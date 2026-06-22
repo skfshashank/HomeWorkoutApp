@@ -63,7 +63,7 @@ export class WorkoutsView {
 
   renderPlan(plan) {
     const preview = this.ctx.manageWorkouts.getPlanPreview(plan, 3);
-    return `<article class="workout-card card"><div class="flex flex-between gap-12"><div><h2>${plan.icon} ${this.translatePlanName(plan)}</h2><p class="text-sm text-muted">${plan.description}</p></div><span class="badge badge-${plan.difficulty}">${this.formatFilterValue(plan.difficulty)}</span></div><div class="flex flex-wrap gap-8"><span class="chip">${plan.duration} min</span><span class="chip">${this.formatFilterValue(plan.category)}</span><span class="chip">${plan.main.length} main</span></div><p class="text-sm text-muted">${preview}</p><button class="btn btn-primary" data-action="start-plan" data-plan-id="${plan.id}">${this.t('start_plan', 'Start plan')}</button></article>`;
+    return `<article class="workout-card card"><div class="flex flex-between gap-12"><div><h2>${plan.icon} ${this.translatePlanName(plan)}</h2><p class="text-sm text-muted">${plan.description}</p></div><span class="badge badge-${plan.difficulty}">${this.formatFilterValue(plan.difficulty)}</span></div><div class="flex flex-wrap gap-8"><span class="chip">${plan.duration} ${this.t('minutes', 'min')}</span><span class="chip">${this.formatFilterValue(plan.category)}</span><span class="chip">${plan.main.length} ${this.t('main_set', 'main')}</span></div><p class="text-sm text-muted">${preview}</p><button class="btn btn-primary" data-action="start-plan" data-plan-id="${plan.id}">${this.t('start_plan', 'Start plan')}</button></article>`;
   }
 
   renderCustomPlan(plan, fallbackDifficulty) {

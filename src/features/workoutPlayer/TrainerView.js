@@ -222,7 +222,7 @@ export class TrainerView {
         <div class="workout-complete mb-24">
           <div class="complete-icon">🎉</div>
           <h2 class="text-center">${this.t('great_work', 'Amazing Work!')}</h2>
-          <p class="complete-stats">${duration} min · ${calories} cal · ${exercises} exercises</p>
+          <p class="complete-stats">${duration} ${this.t('minutes', 'min')} · ${calories} ${this.t('calories', 'cal')} · ${exercises} ${this.t('exercises', 'exercises')}</p>
           <p class="coach-tip">${this.ctx.i18n?.format?.('trainer_days_strong', { days: streakDays }) || `You're ${streakDays} days strong!`} ${this.t('keep_going', 'Keep this momentum going')}.</p>
         </div>
         <div class="grid-3 w-full mb-24">
