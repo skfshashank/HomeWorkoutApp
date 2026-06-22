@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v4';
+const CACHE_NAME = 'openfit-v5';
 const PRECACHE = [
   'index.html',
   'manifest.json',
@@ -9,14 +9,18 @@ const PRECACHE = [
   'src/app/bootstrap.js',
   'src/app/eventBus.js',
   'src/app/router.js',
+  'src/application/achievements/GetAchievements.js',
   'src/application/challenges/GetChallenge.js',
   'src/application/exercises/GetExercises.js',
   'src/application/habits/TrackHabit.js',
   'src/application/profile/UpdateProfile.js',
   'src/application/progress/GetProgress.js',
   'src/application/recovery/GetRecovery.js',
+  'src/application/soreness/TrackSoreness.js',
   'src/application/workouts/CompleteWorkout.js',
+  'src/application/workouts/ManageWorkouts.js',
   'src/application/workouts/StartWorkout.js',
+  'src/application/workouts/WorkoutNotes.js',
   'src/core/backup/backupService.js',
   'src/core/logger/logger.js',
   'src/core/notifications/notificationService.js',
@@ -26,6 +30,7 @@ const PRECACHE = [
   'src/core/storage/profileData.js',
   'src/core/utils/audioEngine.js',
   'src/core/utils/dateUtils.js',
+  'src/core/utils/modalAccessibility.js',
   'src/domain/entities/Exercise.js',
   'src/domain/entities/Habit.js',
   'src/domain/entities/User.js',

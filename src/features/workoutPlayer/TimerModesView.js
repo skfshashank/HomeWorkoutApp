@@ -1,3 +1,5 @@
+import { Events } from '../../app/eventBus.js';
+
 export class TimerModesView {
   constructor() {
     this.ctx = null;
@@ -141,7 +143,7 @@ export class TimerModesView {
     this.state.phase = 'complete';
     this.state.remaining = 0;
     this.announce('Timer complete');
-    this.ctx.bus.emit('timer:complete', { mode: this.mode, roundsCompleted: this.state.roundsCompleted });
+    this.ctx.bus.emit(Events.TIMER_COMPLETE, { mode: this.mode, roundsCompleted: this.state.roundsCompleted });
     this.render();
   }
 

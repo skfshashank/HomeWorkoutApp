@@ -1,3 +1,5 @@
+import { Events } from '../../app/eventBus.js';
+
 export class AchievementView {
   constructor() {
     this.ctx = null;
@@ -8,7 +10,7 @@ export class AchievementView {
   init(container, deps) {
     this.el = container;
     this.ctx = deps;
-    this.ctx.bus.on('achievement:unlocked', ({ achievement }) => {
+    this.ctx.bus.on(Events.ACHIEVEMENT_UNLOCKED, ({ achievement }) => {
       this.lastUnlocked = achievement;
       this.render();
       window.setTimeout(() => {
@@ -16,9 +18,9 @@ export class AchievementView {
         this.render();
       }, 3500);
     });
-    this.ctx.bus.on('profile:updated', () => this.render());
-    this.ctx.bus.on('workout:completed', () => this.render());
-    this.ctx.bus.on('habit:saved', () => this.render());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
+    this.ctx.bus.on(Events.WORKOUT_COMPLETED, () => this.render());
+    this.ctx.bus.on(Events.HABIT_SAVED, () => this.render());
   }
 
   async render() {

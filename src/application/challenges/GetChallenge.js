@@ -115,7 +115,7 @@ export class GetChallenge {
   }
 
   async getMonthlyChallengeModels() {
-    const month = new Date().toISOString().slice(0, 7);
+    const now = new Date(); const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     const profileId = this.#getActiveProfileId();
     const sessions = (await this.#getProfileRecords(this.#db, 'sessions', profileId))
       .filter((session) => String(session.date || session.completedAt).startsWith(month));

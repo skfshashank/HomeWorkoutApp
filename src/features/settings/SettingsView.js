@@ -1,5 +1,4 @@
 import { Events } from '../../app/eventBus.js';
-import { User } from '../../domain/entities/User.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const userStores = ['users', 'profiles', 'sessions', 'measurements', 'habits', 'achievements', 'customWorkouts', 'dailyLogs', 'exerciseMeta', 'lifetimeStats', 'sorenessLogs', 'monthlyChallenges'];
@@ -161,8 +160,7 @@ export class SettingsView {
   }
 
   async openProfileEditor(profileId = '') {
-    const profiles = await this.ctx.updateProfile.getProfiles();
-    const existing = profiles.find((profile) => profile.id === profileId) || new User({ avatar: '🙂' });
+    const existing = await this.ctx.updateProfile.getProfileDraft(profileId);
     this.closeModal();
     openAccessibleModal(this, `
       <h2 class="mb-16" id="modal-title">${profileId ? 'Edit profile' : 'Add profile'}</h2>
@@ -183,21 +181,18 @@ export class SettingsView {
       if (!form) return;
       event.preventDefault();
       const data = new FormData(form);
-      const next = new User({
-        ...existing,
-        id: existing.id || undefined,
-        avatar: data.get('avatar') || '🙂',
-        name: data.get('name') || '',
-        age: Number(data.get('age')) || existing.age,
-        gender: data.get('gender') || '',
-        height: Number(data.get('height')) || existing.height,
-        weight: Number(data.get('weight')) || existing.weight,
-        goal: data.get('goal') || existing.goal,
-        focusArea: data.get('focusArea') || existing.focusArea,
-        level: data.get('level') || existing.level,
-        dailyMinutes: Number(data.get('dailyMinutes')) || existing.dailyMinutes
-      });
-      await this.ctx.updateProfile.saveProfile(next, { setActive: true });
+      await this.ctx.updateProfile.saveProfileDraft(profileId, {
+        avatar: data.get('avatar'),
+        name: data.get('name'),
+        age: data.get('age'),
+        gender: data.get('gender'),
+        height: data.get('height'),
+        weight: data.get('weight'),
+        goal: data.get('goal'),
+        focusArea: data.get('focusArea'),
+        level: data.get('level'),
+        dailyMinutes: data.get('dailyMinutes')
+      }, { setActive: true });
       this.closeModal();
     });
   }

@@ -81,27 +81,48 @@ class App {
     this.exerciseRepo.load(exerciseData.exercises || []);
     this.workoutRepo = new WorkoutRepository();
     this.workoutRepo.load(planData.plans || []);
+    const getActiveProfileId = () => this.profileManager.getActiveProfileId();
+    const getRecordsForProfile = (storeName, profileId) => getProfileRecords(this.db, storeName, profileId);
+    const achievementStorage = {
+      getStats: (profileId = getActiveProfileId()) => this.db.get('lifetimeStats', profileId),
+      saveStats: (stats) => this.db.put('lifetimeStats', stats),
+      getUnlocked: (profileId = getActiveProfileId()) => getRecordsForProfile('achievements', profileId),
+      saveUnlocked: (achievement) => this.db.put('achievements', achievement)
+    };
+    const recoveryStorage = {
+      getLogs: async (profileId, days = 30) => {
+        const threshold = new Date();
+        threshold.setDate(threshold.getDate() - Math.max(0, days - 1));
+        const thresholdDate = todayKey(threshold);
+        const logs = await getRecordsForProfile('dailyLogs', profileId);
+        return logs.filter((entry) => String(entry.date || '') >= thresholdDate);
+      },
+      getHabits: (profileId, date = todayKey()) => getScopedDailyRecord(this.db, 'habits', profileId, date, { soreness: [] })
+    };
+    const progressionStorage = {
+      getHistory: () => this.prefs.get(`rpe_history_${getActiveProfileId()}`, []),
+      saveHistory: (history) => this.prefs.set(`rpe_history_${getActiveProfileId()}`, history),
+      getMultiplier: () => this.prefs.get(`progression_multiplier_${getActiveProfileId()}`, 1.0),
+      saveMultiplier: (multiplier) => this.prefs.set(`progression_multiplier_${getActiveProfileId()}`, multiplier)
+    };
 
     this.recovery = new RecoveryEngine({
-      db: this.db,
-      getActiveProfileId: () => this.profileManager.getActiveProfileId(),
-      getProfileRecords,
-      todayKey
+      storage: recoveryStorage,
+      getActiveProfileId,
+      getDateStr: todayKey
     });
     this.scheduler = new SchedulerEngine(this.exerciseRepo, this.workoutRepo, todayKey);
     this.progression = new ProgressionEngine({
-      db: this.db,
-      prefs: this.prefs,
-      getActiveProfileId: () => this.profileManager.getActiveProfileId(),
-      getProfileRecords
+      storage: progressionStorage,
+      getDateStr: todayKey
     });
     this.achievementEngine = new AchievementEngine({
-      db: this.db,
+      storage: achievementStorage,
       bus: this.bus,
       events: Events,
-      getActiveProfileId: () => this.profileManager.getActiveProfileId(),
+      getActiveProfileId,
       exerciseRepo: this.exerciseRepo,
-      getProfileRecords,
+      getProfileRecords: getRecordsForProfile,
       sortByDateDesc,
       todayKey
     });

@@ -1,3 +1,5 @@
+import { Events } from '../../app/eventBus.js';
+
 export class CustomWorkoutView {
   constructor() {
     this.ctx = null;
@@ -13,7 +15,7 @@ export class CustomWorkoutView {
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
-    this.ctx.bus.on('profile:updated', () => this.resetDraft());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.resetDraft());
   }
 
   async render() {

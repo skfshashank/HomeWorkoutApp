@@ -173,6 +173,7 @@ export class TrackHabit {
     let result;
     if (this.#applyHabitProgress) {
       result = await this.#applyHabitProgress(this.#getActiveProfileId(), habit, previous);
+      await this.#db.put('habits', result?.habit || habit);
     } else {
       await this.#db.put('habits', habit);
       result = { habit, earnedXp: 0 };

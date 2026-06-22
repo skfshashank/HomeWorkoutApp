@@ -1,8 +1,7 @@
 /**
  * RecoveryEngine - calculates recovery score and muscle availability.
  */
-const defaultGetProfileRecords = async (db, storeName) => db.getAll(storeName);
-const defaultTodayKey = (date = new Date()) => {
+const defaultGetDateStr = (date = new Date()) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -10,21 +9,18 @@ const defaultTodayKey = (date = new Date()) => {
 };
 
 export class RecoveryEngine {
-  #db;
+  #storage;
   #getActiveProfileId;
-  #getProfileRecords;
-  #todayKey;
+  #getDateStr;
 
   constructor({
-    db,
+    storage,
     getActiveProfileId = () => 'default',
-    getProfileRecords = defaultGetProfileRecords,
-    todayKey = defaultTodayKey
+    getDateStr = defaultGetDateStr
   }) {
-    this.#db = db;
+    this.#storage = storage;
     this.#getActiveProfileId = getActiveProfileId;
-    this.#getProfileRecords = getProfileRecords;
-    this.#todayKey = todayKey;
+    this.#getDateStr = getDateStr;
   }
 
   async calculateScore(habit) {
@@ -72,13 +68,13 @@ export class RecoveryEngine {
   }
 
   async getRecentConsecutiveDays() {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#storage.getLogs(this.#getActiveProfileId(), 30);
     let count = 0;
     const now = new Date();
     for (let i = 0; i < 30; i += 1) {
       const date = new Date(now);
       date.setDate(now.getDate() - i);
-      const dateStr = this.#todayKey(date);
+      const dateStr = this.#getDateStr(date);
       const log = logs.find((entry) => entry.date === dateStr);
       if (log?.workoutCompleted) count += 1;
       else break;

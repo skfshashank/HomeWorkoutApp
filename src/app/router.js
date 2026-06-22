@@ -1,3 +1,5 @@
+import { Events } from './eventBus.js';
+
 /**
  * SPA Router - manages page visibility and navigation state.
  */
@@ -15,7 +17,7 @@ export class Router {
     if (target) {
       target.classList.add('active');
       this.#currentPage = page;
-      this.#bus.emit('page:changed', { page });
+      this.#bus.emit(Events.PAGE_CHANGED, { page });
     }
     // Update nav
     document.querySelectorAll('[data-nav]').forEach(btn => {

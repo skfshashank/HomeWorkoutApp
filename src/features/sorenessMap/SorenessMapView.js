@@ -1,3 +1,5 @@
+import { Events } from '../../app/eventBus.js';
+
 const colorFor = (value) => ['#1f2937', '#22c55e', '#fbbf24', '#fb923c', '#f87171'][value + 1] || '#1f2937';
 const groups = ['chest', 'shoulders', 'arms', 'core', 'quads', 'calves', 'back', 'glutes', 'hamstrings'];
 
@@ -11,8 +13,8 @@ export class SorenessMapView {
     this.el = container;
     this.ctx = deps;
     this.el.addEventListener('click', (event) => this.handleClick(event));
-    this.ctx.bus.on('profile:updated', () => this.render());
-    this.ctx.bus.on('habit:saved', () => this.render());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
+    this.ctx.bus.on(Events.HABIT_SAVED, () => this.render());
   }
 
   async render() {

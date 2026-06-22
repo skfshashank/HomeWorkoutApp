@@ -64,6 +64,42 @@ export class UpdateProfile {
     return saved;
   }
 
+  async createFromOnboarding(data = {}) {
+    return this.saveProfile({
+      goal: data.goal || 'fat_loss',
+      focusArea: data.focusArea || data.focus || 'core',
+      dailyMinutes: Number.parseInt(data.dailyMinutes ?? data.time ?? '30', 10) || 30,
+      level: data.level || 'beginner'
+    }, { setActive: true });
+  }
+
+  async getProfileDraft(profileId = '') {
+    if (profileId) {
+      const profiles = await this.getProfiles();
+      const existing = profiles.find((profile) => profile.id === profileId);
+      if (existing) return new User(existing);
+    }
+    return new User({ avatar: '🙂' });
+  }
+
+  async saveProfileDraft(profileId, values = {}, options = {}) {
+    const existing = await this.getProfileDraft(profileId);
+    return this.saveProfile({
+      ...existing,
+      id: profileId || undefined,
+      avatar: values.avatar || '🙂',
+      name: values.name || '',
+      age: Number(values.age) || existing.age,
+      gender: values.gender || '',
+      height: Number(values.height) || existing.height,
+      weight: Number(values.weight) || existing.weight,
+      goal: values.goal || existing.goal,
+      focusArea: values.focusArea || existing.focusArea,
+      level: values.level || existing.level,
+      dailyMinutes: Number(values.dailyMinutes) || existing.dailyMinutes
+    }, options);
+  }
+
   async switchProfile(profileId) {
     return this.#profileManager.switchProfile(profileId);
   }

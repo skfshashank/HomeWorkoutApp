@@ -38,7 +38,7 @@ const defaultStats = (profileId) => ({
 });
 
 const toLevel = (xp) => Math.floor((xp || 0) / 100) + 1;
-const defaultGetProfileRecords = async (db, storeName) => db.getAll(storeName);
+const defaultGetProfileRecords = async () => [];
 const defaultSortByDateDesc = (records = [], field = 'date') => [...records].sort((a, b) => String(b?.[field] || '').localeCompare(String(a?.[field] || '')));
 const defaultTodayKey = (date = new Date()) => {
   const year = date.getFullYear();
@@ -49,7 +49,7 @@ const defaultTodayKey = (date = new Date()) => {
 
 export class AchievementEngine {
   constructor({
-    db,
+    storage,
     bus,
     events,
     getActiveProfileId,
@@ -58,7 +58,7 @@ export class AchievementEngine {
     sortByDateDesc = defaultSortByDateDesc,
     todayKey = defaultTodayKey
   }) {
-    this.db = db;
+    this.storage = storage;
     this.bus = bus;
     this.events = events;
     this.getActiveProfileId = getActiveProfileId;
@@ -74,7 +74,7 @@ export class AchievementEngine {
 
   async getStats(profileId = this.getActiveProfileId()) {
     const activeProfileId = profileId || this.getActiveProfileId();
-    return (await this.db.get('lifetimeStats', activeProfileId)) || defaultStats(activeProfileId);
+    return (await this.storage.getStats(activeProfileId)) || defaultStats(activeProfileId);
   }
 
   async saveStats(stats) {
@@ -85,7 +85,7 @@ export class AchievementEngine {
       level: toLevel(stats.xp || 0),
       updatedAt: new Date().toISOString()
     };
-    await this.db.put('lifetimeStats', nextStats);
+    await this.storage.saveStats(nextStats);
     return nextStats;
   }
 
@@ -98,7 +98,8 @@ export class AchievementEngine {
 
   async grantBadge(profileId, badge) {
     const recordId = `${profileId}:${badge.id}`;
-    const existing = await this.db.get('achievements', recordId);
+    const unlocked = await this.storage.getUnlocked(profileId);
+    const existing = unlocked.find((record) => record.id === recordId);
     if (existing) return existing;
 
     const record = {
@@ -113,7 +114,7 @@ export class AchievementEngine {
       rewardXp: badge.xp || 100
     };
 
-    await this.db.put('achievements', record);
+    await this.storage.saveUnlocked(record);
     await this.grantXp(profileId, record.rewardXp, record.type);
     this.bus.emit(this.events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
     return record;
@@ -196,7 +197,6 @@ export class AchievementEngine {
     await this.saveStats(stats);
 
     habit.awardedHabitKeys = [...nextAwarded];
-    await this.db.put('habits', habit);
 
     if (earnedXp) {
       await this.grantXp(profileId, earnedXp, 'habit');
@@ -208,7 +208,7 @@ export class AchievementEngine {
   }
 
   async syncMeasurementProgress(profileId) {
-    const measurements = this.sortByDateDesc(await this.getProfileRecords(this.db, 'measurements', profileId));
+    const measurements = this.sortByDateDesc(await this.getProfileRecords('measurements', profileId));
     const stats = await this.getStats(profileId);
     const chronological = [...measurements].sort((a, b) => a.date.localeCompare(b.date));
     const first = chronological[0];
@@ -227,7 +227,7 @@ export class AchievementEngine {
   }
 
   async computeCurrentStreak(profileId) {
-    const logs = await this.getProfileRecords(this.db, 'dailyLogs', profileId);
+    const logs = await this.getProfileRecords('dailyLogs', profileId);
     const completedDates = new Set(logs.filter((log) => log.workoutCompleted).map((log) => log.date));
     let streak = 0;
     const now = new Date();
@@ -284,7 +284,7 @@ export class AchievementEngine {
 
   async evaluateAchievements(profileId = this.getActiveProfileId()) {
     const stats = await this.getAchievementStats(profileId);
-    const unlockedRecords = await this.getProfileRecords(this.db, 'achievements', profileId);
+    const unlockedRecords = await this.storage.getUnlocked(profileId);
     const unlockedIds = new Set(unlockedRecords.map((record) => record.achievementId));
 
     for (const achievement of ACHIEVEMENTS) {
@@ -300,7 +300,7 @@ export class AchievementEngine {
           unlockedAt: new Date().toISOString(),
           rewardXp: 50
         };
-        await this.db.put('achievements', record);
+        await this.storage.saveUnlocked(record);
         await this.grantXp(profileId, 50, 'achievement');
         this.bus.emit(this.events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
       }
@@ -309,7 +309,7 @@ export class AchievementEngine {
 
   async getAchievementsViewModel(profileId = this.getActiveProfileId()) {
     const stats = await this.getAchievementStats(profileId);
-    const unlockedRecords = await this.getProfileRecords(this.db, 'achievements', profileId);
+    const unlockedRecords = await this.storage.getUnlocked(profileId);
     const unlockedMap = new Map(unlockedRecords.map((record) => [record.achievementId, record]));
 
     return ACHIEVEMENTS.map((achievement) => {

@@ -1,3 +1,4 @@
+import { Events } from '../../app/eventBus.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 export class ExerciseLibraryView {
@@ -20,7 +21,7 @@ export class ExerciseLibraryView {
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
-    this.ctx.bus.on('profile:updated', () => this.render());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
   }
 
   async render() {

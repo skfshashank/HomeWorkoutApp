@@ -1,5 +1,3 @@
-import { User } from '../../domain/entities/User.js';
-
 export class OnboardingView {
   #updateProfile;
   #step = 1;
@@ -66,13 +64,12 @@ export class OnboardingView {
       return;
     }
 
-    const user = new User({
+    await this.#updateProfile.createFromOnboarding({
       goal: this.#data.goal || 'fat_loss',
       focusArea: this.#data.focus || 'core',
       dailyMinutes: parseInt(this.#data.time, 10) || 30,
       level: this.#data.level || 'beginner'
     });
-    await this.#updateProfile.saveProfile(user, { setActive: true });
   }
 
   #stepGoal() {

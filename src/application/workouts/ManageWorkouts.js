@@ -106,7 +106,7 @@ export class ManageWorkouts {
     const plan = this.#scheduler.generateDaily(user, date, options);
     return {
       ...plan,
-      id: `daily-${plan.date || new Date().toISOString().slice(0, 10)}`,
+      id: `daily-${plan.date || `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}`,
       name: plan.isRestDay ? 'Recovery Reset' : `${plan.category.replaceAll('_', ' ')} focus`,
       description: plan.isRestDay
         ? 'Gentle mobility, breathing, and stretching to keep your streak sustainable.'
