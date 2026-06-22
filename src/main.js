@@ -140,14 +140,14 @@ class App {
       events: Events,
       getActiveProfileId: () => this.profileManager.getActiveProfileId(),
       getLocalDateStr,
-      getProfileRecords,
+      getProfileRecords: getRecordsForProfile,
       getScopedDailyRecord,
       applyHabitProgress: (...args) => this.getAchievements.applyHabitProgress(...args)
     });
     this.getProgress = new GetProgress({
       db: this.db,
       getActiveProfileId: () => this.profileManager.getActiveProfileId(),
-      getProfileRecords,
+      getProfileRecords: getRecordsForProfile,
       getScopedDailyRecord,
       todayKey
     });
@@ -175,7 +175,7 @@ class App {
       getActiveProfileId: () => this.profileManager.getActiveProfileId(),
       today,
       daysBetween,
-      getProfileRecords,
+      getProfileRecords: getRecordsForProfile,
       exerciseRepo: this.exerciseRepo,
       achievementGateway: this.getAchievements
     });

@@ -58,7 +58,7 @@ export class TrackHabit {
   async getTrackerViewModel(date = this.#getLocalDateStr()) {
     const [habit, records] = await Promise.all([
       this.getHabit(date),
-      this.#getProfileRecords(this.#db, 'habits', this.#getActiveProfileId())
+      this.#getProfileRecords('habits', this.#getActiveProfileId())
     ]);
     return {
       habit,

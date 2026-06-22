@@ -198,12 +198,12 @@ export class SettingsView {
   }
 
   async deleteProfile(profileId) {
-    if (!confirm('Delete this profile from the active switcher?')) return;
+    if (!window.confirm('Delete this profile from the active switcher?')) return;
     try {
       await this.ctx.updateProfile.deleteProfile(profileId);
       this.render();
     } catch (error) {
-      alert(error.message);
+      window.alert(error.message);
     }
   }
 
@@ -213,16 +213,16 @@ export class SettingsView {
       await this.ctx.backup.importFromJSON(file);
       await this.ctx.updateProfile.initProfiles();
       this.render();
-      alert('Backup imported successfully.');
+      window.alert('Backup imported successfully.');
     } catch (error) {
-      alert(`Import failed: ${error.message}`);
+      window.alert(`Import failed: ${error.message}`);
     }
   }
 
   async resetData() {
-    if (!confirm('Reset all OpenFit Local data on this device?')) return;
+    if (!window.confirm('Reset all OpenFit Local data on this device?')) return;
     await this.ctx.updateProfile.resetAllData(userStores);
-    location.reload();
+    window.location.reload();
   }
 
   closeModal(options = {}) {

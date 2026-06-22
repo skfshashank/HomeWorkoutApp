@@ -69,8 +69,8 @@ export class GetProgress {
       };
     }
 
-    const sessions = await this.#getProfileRecords(this.#db, 'sessions', profileId);
-    const habits = await this.#getProfileRecords(this.#db, 'habits', profileId);
+    const sessions = await this.#getProfileRecords('sessions', profileId);
+    const habits = await this.#getProfileRecords('habits', profileId);
     const totalMinutes = sessions.reduce((sum, session) => sum + (session.duration || 0), 0);
     return {
       profileId,
@@ -96,17 +96,17 @@ export class GetProgress {
   }
 
   async getCompletedDates() {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#getProfileRecords('dailyLogs', this.#getActiveProfileId());
     return logs.filter((log) => log.workoutCompleted).map((log) => log.date);
   }
 
   async getMeasurements() {
-    const measurements = await this.#getProfileRecords(this.#db, 'measurements', this.#getActiveProfileId());
+    const measurements = await this.#getProfileRecords('measurements', this.#getActiveProfileId());
     return [...measurements].sort((a, b) => b.date.localeCompare(a.date));
   }
 
   async getStreak() {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#getProfileRecords('dailyLogs', this.#getActiveProfileId());
     const completedDates = new Set(logs.filter((log) => log.workoutCompleted).map((log) => log.date));
     let streak = 0;
     const now = new Date();
@@ -125,7 +125,7 @@ export class GetProgress {
   }
 
   async getBestStreak() {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#getProfileRecords('dailyLogs', this.#getActiveProfileId());
     const dates = logs.filter((log) => log.workoutCompleted).map((log) => log.date).sort();
     if (!dates.length) return 0;
 
@@ -144,7 +144,7 @@ export class GetProgress {
   }
 
   async getWeeklyConsistency() {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#getProfileRecords('dailyLogs', this.#getActiveProfileId());
     const now = new Date();
     const weekStart = new Date(now);
     weekStart.setDate(now.getDate() - now.getDay());
@@ -162,13 +162,13 @@ export class GetProgress {
   }
 
   async getHeatmapData(year, month) {
-    const logs = await this.#getProfileRecords(this.#db, 'dailyLogs', this.#getActiveProfileId());
+    const logs = await this.#getProfileRecords('dailyLogs', this.#getActiveProfileId());
     const prefix = `${year}-${String(month + 1).padStart(2, '0')}`;
     return logs.filter((log) => log.date.startsWith(prefix));
   }
 
   async getHistory(limit = 20) {
-    const sessions = await this.#getProfileRecords(this.#db, 'sessions', this.#getActiveProfileId());
+    const sessions = await this.#getProfileRecords('sessions', this.#getActiveProfileId());
     return [...sessions].sort((a, b) => String(b.completedAt).localeCompare(String(a.completedAt))).slice(0, limit);
   }
 }
