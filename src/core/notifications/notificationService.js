@@ -3,8 +3,10 @@
  */
 export class NotificationService {
   #permitted = false;
+  #i18n;
 
-  constructor() {
+  constructor(i18n = null) {
+    this.#i18n = i18n;
     this.#permitted = ('Notification' in window && Notification.permission === 'granted');
   }
   
@@ -25,18 +27,26 @@ export class NotificationService {
       ...options
     });
   }
+
+  t(key, fallback = key) {
+    return this.#i18n?.t(key) || fallback;
+  }
+
+  format(key, values = {}, fallback = '') {
+    return this.#i18n?.format?.(key, values) || fallback;
+  }
   
   deskBreak(exerciseName) {
-    return this.notify('⏰ Time to Move!', {
-      body: `You've been sitting for 50 minutes. Try: ${exerciseName}`,
+    return this.notify(this.t('notification_time_to_move', '⏰ Time to Move!'), {
+      body: this.format('notification_desk_break_body', { exercise: exerciseName }, `You've been sitting for 50 minutes. Try: ${exerciseName}`),
       tag: 'desk-break',
       requireInteraction: true
     });
   }
   
   workoutReminder(goal = 'daily') {
-    return this.notify('OpenFit Local', {
-      body: `Time for your workout! 💪 Your ${goal} routine is waiting.`,
+    return this.notify(this.t('notification_workout_title', 'OpenFit Local'), {
+      body: this.format('notification_workout_body', { goal }, `Time for your workout! 💪 Your ${goal} routine is waiting.`),
       tag: 'workout-reminder'
     });
   }

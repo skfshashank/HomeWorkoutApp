@@ -36,7 +36,8 @@ export class TrainerView {
   }
 
   renderProgressLiveText(percent) {
-    return `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
+    return this.ctx.i18n?.format?.('workout_progress', { percent, current: this.currentIndex + 1, total: this.queue.length })
+      || `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
   }
 
   t(key, fallback = key) {
@@ -125,11 +126,11 @@ export class TrainerView {
       <div class="fs-header">
         <div>
           <div class="text-sm text-muted">${this.session.workoutName}</div>
-          <strong>${this.currentIndex + 1} / ${this.queue.length} exercises</strong>
+          <strong>${this.currentIndex + 1} / ${this.queue.length} ${this.t('exercises', 'Exercises').toLowerCase()}</strong>
         </div>
         <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')}</button>
       </div>
-      <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
+      <div class="progress-bar" role="progressbar" aria-label="${this.t('progress_title', 'Progress')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
       <div class="exercise-demo-shell w-full mb-16">
@@ -151,7 +152,7 @@ export class TrainerView {
         <div class="set-dots">
           ${Array.from({ length: item.sets }, (_, index) => `<span class="set-dot ${index + 1 < this.currentSet ? 'completed' : ''} ${index + 1 === this.currentSet ? 'current' : ''}"></span>`).join('')}
         </div>
-        <div class="text-sm text-muted mb-16">Set ${this.currentSet} of ${item.sets}</div>
+        <div class="text-sm text-muted mb-16">${this.t('sets', 'Sets')} ${this.currentSet} ${this.t('of', 'of')} ${item.sets}</div>
 
         <div class="card w-full mb-16">
           <div class="flex flex-between gap-12 mb-8">
@@ -161,7 +162,7 @@ export class TrainerView {
               <button class="btn btn-secondary btn-sm" data-action="adjust-target">${this.t('adjust_target', 'Adjust target')}</button>
             </div>
           </div>
-          <p class="text-sm text-muted">Need a variation? Swap keeps your place in the workout while replacing just this movement.</p>
+          <p class="text-sm text-muted">${this.t('trainer_need_variation', 'Need a variation? Swap keeps your place in the workout while replacing just this movement.')}</p>
         </div>
 
         ${isRepBased && this.mode === 'exercise' ? `<button class="btn btn-primary btn-lg w-full mb-16" data-action="complete-set">${this.t('complete_set', 'Complete set')}</button>` : ''}
@@ -186,14 +187,14 @@ export class TrainerView {
         </div>
         <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')} ${this.t('rest', 'Rest').toLowerCase()}</button>
       </div>
-      <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
+      <div class="progress-bar" role="progressbar" aria-label="${this.t('progress_title', 'Progress')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
         <div class="exercise-demo w-full mb-16">
           <div class="exercise-demo__avatar anim-breathing">😮‍💨</div>
           <div class="exercise-demo__caption">
             <strong>${this.t('rest', 'Rest')}</strong>
-            <div class="text-sm text-muted">Breathe, reset, and get ready.</div>
+            <div class="text-sm text-muted">${this.t('trainer_breathe_reset', 'Breathe, reset, and get ready.')}</div>
           </div>
         </div>
         <div class="timer-display" ${this.renderTimerAttributes(this.remaining)}>${formatDuration(this.remaining)}</div>
@@ -222,21 +223,21 @@ export class TrainerView {
           <div class="complete-icon">🎉</div>
           <h2 class="text-center">${this.t('great_work', 'Amazing Work!')}</h2>
           <p class="complete-stats">${duration} min · ${calories} cal · ${exercises} exercises</p>
-          <p class="coach-tip">You're ${streakDays} days strong! ${this.t('keep_going', 'Keep this momentum going')}.</p>
+          <p class="coach-tip">${this.ctx.i18n?.format?.('trainer_days_strong', { days: streakDays }) || `You're ${streakDays} days strong!`} ${this.t('keep_going', 'Keep this momentum going')}.</p>
         </div>
         <div class="grid-3 w-full mb-24">
-          <div class="stat-card"><div class="stat-value">${calories}</div><div class="stat-label">Calories</div></div>
-          <div class="stat-card"><div class="stat-value">${duration}</div><div class="stat-label">Minutes</div></div>
-          <div class="stat-card"><div class="stat-value">${this.completedSets}</div><div class="stat-label">Sets</div></div>
+          <div class="stat-card"><div class="stat-value">${calories}</div><div class="stat-label">${this.t('calories', 'Calories')}</div></div>
+          <div class="stat-card"><div class="stat-value">${duration}</div><div class="stat-label">${this.t('minutes', 'Minutes')}</div></div>
+          <div class="stat-card"><div class="stat-value">${this.completedSets}</div><div class="stat-label">${this.t('sets', 'Sets')}</div></div>
         </div>
         ${progressCheck?.message ? `<div class="card mb-24"><p class="text-sm">${progressCheck.message}</p></div>` : ''}
         <div class="card w-full mb-24">
           <div class="flex flex-between gap-12 mb-8">
-            <strong>Add notes about this session (optional)</strong>
-            <button class="btn btn-secondary btn-sm" data-action="save-note">Save</button>
+            <strong>${this.t('trainer_session_notes_title', 'Add notes about this session (optional)')}</strong>
+            <button class="btn btn-secondary btn-sm" data-action="save-note">${this.t('save', 'Save')}</button>
           </div>
-          <textarea id="session-note" class="form-input note-input" rows="4" placeholder="How did it feel? Any wins, pain points, or adjustments for next time?">${note}</textarea>
-          <div class="text-sm text-muted mt-8">${this.noteFeedback || 'Saved with this workout in your local history.'}</div>
+          <textarea id="session-note" class="form-input note-input" rows="4" placeholder="${this.t('trainer_session_notes_placeholder', 'How did it feel? Any wins, pain points, or adjustments for next time?')}">${note}</textarea>
+          <div class="text-sm text-muted mt-8">${this.noteFeedback || this.t('trainer_session_saved_feedback', 'Saved with this workout in your local history.')}</div>
         </div>
         <button class="btn btn-primary btn-lg w-full" data-action="close-complete">${this.t('back_to_dashboard', 'Back to dashboard')}</button>
       </div>`;
@@ -410,13 +411,13 @@ export class TrainerView {
     return new Promise((resolve) => {
       this.openModal(`
         <div class="text-center mb-16">
-          <h2 id="modal-title">How did that feel?</h2>
-          <p class="text-sm text-muted">Your answer helps OpenFit adapt tomorrow's target.</p>
+          <h2 id="modal-title">${this.t('trainer_rpe_title', 'How did that feel?')}</h2>
+          <p class="text-sm text-muted">${this.t('trainer_rpe_subtitle', 'Your answer helps OpenFit adapt tomorrow\'s target.')}</p>
         </div>
         <div class="rpe-options">
-          <button class="rpe-option" data-rpe="too_easy"><span class="rpe-emoji">😌</span><span class="rpe-label">Too Easy</span></button>
-          <button class="rpe-option" data-rpe="just_right"><span class="rpe-emoji">😎</span><span class="rpe-label">Just Right</span></button>
-          <button class="rpe-option" data-rpe="exhausting"><span class="rpe-emoji">🥵</span><span class="rpe-label">Exhausting</span></button>
+          <button class="rpe-option" data-rpe="too_easy"><span class="rpe-emoji">😌</span><span class="rpe-label">${this.t('too_easy', 'Too Easy')}</span></button>
+          <button class="rpe-option" data-rpe="just_right"><span class="rpe-emoji">😎</span><span class="rpe-label">${this.t('just_right', 'Just Right')}</span></button>
+          <button class="rpe-option" data-rpe="exhausting"><span class="rpe-emoji">🥵</span><span class="rpe-label">${this.t('exhausting', 'Exhausting')}</span></button>
         </div>`, (event) => {
         const option = event.target.closest('[data-rpe]');
         if (!option) return;
@@ -430,18 +431,18 @@ export class TrainerView {
   openAdjustTargetModal() {
     const item = this.currentItem();
     if (!item) return;
-    const label = item.exercise.isTimeBased ? 'seconds' : 'reps';
+    const label = item.exercise.isTimeBased ? this.t('seconds', 'seconds') : this.t('reps', 'reps');
 
     this.openModal(`
-      <h2 class="mb-16" id="modal-title">Adjust target</h2>
+      <h2 class="mb-16" id="modal-title">${this.t('adjust_target', 'Adjust target')}</h2>
       <form id="adjust-target-form">
         <div class="form-group">
-          <label class="form-label">Target (${label})</label>
+          <label class="form-label">${this.ctx.i18n?.format?.('target_with_unit', { unit: label }) || `Target (${label})`}</label>
           <input class="form-input" type="number" name="target" min="1" value="${item.currentTarget || item.target}" required>
         </div>
         <div class="grid-2 mt-24">
-          <button type="button" class="btn btn-secondary" data-close-modal="true">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-close-modal="true">${this.t('cancel', 'Cancel')}</button>
+          <button type="submit" class="btn btn-primary">${this.t('save', 'Save')}</button>
         </div>
       </form>`, (event) => {
       if (event.target.closest('[data-close-modal]')) {
@@ -471,17 +472,17 @@ export class TrainerView {
 
     if (!suggestions.length) {
       this.openModal(`
-        <h2 class="mb-16" id="modal-title">No swaps yet</h2>
-        <p class="text-sm text-muted mb-16">We couldn't find a close match for this exercise right now.</p>
-        <button type="button" class="btn btn-primary w-full" data-close-modal="true">Got it</button>`, (event) => {
+        <h2 class="mb-16" id="modal-title">${this.t('no_swaps_yet', 'No swaps yet')}</h2>
+        <p class="text-sm text-muted mb-16">${this.t('no_swaps_message', 'We couldn\'t find a close match for this exercise right now.')}</p>
+        <button type="button" class="btn btn-primary w-full" data-close-modal="true">${this.t('got_it', 'Got it')}</button>`, (event) => {
         if (event.target.closest('[data-close-modal]')) this.closeModal();
       });
       return;
     }
 
     this.openModal(`
-      <h2 class="mb-16" id="modal-title">Swap exercise</h2>
-      <p class="text-sm text-muted mb-16">Choose a similar move for the same training block.</p>
+      <h2 class="mb-16" id="modal-title">${this.t('swap_exercise_title', 'Swap exercise')}</h2>
+      <p class="text-sm text-muted mb-16">${this.t('swap_exercise_subtitle', 'Choose a similar move for the same training block.')}</p>
       <div class="swap-options">
         ${suggestions.map((exercise) => `
           <button class="swap-option" data-exercise-id="${exercise.id}">
@@ -493,7 +494,7 @@ export class TrainerView {
           </button>`).join('')}
       </div>
       <div class="mt-16">
-        <button type="button" class="btn btn-secondary w-full" data-close-modal="true">Cancel</button>
+        <button type="button" class="btn btn-secondary w-full" data-close-modal="true">${this.t('cancel', 'Cancel')}</button>
       </div>`, (event) => {
       if (event.target.closest('[data-close-modal]')) {
         this.closeModal();
@@ -571,7 +572,7 @@ export class TrainerView {
     if (nextNote === String(record.note || '')) return;
 
     record.note = await this.ctx.workoutNotes.save(record.id, nextNote);
-    this.noteFeedback = record.note ? 'Notes saved to workout history.' : 'Notes cleared from this session.';
+    this.noteFeedback = record.note ? this.t('trainer_note_saved', 'Notes saved to workout history.') : this.t('trainer_note_cleared', 'Notes cleared from this session.');
   }
 
   async dismiss() {

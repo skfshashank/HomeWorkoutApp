@@ -18,6 +18,10 @@ export class CustomWorkoutView {
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.resetDraft());
   }
 
+  t(key, fallback = key) {
+    return this.ctx.i18n?.t(key) || fallback;
+  }
+
   async render() {
     await this.ensureDraft();
     const exercises = this.ctx.getExercises.execute(this.libraryFilters).slice(0, 24);
@@ -25,36 +29,36 @@ export class CustomWorkoutView {
     const tags = ['all', ...this.ctx.getExercises.getTags()];
 
     this.el.innerHTML = `
-      <div class="page-title">Custom Workout Creator</div>
-      <p class="page-subtitle">Build your own workout, fine-tune reps/duration/sets/rest, and save it for this profile.</p>
+      <div class="page-title">${this.t('custom_workout_creator', 'Custom Workout Creator')}</div>
+      <p class="page-subtitle">${this.t('custom_workout_subtitle', 'Build your own workout, fine-tune reps/duration/sets/rest, and save it for this profile.')}</p>
 
       <section class="card">
         <div class="grid-2">
-          <div class="form-group"><label class="form-label">Workout name</label><input class="form-input" data-draft="name" value="${this.draft.name}"></div>
-          <div class="form-group"><label class="form-label">Estimated duration (min)</label><input class="form-input" type="number" data-draft="duration" value="${this.draft.duration}"></div>
-          <div class="form-group"><label class="form-label">Rest between sets (sec)</label><input class="form-input" type="number" data-draft="restBetweenSets" value="${this.draft.restBetweenSets}"></div>
-          <div class="form-group"><label class="form-label">Rest between exercises (sec)</label><input class="form-input" type="number" data-draft="restBetweenExercises" value="${this.draft.restBetweenExercises}"></div>
+          <div class="form-group"><label class="form-label">${this.t('workout_name', 'Workout name')}</label><input class="form-input" data-draft="name" value="${this.draft.name}"></div>
+          <div class="form-group"><label class="form-label">${this.t('estimated_duration_minutes', 'Estimated duration (min)')}</label><input class="form-input" type="number" data-draft="duration" value="${this.draft.duration}"></div>
+          <div class="form-group"><label class="form-label">${this.t('rest_between_sets', 'Rest between sets (sec)')}</label><input class="form-input" type="number" data-draft="restBetweenSets" value="${this.draft.restBetweenSets}"></div>
+          <div class="form-group"><label class="form-label">${this.t('rest_between_exercises', 'Rest between exercises (sec)')}</label><input class="form-input" type="number" data-draft="restBetweenExercises" value="${this.draft.restBetweenExercises}"></div>
         </div>
         <div class="flex gap-8 flex-wrap">
-          <button class="btn btn-primary" data-action="save-workout">Save workout</button>
-          ${this.editingId ? '<button class="btn btn-secondary" data-action="duplicate-workout">Duplicate</button>' : ''}
-          ${this.editingId ? '<button class="btn btn-danger" data-action="delete-workout">Delete</button>' : ''}
-          <button class="btn btn-secondary" data-action="back-workouts">Back to workouts</button>
+          <button class="btn btn-primary" data-action="save-workout">${this.t('save_workout', 'Save workout')}</button>
+          ${this.editingId ? `<button class="btn btn-secondary" data-action="duplicate-workout">${this.t('duplicate', 'Duplicate')}</button>` : ''}
+          ${this.editingId ? `<button class="btn btn-danger" data-action="delete-workout">${this.t('delete', 'Delete')}</button>` : ''}
+          <button class="btn btn-secondary" data-action="back-workouts">${this.t('back_to_workouts', 'Back to workouts')}</button>
         </div>
       </section>
 
       <section class="card">
-        <h2>Selected exercises</h2>
-        ${this.draft.main.length ? this.draft.main.map((item, index) => this.renderDraftItem(item, index)).join('') : '<p class="text-sm text-muted">Add exercises from the library below.</p>'}
+        <h2>${this.t('selected_exercises', 'Selected exercises')}</h2>
+        ${this.draft.main.length ? this.draft.main.map((item, index) => this.renderDraftItem(item, index)).join('') : `<p class="text-sm text-muted">${this.t('add_exercises_below', 'Add exercises from the library below.')}</p>`}
       </section>
 
       <section class="card">
-        <h2>Add from library</h2>
+        <h2>${this.t('add_from_library', 'Add from library')}</h2>
         <div class="grid-2">
-          <div class="form-group"><label class="form-label">Search</label><input class="form-input" data-library="search" value="${this.libraryFilters.search}" placeholder="Search exercise"></div>
-          <div class="form-group"><label class="form-label">Muscle</label><select class="form-input form-select" data-library="muscle">${muscles.map((muscle) => `<option value="${muscle}" ${muscle === this.libraryFilters.muscle ? 'selected' : ''}>${muscle}</option>`).join('')}</select></div>
-          <div class="form-group"><label class="form-label">Difficulty</label><select class="form-input form-select" data-library="difficulty">${['all', 'beginner', 'intermediate', 'advanced'].map((level) => `<option value="${level}" ${level === this.libraryFilters.difficulty ? 'selected' : ''}>${level}</option>`).join('')}</select></div>
-          <div class="form-group"><label class="form-label">Tag</label><select class="form-input form-select" data-library="tag">${tags.map((tag) => `<option value="${tag}" ${tag === this.libraryFilters.tag ? 'selected' : ''}>${tag}</option>`).join('')}</select></div>
+          <div class="form-group"><label class="form-label">${this.t('search', 'Search')}</label><input class="form-input" data-library="search" value="${this.libraryFilters.search}" placeholder="${this.t('search_exercise', 'Search exercise')}"></div>
+          <div class="form-group"><label class="form-label">${this.t('muscle', 'Muscle')}</label><select class="form-input form-select" data-library="muscle">${muscles.map((muscle) => `<option value="${muscle}" ${muscle === this.libraryFilters.muscle ? 'selected' : ''}>${this.t(muscle, muscle)}</option>`).join('')}</select></div>
+          <div class="form-group"><label class="form-label">${this.t('difficulty', 'Difficulty')}</label><select class="form-input form-select" data-library="difficulty">${['all', 'beginner', 'intermediate', 'advanced'].map((level) => `<option value="${level}" ${level === this.libraryFilters.difficulty ? 'selected' : ''}>${this.t(level, level)}</option>`).join('')}</select></div>
+          <div class="form-group"><label class="form-label">${this.t('training_tag', 'Training tag')}</label><select class="form-input form-select" data-library="tag">${tags.map((tag) => `<option value="${tag}" ${tag === this.libraryFilters.tag ? 'selected' : ''}>${this.t(tag, tag)}</option>`).join('')}</select></div>
         </div>
         <div class="exercise-picker-grid">${exercises.map((exercise) => `<button class="picker-chip" data-action="add-exercise" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('')}</div>
       </section>`;
@@ -64,12 +68,12 @@ export class CustomWorkoutView {
     const exercise = this.ctx.getExercises.getById(item.exerciseId);
     return `
       <div class="custom-workout-item">
-        <div class="flex flex-between gap-12 mb-8"><strong>${exercise?.emoji || '💪'} ${exercise?.name || item.exerciseId}</strong><div class="flex gap-8"><button class="btn btn-secondary btn-sm" data-action="move-up" data-index="${index}">↑</button><button class="btn btn-secondary btn-sm" data-action="move-down" data-index="${index}">↓</button><button class="btn btn-danger btn-sm" data-action="remove-exercise" data-index="${index}">Remove</button></div></div>
+        <div class="flex flex-between gap-12 mb-8"><strong>${exercise?.emoji || '💪'} ${exercise?.name || item.exerciseId}</strong><div class="flex gap-8"><button class="btn btn-secondary btn-sm" data-action="move-up" data-index="${index}">↑</button><button class="btn btn-secondary btn-sm" data-action="move-down" data-index="${index}">↓</button><button class="btn btn-danger btn-sm" data-action="remove-exercise" data-index="${index}">${this.t('remove', 'Remove')}</button></div></div>
         <div class="grid-4 custom-grid">
-          <div class="form-group"><label class="form-label">Sets</label><input class="form-input" type="number" data-item-field="sets" data-index="${index}" value="${item.sets}"></div>
-          <div class="form-group"><label class="form-label">${exercise?.isTimeBased ? 'Duration (sec)' : 'Reps'}</label><input class="form-input" type="number" data-item-field="targetOverride" data-index="${index}" value="${item.targetOverride}"></div>
-          <div class="form-group"><label class="form-label">Rest (sec)</label><input class="form-input" type="number" data-item-field="restSec" data-index="${index}" value="${item.restSec}"></div>
-          <div class="form-group"><label class="form-label">Type</label><div class="chip">${exercise?.targetLabel || 'target'}</div></div>
+          <div class="form-group"><label class="form-label">${this.t('sets', 'Sets')}</label><input class="form-input" type="number" data-item-field="sets" data-index="${index}" value="${item.sets}"></div>
+          <div class="form-group"><label class="form-label">${exercise?.isTimeBased ? this.t('duration_seconds', 'Duration (sec)') : this.t('reps', 'Reps')}</label><input class="form-input" type="number" data-item-field="targetOverride" data-index="${index}" value="${item.targetOverride}"></div>
+          <div class="form-group"><label class="form-label">${this.t('rest_seconds', 'Rest (sec)')}</label><input class="form-input" type="number" data-item-field="restSec" data-index="${index}" value="${item.restSec}"></div>
+          <div class="form-group"><label class="form-label">${this.t('type', 'Type')}</label><div class="chip">${exercise?.targetLabel || this.t('target_label', 'Target')}</div></div>
         </div>
       </div>`;
   }
@@ -158,7 +162,7 @@ export class CustomWorkoutView {
 
   async saveWorkout() {
     if (!this.draft.name.trim() || !this.draft.main.length) {
-      alert('Add a workout name and at least one exercise.');
+      alert(this.t('validation_workout_name_required', 'Add a workout name and at least one exercise.'));
       return;
     }
     const workout = await this.ctx.manageWorkouts.saveCustomWorkout({

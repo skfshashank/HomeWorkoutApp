@@ -9,7 +9,6 @@ export class GetExercises {
   }
 
   execute(filters = {}) {
-    if (filters.search) return this.#repo.search(filters.search);
     if (Object.keys(filters).length > 0) return this.#repo.filter(filters);
     return this.#repo.getAll();
   }

@@ -6,13 +6,20 @@ import { getLocalDateStr } from '../../core/utils/dateUtils.js';
 export class ProgressionEngine {
   #storage;
   #getDateStr;
+  #i18n;
 
   constructor({
     storage,
-    getDateStr = getLocalDateStr
+    getDateStr = getLocalDateStr,
+    i18n = null
   }) {
     this.#storage = storage;
     this.#getDateStr = getDateStr;
+    this.#i18n = i18n;
+  }
+
+  t(key, fallback = key) {
+    return this.#i18n?.t(key) || fallback;
   }
 
   async recordRPE(rating) {
@@ -51,11 +58,11 @@ export class ProgressionEngine {
   async checkAutoProgression() {
     if (this.shouldLevelUp()) {
       this.#storage.saveMultiplier(1.1);
-      return { shouldProgress: true, message: 'You\'re crushing it! Increasing targets by 10%' };
+      return { shouldProgress: true, message: this.t('progression_increase_message', 'You\'re crushing it! Increasing targets by 10%') };
     }
     if (this.shouldDeload()) {
       this.#storage.saveMultiplier(0.85);
-      return { shouldProgress: false, message: 'Recovery mode enabled. Reducing targets by 15% for the next session.' };
+      return { shouldProgress: false, message: this.t('progression_deload_message', 'Recovery mode enabled. Reducing targets by 15% for the next session.') };
     }
     this.#storage.saveMultiplier(1.0);
     return { shouldProgress: false };

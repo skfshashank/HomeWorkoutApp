@@ -1,5 +1,5 @@
 import { Events } from '../../app/eventBus.js';
-import { getGreeting, getWeekDates, parseDateSafe } from '../../core/utils/dateUtils.js';
+import { getWeekDates, parseDateSafe } from '../../core/utils/dateUtils.js';
 
 const formatClock = (seconds) => {
   const mins = Math.floor(seconds / 60);
@@ -35,6 +35,13 @@ export class DashboardView {
     return this.ctx.i18n?.t(key) || fallback;
   }
 
+  greeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return this.t('greeting_morning', 'Good Morning');
+    if (hour < 17) return this.t('greeting_afternoon', 'Good Afternoon');
+    return this.t('greeting_evening', 'Good Evening');
+  }
+
   async render() {
     const user = this.ctx.updateProfile.getUser();
     const [progress, achievementSnapshot, recentExercises] = await Promise.all([
@@ -56,10 +63,10 @@ export class DashboardView {
     this.el.innerHTML = `
       <div class="dashboard-header mb-16">
         <div>
-          <div class="page-title">${user.avatar} ${getGreeting()}, ${user.name || 'Athlete'} ✨</div>
+          <div class="page-title">${user.avatar} ${this.greeting()}, ${user.name || this.t('athlete', 'Athlete')} ✨</div>
           <p class="page-subtitle">${this.t('dashboard_subtitle', 'Your local-first coach for workouts, habits, recovery, and milestones.')}</p>
         </div>
-        <div class="offline-badge" role="status" aria-label="App works offline">
+        <div class="offline-badge" role="status" aria-label="${this.t('app_works_offline', 'App works offline')}">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><circle cx="12" cy="20" r="1"></circle>
           </svg>

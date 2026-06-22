@@ -24,6 +24,14 @@ export class SettingsView {
     return this.ctx.i18n?.t(key) || fallback;
   }
 
+  format(key, values, fallback) {
+    return this.ctx.i18n?.format?.(key, values) || fallback;
+  }
+
+  translateValue(value, fallback = '') {
+    return this.t(String(value || '').toLowerCase(), fallback || String(value || ''));
+  }
+
   async render() {
     const user = this.ctx.updateProfile.getUser();
     const profiles = await this.ctx.updateProfile.getProfiles();
@@ -33,7 +41,7 @@ export class SettingsView {
 
     this.el.innerHTML = `
       <div class="page-title">${this.t('settings', 'Settings')}</div>
-      <p class="page-subtitle">Manage profiles, audio options, local backups, and storage.</p>
+      <p class="page-subtitle">${this.t('settings_manage_subtitle', 'Manage profiles, audio options, local backups, and storage.')}</p>
       ${this.renderProfileSection(user, profiles, settings.units)}
       ${this.renderPreferencesSection(settings, reminderTime, user)}
       ${this.renderDataSection()}`;
@@ -45,29 +53,29 @@ export class SettingsView {
         <div class="flex flex-between gap-12 mb-16">
           <div>
             <h2>${user.avatar} ${user.name || 'OpenFit Athlete'}</h2>
-            <p class="text-sm text-muted">${user.goal.replaceAll('_', ' ')} • ${user.focusArea.replaceAll('_', ' ')} focus • ${user.level}</p>
+            <p class="text-sm text-muted">${this.translateValue(user.goal, user.goal.replaceAll('_', ' '))} • ${this.translateValue(user.focusArea, user.focusArea.replaceAll('_', ' '))} • ${this.translateValue(user.level, user.level)}</p>
           </div>
           <button class="btn btn-primary btn-sm" data-action="edit-profile" data-profile-id="${user.id}">${this.t('edit', 'Edit')}</button>
         </div>
-        <div class="setting-row"><span class="setting-label">Age</span><span class="setting-value">${user.age}</span></div>
-        <div class="setting-row"><span class="setting-label">Height</span><span class="setting-value">${formatHeight(user, units)}</span></div>
-        <div class="setting-row"><span class="setting-label">Weight</span><span class="setting-value">${formatWeight(user, units)}</span></div>
+        <div class="setting-row"><span class="setting-label">${this.t('age', 'Age')}</span><span class="setting-value">${user.age}</span></div>
+        <div class="setting-row"><span class="setting-label">${this.t('height', 'Height')}</span><span class="setting-value">${formatHeight(user, units)}</span></div>
+        <div class="setting-row"><span class="setting-label">${this.t('weight', 'Weight')}</span><span class="setting-value">${formatWeight(user, units)}</span></div>
         <div class="setting-row"><span class="setting-label">${this.t('daily_target', 'Daily target')}</span><span class="setting-value">${user.dailyMinutes} min</span></div>
       </section>
 
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
-            <h2>Profiles</h2>
-            <p class="text-sm text-muted">Switching profiles swaps workout history, habits, measurements, and achievements.</p>
+            <h2>${this.t('profiles', 'Profiles')}</h2>
+            <p class="text-sm text-muted">${this.t('profiles_subtitle', 'Switching profiles swaps workout history, habits, measurements, and achievements.')}</p>
           </div>
           <button class="btn btn-primary btn-sm" data-action="add-profile">${this.t('add_profile', 'Add Profile')}</button>
         </div>
         ${profiles.map((profile) => `
           <div class="profile-switcher ${profile.id === user.id ? 'active' : ''}">
             <div>
-              <strong>${profile.avatar} ${profile.name || 'Unnamed profile'}</strong>
-              <p class="text-sm text-muted">${profile.goal.replaceAll('_', ' ')} • ${profile.level}</p>
+              <strong>${profile.avatar} ${profile.name || this.t('unnamed_profile', 'Unnamed profile')}</strong>
+              <p class="text-sm text-muted">${this.translateValue(profile.goal, profile.goal.replaceAll('_', ' '))} • ${this.translateValue(profile.level, profile.level)}</p>
             </div>
             <div class="flex gap-8 flex-wrap">
               ${profile.id !== user.id ? `<button class="btn btn-secondary btn-sm" data-action="switch-profile" data-profile-id="${profile.id}">${this.t('switch', 'Switch')}</button>` : `<span class="chip">${this.t('active', 'Active')}</span>`}
@@ -91,17 +99,17 @@ export class SettingsView {
     return `
       <section class="card">
         <div class="setting-row"><div><div class="setting-label">${this.t('language', 'Language')}</div><div class="setting-value">${language === 'hi' ? this.t('hindi', 'हिंदी') : this.t('english', 'English')}</div></div><div class="flex gap-8"><button class="chip ${language === 'en' ? 'active' : ''}" data-action="language" data-value="en">${this.t('english', 'English')}</button><button class="chip ${language === 'hi' ? 'active' : ''}" data-action="language" data-value="hi">${this.t('hindi', 'हिंदी')}</button></div></div>
-        <div class="setting-row"><div><div class="setting-label">${this.t('sound', 'Sound')}</div><div class="setting-value">Workout beeps and completion tones</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${this.t('voice_coach', 'Voice Coach')}</div><div class="setting-value">Exercise prompts and rest guidance</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${this.t('dark_mode', 'Dark mode')}</div><div class="setting-value">${theme === 'dark' ? 'High-contrast dark theme' : 'Bright light theme'}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-theme" ${theme === 'dark' ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${this.t('units', 'Units')}</div><div class="setting-value">Choose how height and weight are displayed</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button></div></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('sound', 'Sound')}</div><div class="setting-value">${this.t('sound_description', 'Workout beeps and completion tones')}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('voice_coach', 'Voice Coach')}</div><div class="setting-value">${this.t('voice_description', 'Exercise prompts and rest guidance')}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('dark_mode', 'Dark mode')}</div><div class="setting-value">${theme === 'dark' ? this.t('dark_theme_description', 'High-contrast dark theme') : this.t('light_theme_description', 'Bright light theme')}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-theme" ${theme === 'dark' ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('units', 'Units')}</div><div class="setting-value">${this.t('units_description', 'Choose how height and weight are displayed')}</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">${this.t('metric', 'Metric')}</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">${this.t('imperial', 'Imperial')}</button></div></div>
       </section>
 
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
             <h2>${this.t('workout_reminder', 'Workout Reminder')}</h2>
-            <p class="text-sm text-muted">Shows when you open the app after your reminder time and have not finished today's workout.</p>
+            <p class="text-sm text-muted">${this.t('reminder_subtitle', 'Shows when you open the app after your reminder time and have not finished today\'s workout.')}</p>
           </div>
           <label class="toggle"><input type="checkbox" data-action="toggle-reminder" ${reminderConfig.enabled ? 'checked' : ''} ${!this.ctx.notifications?.isAvailable ? 'disabled' : ''}><span class="toggle-slider"></span></label>
         </div>
@@ -112,17 +120,17 @@ export class SettingsView {
           </div>
           <div class="form-group">
             <label class="form-label">${this.t('message_preview', 'Message preview')}</label>
-            <div class="setting-hint">Time for your workout! 💪 Your ${user.goal.replaceAll('_', ' ')} routine is waiting.</div>
+            <div class="setting-hint">${this.format('reminder_preview_body', { goal: this.translateValue(user.goal, user.goal.replaceAll('_', ' ')) }, `Time for your workout! 💪 Your ${user.goal.replaceAll('_', ' ')} routine is waiting.`)}</div>
           </div>
         </div>
-        <p class="text-sm text-muted">${this.ctx.notifications?.isAvailable ? 'Browser notification permission is requested when you enable reminders.' : 'This browser does not support local notifications.'}</p>
+        <p class="text-sm text-muted">${this.ctx.notifications?.isAvailable ? this.t('notifications_permission_hint', 'Browser notification permission is requested when you enable reminders.') : this.t('notifications_not_supported', 'This browser does not support local notifications.')}</p>
       </section>`;
   }
 
   renderDataSection() {
     return `
       <section class="card"><button class="btn btn-secondary w-full mb-16" data-action="export-backup">${this.t('export_backup', 'Export backup')}</button><button class="btn btn-secondary w-full mb-16" data-action="import-backup">${this.t('import_backup', 'Import backup')}</button><input type="file" id="backup-file-input" accept="application/json" class="hidden"><button class="btn btn-danger w-full" data-action="reset-data">${this.t('reset_all_data', 'Reset all local data')}</button></section>
-      <section class="card"><div class="setting-row"><span class="setting-label">${this.t('app_version', 'App version')}</span><span class="setting-value">OpenFit Local v2</span></div><div class="setting-row"><span class="setting-label">${this.t('storage', 'Storage')}</span><span class="setting-value">Offline-first browser storage</span></div></section>`;
+      <section class="card"><div class="setting-row"><span class="setting-label">${this.t('app_version', 'App version')}</span><span class="setting-value">${this.t('app_version_value', 'OpenFit Local v2')}</span></div><div class="setting-row"><span class="setting-label">${this.t('storage', 'Storage')}</span><span class="setting-value">${this.t('storage_value', 'Offline-first browser storage')}</span></div></section>`;
   }
 
   async handleClick(event) {
@@ -190,14 +198,14 @@ export class SettingsView {
     const existing = await this.ctx.updateProfile.getProfileDraft(profileId);
     this.closeModal();
     openAccessibleModal(this, `
-      <h2 class="mb-16" id="modal-title">${profileId ? 'Edit profile' : 'Add profile'}</h2>
+      <h2 class="mb-16" id="modal-title">${profileId ? this.t('edit_profile', 'Edit profile') : this.t('add_profile_title', 'Add profile')}</h2>
       <form id="profile-form">
-        <div class="grid-2"><div class="form-group"><label class="form-label">Avatar emoji</label><input class="form-input" name="avatar" value="${existing.avatar || '🙂'}"></div><div class="form-group"><label class="form-label">Name</label><input class="form-input" name="name" value="${existing.name || ''}"></div></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Age</label><input class="form-input" name="age" type="number" value="${existing.age || 25}"></div><div class="form-group"><label class="form-label">Gender</label><select class="form-input form-select" name="gender"><option value="" ${!existing.gender ? 'selected' : ''}>Prefer not to say</option><option value="male" ${existing.gender === 'male' ? 'selected' : ''}>Male</option><option value="female" ${existing.gender === 'female' ? 'selected' : ''}>Female</option></select></div></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input" name="height" type="number" value="${existing.height || 170}"></div><div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" name="weight" type="number" step="0.1" value="${existing.weight || 70}"></div></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Goal</label><select class="form-input form-select" name="goal"><option value="fat_loss" ${existing.goal === 'fat_loss' ? 'selected' : ''}>Fat loss</option><option value="strength" ${existing.goal === 'strength' ? 'selected' : ''}>Strength</option><option value="flexibility" ${existing.goal === 'flexibility' ? 'selected' : ''}>Flexibility</option><option value="stress_relief" ${existing.goal === 'stress_relief' ? 'selected' : ''}>Stress relief</option></select></div><div class="form-group"><label class="form-label">Focus</label><select class="form-input form-select" name="focusArea"><option value="core" ${existing.focusArea === 'core' ? 'selected' : ''}>Core</option><option value="full_body" ${existing.focusArea === 'full_body' ? 'selected' : ''}>Full body</option><option value="upper" ${existing.focusArea === 'upper' ? 'selected' : ''}>Upper body</option><option value="lower" ${existing.focusArea === 'lower' ? 'selected' : ''}>Lower body</option></select></div></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Level</label><select class="form-input form-select" name="level"><option value="beginner" ${existing.level === 'beginner' ? 'selected' : ''}>Beginner</option><option value="intermediate" ${existing.level === 'intermediate' ? 'selected' : ''}>Intermediate</option><option value="advanced" ${existing.level === 'advanced' ? 'selected' : ''}>Advanced</option></select></div><div class="form-group"><label class="form-label">Daily Minutes</label><input class="form-input" name="dailyMinutes" type="number" value="${existing.dailyMinutes || 30}"></div></div>
-        <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close-profile="true">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('avatar_emoji', 'Avatar emoji')}</label><input class="form-input" name="avatar" value="${existing.avatar || '🙂'}"></div><div class="form-group"><label class="form-label">${this.t('name', 'Name')}</label><input class="form-input" name="name" value="${existing.name || ''}"></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('age', 'Age')}</label><input class="form-input" name="age" type="number" value="${existing.age || 25}"></div><div class="form-group"><label class="form-label">${this.t('gender', 'Gender')}</label><select class="form-input form-select" name="gender"><option value="" ${!existing.gender ? 'selected' : ''}>${this.t('prefer_not_to_say', 'Prefer not to say')}</option><option value="male" ${existing.gender === 'male' ? 'selected' : ''}>${this.t('male', 'Male')}</option><option value="female" ${existing.gender === 'female' ? 'selected' : ''}>${this.t('female', 'Female')}</option></select></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('height', 'Height')} (cm)</label><input class="form-input" name="height" type="number" value="${existing.height || 170}"></div><div class="form-group"><label class="form-label">${this.t('weight', 'Weight')} (kg)</label><input class="form-input" name="weight" type="number" step="0.1" value="${existing.weight || 70}"></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('goal_label', 'Goal')}</label><select class="form-input form-select" name="goal"><option value="fat_loss" ${existing.goal === 'fat_loss' ? 'selected' : ''}>${this.t('fat_loss', 'Fat loss')}</option><option value="strength" ${existing.goal === 'strength' ? 'selected' : ''}>${this.t('strength', 'Strength')}</option><option value="flexibility" ${existing.goal === 'flexibility' ? 'selected' : ''}>${this.t('flexibility', 'Flexibility')}</option><option value="stress_relief" ${existing.goal === 'stress_relief' ? 'selected' : ''}>${this.t('stress_relief', 'Stress relief')}</option></select></div><div class="form-group"><label class="form-label">${this.t('focus_label', 'Focus')}</label><select class="form-input form-select" name="focusArea"><option value="core" ${existing.focusArea === 'core' ? 'selected' : ''}>${this.t('core', 'Core')}</option><option value="full_body" ${existing.focusArea === 'full_body' ? 'selected' : ''}>${this.t('full_body', 'Full body')}</option><option value="upper" ${existing.focusArea === 'upper' ? 'selected' : ''}>${this.t('upper', 'Upper body')}</option><option value="lower" ${existing.focusArea === 'lower' ? 'selected' : ''}>${this.t('lower', 'Lower body')}</option></select></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('level_label', 'Level')}</label><select class="form-input form-select" name="level"><option value="beginner" ${existing.level === 'beginner' ? 'selected' : ''}>${this.t('beginner', 'Beginner')}</option><option value="intermediate" ${existing.level === 'intermediate' ? 'selected' : ''}>${this.t('intermediate', 'Intermediate')}</option><option value="advanced" ${existing.level === 'advanced' ? 'selected' : ''}>${this.t('advanced', 'Advanced')}</option></select></div><div class="form-group"><label class="form-label">${this.t('daily_minutes', 'Daily Minutes')}</label><input class="form-input" name="dailyMinutes" type="number" value="${existing.dailyMinutes || 30}"></div></div>
+        <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close-profile="true">${this.t('cancel', 'Cancel')}</button><button type="submit" class="btn btn-primary">${this.t('save', 'Save')}</button></div>
       </form>`, async (event) => {
       if (event.type === 'click' && event.target.closest('[data-close-profile]')) {
         this.closeModal();
@@ -225,12 +233,15 @@ export class SettingsView {
   }
 
   async deleteProfile(profileId) {
-    if (!window.confirm('Delete this profile from the active switcher?')) return;
+    if (!window.confirm(this.t('delete_profile_confirm', 'Delete this profile from the active switcher?'))) return;
     try {
       await this.ctx.updateProfile.deleteProfile(profileId);
       this.render();
     } catch (error) {
-      window.alert(error.message);
+      const message = error.message === 'Keep at least one profile in OpenFit Local.'
+        ? this.t('error_keep_one_profile', 'Keep at least one profile in OpenFit Local.')
+        : error.message;
+      window.alert(message);
     }
   }
 
@@ -240,14 +251,14 @@ export class SettingsView {
       await this.ctx.backup.importFromJSON(file);
       await this.ctx.updateProfile.initProfiles();
       this.render();
-      window.alert('Backup imported successfully.');
+      window.alert(this.t('backup_imported_success', 'Backup imported successfully.'));
     } catch (error) {
-      window.alert(`Import failed: ${error.message}`);
+      window.alert(`${this.t('import_failed_prefix', 'Import failed')}: ${error.message}`);
     }
   }
 
   async resetData() {
-    if (!window.confirm('Reset all OpenFit Local data on this device?')) return;
+    if (!window.confirm(this.t('reset_data_confirm', 'Reset all OpenFit Local data on this device?'))) return;
     await this.ctx.updateProfile.resetAllData(userStores);
     window.location.reload();
   }

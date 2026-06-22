@@ -17,21 +17,29 @@ export class TimerModesView {
     this.el.addEventListener('input', (event) => this.handleInput(event));
   }
 
+  t(key, fallback = key) {
+    return this.ctx.i18n?.t(key) || fallback;
+  }
+
+  format(key, values, fallback) {
+    return this.ctx.i18n?.format?.(key, values) || fallback;
+  }
+
   render() {
     const urgency = this.state.total ? this.state.remaining / this.state.total : 1;
     const color = urgency > 0.5 ? 'var(--green)' : urgency > 0.2 ? 'var(--yellow)' : 'var(--red)';
     this.el.innerHTML = `
-      <div class="page-title">Timer Modes</div>
-      <p class="page-subtitle">AMRAP, EMOM, Tabata, and custom intervals with voice announcements and color countdowns.</p>
+      <div class="page-title">${this.t('timer_modes_title', 'Timer Modes')}</div>
+      <p class="page-subtitle">${this.t('timer_modes_subtitle', 'AMRAP, EMOM, Tabata, and custom intervals with voice announcements and color countdowns.')}</p>
       <section class="card"><div class="tabs">${['amrap', 'emom', 'tabata', 'custom'].map((mode) => `<button class="tab ${this.mode === mode ? 'active' : ''}" data-action="set-mode" data-mode="${mode}">${mode.toUpperCase()}</button>`).join('')}</div></section>
-      <section class="card">${this.renderControls()}<div class="timer-mode-display" style="border-color:${color};color:${color};">${this.formatTime(this.state.remaining || this.defaultSeconds())}</div><p class="text-sm text-muted text-center mb-16">${this.state.phase === 'idle' ? 'Ready when you are.' : `${this.state.phase} • round ${this.state.round || 1}`}</p><div class="flex gap-8 flex-wrap"><button class="btn btn-primary" data-action="start-timer">${this.state.running ? (this.state.paused ? 'Resume' : 'Restart') : 'Start'}</button><button class="btn btn-secondary" data-action="pause-timer">${this.state.paused ? 'Resume' : 'Pause'}</button><button class="btn btn-danger" data-action="reset-timer">Reset</button>${this.mode === 'amrap' ? '<button class="btn btn-secondary" data-action="count-round">+ Round</button>' : ''}</div><p class="text-sm text-muted mt-16">Rounds completed: ${this.state.roundsCompleted}</p></section>`;
+      <section class="card">${this.renderControls()}<div class="timer-mode-display" style="border-color:${color};color:${color};">${this.formatTime(this.state.remaining || this.defaultSeconds())}</div><p class="text-sm text-muted text-center mb-16">${this.state.phase === 'idle' ? this.t('ready_when_you_are', 'Ready when you are.') : `${this.t(this.state.phase, this.state.phase)} • ${this.t('round', 'round')} ${this.state.round || 1}`}</p><div class="flex gap-8 flex-wrap"><button class="btn btn-primary" data-action="start-timer">${this.state.running ? (this.state.paused ? this.t('resume', 'Resume') : this.t('restart', 'Restart')) : this.t('start', 'Start')}</button><button class="btn btn-secondary" data-action="pause-timer">${this.state.paused ? this.t('resume', 'Resume') : this.t('pause', 'Pause')}</button><button class="btn btn-danger" data-action="reset-timer">${this.t('reset', 'Reset')}</button>${this.mode === 'amrap' ? `<button class="btn btn-secondary" data-action="count-round">+ ${this.t('round', 'Round')}</button>` : ''}</div><p class="text-sm text-muted mt-16">${this.t('rounds_completed', 'Rounds completed')}: ${this.state.roundsCompleted}</p></section>`;
   }
 
   renderControls() {
-    if (this.mode === 'amrap') return `<div class="form-group"><label class="form-label">Total minutes</label><input class="form-input" type="number" data-config="amrapMinutes" value="${this.config.amrapMinutes}"></div>`;
-    if (this.mode === 'emom') return `<div class="form-group"><label class="form-label">Total minutes</label><input class="form-input" type="number" data-config="emomMinutes" value="${this.config.emomMinutes}"></div>`;
-    if (this.mode === 'tabata') return '<p class="text-sm text-muted mb-16">20s work / 10s rest × 8 rounds.</p>';
-    return `<div class="grid-3"><div class="form-group"><label class="form-label">Work (sec)</label><input class="form-input" type="number" data-config="customWork" value="${this.config.customWork}"></div><div class="form-group"><label class="form-label">Rest (sec)</label><input class="form-input" type="number" data-config="customRest" value="${this.config.customRest}"></div><div class="form-group"><label class="form-label">Rounds</label><input class="form-input" type="number" data-config="customRounds" value="${this.config.customRounds}"></div></div>`;
+    if (this.mode === 'amrap') return `<div class="form-group"><label class="form-label">${this.t('total_minutes', 'Total minutes')}</label><input class="form-input" type="number" data-config="amrapMinutes" value="${this.config.amrapMinutes}"></div>`;
+    if (this.mode === 'emom') return `<div class="form-group"><label class="form-label">${this.t('total_minutes', 'Total minutes')}</label><input class="form-input" type="number" data-config="emomMinutes" value="${this.config.emomMinutes}"></div>`;
+    if (this.mode === 'tabata') return `<p class="text-sm text-muted mb-16">${this.t('tabata_description', '20s work / 10s rest × 8 rounds.')}</p>`;
+    return `<div class="grid-3"><div class="form-group"><label class="form-label">${this.t('work_seconds', 'Work (sec)')}</label><input class="form-input" type="number" data-config="customWork" value="${this.config.customWork}"></div><div class="form-group"><label class="form-label">${this.t('rest_seconds', 'Rest (sec)')}</label><input class="form-input" type="number" data-config="customRest" value="${this.config.customRest}"></div><div class="form-group"><label class="form-label">${this.t('rounds', 'Rounds')}</label><input class="form-input" type="number" data-config="customRounds" value="${this.config.customRounds}"></div></div>`;
   }
 
   defaultSeconds() {
@@ -60,7 +68,7 @@ export class TimerModesView {
       this.state.phase = 'amrap';
       this.state.remaining = this.config.amrapMinutes * 60;
       this.state.total = this.state.remaining;
-      this.announce('AMRAP started');
+      this.announce(this.t('amrap_started', 'AMRAP started'));
       this.timerId = window.setInterval(() => this.tickAmrap(), 1000);
     } else if (this.mode === 'emom') {
       this.state.phase = 'work';
@@ -68,7 +76,7 @@ export class TimerModesView {
       this.state.total = 60;
       this.state.remaining = 60;
       this.state.targetRounds = this.config.emomMinutes;
-      this.announce('EMOM started');
+      this.announce(this.t('emom_started', 'EMOM started'));
       this.timerId = window.setInterval(() => this.tickEmom(), 1000);
     } else if (this.mode === 'tabata') {
       this.state.phase = 'work';
@@ -76,7 +84,7 @@ export class TimerModesView {
       this.state.targetRounds = 8;
       this.state.total = 20;
       this.state.remaining = 20;
-      this.announce('Tabata started');
+      this.announce(this.t('tabata_started', 'Tabata started'));
       this.timerId = window.setInterval(() => this.tickIntervals(20, 10, 8), 1000);
     } else {
       this.state.phase = 'work';
@@ -84,7 +92,7 @@ export class TimerModesView {
       this.state.targetRounds = this.config.customRounds;
       this.state.total = this.config.customWork;
       this.state.remaining = this.config.customWork;
-      this.announce('Custom intervals started');
+      this.announce(this.t('custom_intervals_started', 'Custom intervals started'));
       this.timerId = window.setInterval(() => this.tickIntervals(this.config.customWork, this.config.customRest, this.config.customRounds), 1000);
     }
     this.render();
@@ -106,7 +114,7 @@ export class TimerModesView {
       this.state.round += 1;
       this.state.remaining = 60;
       this.state.total = 60;
-      this.announce(`Minute ${this.state.round}`);
+      this.announce(this.format('minute_announcement', { round: this.state.round }, `Minute ${this.state.round}`));
     }
     this.render();
   }
@@ -123,7 +131,7 @@ export class TimerModesView {
       this.state.phase = 'rest';
       this.state.remaining = rest;
       this.state.total = rest;
-      this.announce('Rest');
+      this.announce(this.t('rest', 'Rest'));
     } else {
       this.state.roundsCompleted += 1;
       if (this.state.round >= rounds) return this.completeTimer();
@@ -131,7 +139,7 @@ export class TimerModesView {
       this.state.phase = 'work';
       this.state.remaining = work;
       this.state.total = work;
-      this.announce(`Round ${this.state.round}`);
+      this.announce(this.format('round_announcement', { round: this.state.round }, `Round ${this.state.round}`));
     }
     this.render();
   }
@@ -142,7 +150,7 @@ export class TimerModesView {
     this.state.paused = false;
     this.state.phase = 'complete';
     this.state.remaining = 0;
-    this.announce('Timer complete');
+    this.announce(this.t('timer_complete', 'Timer complete'));
     this.ctx.bus.emit(Events.TIMER_COMPLETE, { mode: this.mode, roundsCompleted: this.state.roundsCompleted });
     this.render();
   }

@@ -53,10 +53,12 @@ class App {
     this.db = new IndexedDbService();
     this.prefs = new Preferences();
     this.i18n = new I18n(this.prefs.get('language', 'en'));
-    this.speech = new SpeechService();
-    this.notifications = new NotificationService();
+    this.speech = new SpeechService(this.i18n);
+    this.notifications = new NotificationService(this.i18n);
     this.audio = new AudioEngine();
     this.views = {};
+    this.onboardingView = null;
+    this.i18n.onChange(() => this.handleLanguageChange());
   }
 
   async init() {
@@ -68,6 +70,7 @@ class App {
     this.audio.init();
     this.audio.setEnabled(this.prefs.get('soundEnabled', true));
     this.speech.setEnabled(this.prefs.get('voiceEnabled', true));
+    this.handleLanguageChange();
 
     this.profileManager = new ProfileManager(this.db, this.prefs, this.bus);
     const existingProfile = await this.profileManager.init();
@@ -116,7 +119,8 @@ class App {
     this.scheduler = new SchedulerEngine(this.exerciseRepo, this.workoutRepo, todayKey);
     this.progression = new ProgressionEngine({
       storage: progressionStorage,
-      getDateStr: todayKey
+      getDateStr: todayKey,
+      i18n: this.i18n
     });
     this.achievementEngine = new AchievementEngine({
       storage: achievementStorage,
@@ -230,10 +234,11 @@ class App {
   }
 
   showOnboarding(challengeData, quotesData) {
-    const onboarding = new OnboardingView(this.updateProfile);
-    onboarding.render();
+    this.onboardingView = new OnboardingView(this.updateProfile, this.i18n);
+    this.onboardingView.render();
     const off = this.bus.on(Events.PROFILE_UPDATED, async () => {
       off();
+      this.onboardingView = null;
       document.getElementById('onboarding').classList.remove('active');
       this.initViews(challengeData, quotesData);
       this.router.navigate('dashboard');
@@ -401,6 +406,35 @@ class App {
     if (meta) {
       meta.setAttribute('content', theme === 'light' ? '#f8fafc' : '#050816');
     }
+  }
+
+  handleLanguageChange() {
+    this.updateDocumentLanguage();
+    this.updateNavLabels();
+    this.onboardingView?.render?.();
+    Object.values(this.views).forEach((view) => view.render?.());
+  }
+
+  updateDocumentLanguage() {
+    document.documentElement.lang = this.i18n.getLang();
+  }
+
+  updateNavLabels() {
+    const labels = {
+      dashboard: this.i18n.t('home'),
+      workouts: this.i18n.t('workouts'),
+      challenge: this.i18n.t('challenge_title'),
+      progress: this.i18n.t('progress_title'),
+      settings: this.i18n.t('settings')
+    };
+
+    Object.entries(labels).forEach(([page, label]) => {
+      const span = document.querySelector(`[data-nav="${page}"] span`);
+      if (span) span.textContent = label;
+    });
+
+    const nav = document.querySelector('.bottom-nav');
+    if (nav) nav.setAttribute('aria-label', this.i18n.t('main_navigation'));
   }
 
   async checkWorkoutReminder() {

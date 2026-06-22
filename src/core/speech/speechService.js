@@ -7,14 +7,20 @@ export class SpeechService {
   #enabled = true;
   #queue = [];
   #speaking = false;
+  #i18n;
   
-  constructor() {
+  constructor(i18n = null) {
     this.#synth = window.speechSynthesis || null;
+    this.#i18n = i18n;
   }
   
   get isAvailable() { return !!this.#synth; }
   
   setEnabled(val) { this.#enabled = val; }
+
+  t(key, fallback = key) {
+    return this.#i18n?.t(key) || fallback;
+  }
   
   speak(text, options = {}) {
     if (!this.#enabled || !this.#synth) return;
@@ -22,7 +28,7 @@ export class SpeechService {
     utterance.rate = options.rate || 1.0;
     utterance.pitch = options.pitch || 1.0;
     utterance.volume = options.volume || 1.0;
-    if (options.lang) utterance.lang = options.lang;
+    utterance.lang = options.lang || (this.#i18n?.getLang?.() === 'hi' ? 'hi-IN' : 'en-US');
     
     if (options.immediate) {
       this.#synth.cancel();
@@ -33,15 +39,15 @@ export class SpeechService {
   }
   
   announceExercise(name, target) {
-    return this.speak(`Get ready for ${name}. ${target}. 3, 2, 1, Begin!`, { rate: 0.9 });
+    return this.speak(`${this.t('get_ready', 'Get ready')} ${name}. ${target}. 3, 2, 1, ${this.t('begin', 'Begin')}!`, { rate: 0.9 });
   }
   
   announceRest(seconds) {
-    return this.speak(`Rest for ${seconds} seconds. Next exercise coming up.`);
+    return this.speak(`${this.t('rest', 'Rest')}: ${seconds} ${this.t('seconds', 'seconds')}. ${this.t('next_exercise', 'Next exercise')}.`);
   }
   
   announceComplete() {
-    return this.speak('Workout complete! Great job today!', { rate: 0.9 });
+    return this.speak(`${this.t('workout_complete', 'Workout complete')}! ${this.t('great_work', 'Amazing Work!')}`, { rate: 0.9 });
   }
   
   countRep(number) {
