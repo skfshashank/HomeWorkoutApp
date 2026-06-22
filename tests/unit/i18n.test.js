@@ -8,9 +8,13 @@ assert.deepStrictEqual(hiKeys, enKeys, 'Hindi translations must cover every Engl
 
 const i18n = new I18n('en');
 assert.strictEqual(i18n.t('start'), 'Start');
+assert.strictEqual(i18n.translateValue('fat_loss'), 'Weight Loss');
+assert.strictEqual(i18n.translateValue('belly_fat'), 'Belly Fat');
 
 i18n.setLang('hi');
 assert.strictEqual(i18n.t('start'), 'शुरू करें');
 assert.strictEqual(i18n.t('home'), 'होम');
+assert.strictEqual(i18n.translateValue('fat_loss'), 'वज़न कम करना');
+assert.strictEqual(i18n.translateValue('upper'), 'ऊपरी शरीर');
 
 console.log('✅ i18n tests passed');

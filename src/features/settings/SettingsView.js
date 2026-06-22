@@ -29,7 +29,7 @@ export class SettingsView {
   }
 
   translateValue(value, fallback = '') {
-    return this.t(String(value || '').toLowerCase(), fallback || String(value || ''));
+    return this.ctx.i18n?.translateValue?.(value) || fallback || String(value || '');
   }
 
   async render() {

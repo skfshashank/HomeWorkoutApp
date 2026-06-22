@@ -33,7 +33,7 @@ export class WorkoutsView {
   formatFilterValue(value) {
     if (!value) return '';
     if (value === 'all') return this.t('all', 'All');
-    return this.t(value, value.replaceAll('_', ' '));
+    return this.ctx.i18n?.translateValue?.(value) || this.t(value, value.replaceAll('_', ' '));
   }
 
   translatePlanName(plan) {

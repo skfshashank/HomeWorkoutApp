@@ -398,6 +398,29 @@ export const strings = {
     full_body: 'Full body',
     upper: 'Upper body',
     lower: 'Lower body',
+    goal_weight_loss: 'Weight Loss',
+    goal_fat_loss: 'Weight Loss',
+    goal_strength: 'Strength',
+    goal_flexibility: 'Flexibility',
+    goal_stress_relief: 'Stress Relief',
+    difficulty_beginner: 'Beginner',
+    difficulty_intermediate: 'Intermediate',
+    difficulty_advanced: 'Advanced',
+    category_belly_fat: 'Belly Fat',
+    category_full_body: 'Full Body',
+    category_upper_body: 'Upper Body',
+    category_upper: 'Upper Body',
+    category_lower_body: 'Lower Body',
+    category_lower: 'Lower Body',
+    category_yoga: 'Yoga',
+    category_hiit: 'HIIT',
+    category_stretch: 'Stretching',
+    category_core: 'Core',
+    category_pranayama: 'Pranayama',
+    category_office: 'Office',
+    category_recovery: 'Recovery',
+    category_custom: 'Custom',
+    category_challenge: 'Challenge',
     achievement_first_workout_title: 'First Step',
     achievement_first_workout_desc: 'Complete your first workout',
     achievement_week_streak_title: 'Week Warrior',
@@ -836,6 +859,29 @@ export const strings = {
     full_body: 'फुल बॉडी',
     upper: 'अपर बॉडी',
     lower: 'लोअर बॉडी',
+    goal_weight_loss: 'वज़न कम करना',
+    goal_fat_loss: 'वज़न कम करना',
+    goal_strength: 'ताकत',
+    goal_flexibility: 'लचीलापन',
+    goal_stress_relief: 'तनाव मुक्ति',
+    difficulty_beginner: 'शुरुआती',
+    difficulty_intermediate: 'मध्यम',
+    difficulty_advanced: 'उन्नत',
+    category_belly_fat: 'पेट की चर्बी',
+    category_full_body: 'पूरा शरीर',
+    category_upper_body: 'ऊपरी शरीर',
+    category_upper: 'ऊपरी शरीर',
+    category_lower_body: 'निचला शरीर',
+    category_lower: 'निचला शरीर',
+    category_yoga: 'योग',
+    category_hiit: 'HIIT',
+    category_stretch: 'स्ट्रेचिंग',
+    category_core: 'कोर',
+    category_pranayama: 'प्राणायाम',
+    category_office: 'ऑफिस',
+    category_recovery: 'रिकवरी',
+    category_custom: 'कस्टम',
+    category_challenge: 'चैलेंज',
     achievement_first_workout_title: 'पहला कदम',
     achievement_first_workout_desc: 'अपना पहला वर्कआउट पूरा करें',
     achievement_week_streak_title: 'हफ्ते का योद्धा',
@@ -883,12 +929,34 @@ export class I18n {
     this.listeners = new Set();
   }
 
-  t(key) {
-    return strings[this.lang]?.[key] || strings.en[key] || key;
+  t(key, fallback = key) {
+    return strings[this.lang]?.[key] || strings.en[key] || fallback;
   }
 
   format(key, values = {}) {
     return this.t(key).replace(/\{(\w+)\}/g, (_, token) => String(values[token] ?? `{${token}}`));
+  }
+
+  translateValue(rawValue) {
+    if (!rawValue) return '';
+    const value = String(rawValue);
+    const key = value.toLowerCase().replace(/[\s_]+/g, '_');
+    const aliases = {
+      fat_loss: 'weight_loss',
+      upper: 'upper_body',
+      lower: 'lower_body'
+    };
+    const candidates = [...new Set([key, aliases[key]].filter(Boolean))];
+
+    for (const candidate of candidates) {
+      const translated = this.t(`goal_${candidate}`, null)
+        || this.t(`difficulty_${candidate}`, null)
+        || this.t(`category_${candidate}`, null)
+        || this.t(candidate, null);
+      if (translated) return translated;
+    }
+
+    return value.replace(/_/g, ' ');
   }
 
   getLang() {

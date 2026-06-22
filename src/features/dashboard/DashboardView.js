@@ -35,6 +35,10 @@ export class DashboardView {
     return this.ctx.i18n?.t(key) || fallback;
   }
 
+  translateValue(value) {
+    return this.ctx.i18n?.translateValue?.(value) || String(value || '').replaceAll('_', ' ');
+  }
+
   greeting() {
     const hour = new Date().getHours();
     if (hour < 12) return this.t('greeting_morning', 'Good Morning');
@@ -74,7 +78,7 @@ export class DashboardView {
         </div>
       </div>
       <section class="card hero-card card--hero">
-        <div class="flex flex-between gap-12"><div><div class="text-sm text-muted">${this.t('daily_completion', 'Daily completion')}</div><h2>${todayProgress}% ${this.t('done_label', 'done')}</h2><p class="text-sm text-muted">${this.t('target', 'Target')}: ${user.dailyMinutes} ${this.t('minutes', 'min')} • ${this.t('goal', 'Goal')}: ${user.goal.replaceAll('_', ' ')}</p></div>${this.renderProgressRing(todayProgress)}</div>
+        <div class="flex flex-between gap-12"><div><div class="text-sm text-muted">${this.t('daily_completion', 'Daily completion')}</div><h2>${todayProgress}% ${this.t('done_label', 'done')}</h2><p class="text-sm text-muted">${this.t('target', 'Target')}: ${user.dailyMinutes} ${this.t('minutes', 'min')} • ${this.t('goal', 'Goal')}: ${this.translateValue(user.goal)}</p></div>${this.renderProgressRing(todayProgress)}</div>
         <div class="grid-3 mt-16"><div class="stat-card"><div class="stat-value">${dailyLog.calories || 0}</div><div class="stat-label">${this.t('calories', 'Calories')}</div></div><div class="stat-card"><div class="stat-value">${dailyLog.minutes || 0}</div><div class="stat-label">${this.t('minutes', 'Minutes')}</div></div><div class="stat-card"><div class="stat-value">${achievementSnapshot.stats.level}</div><div class="stat-label">${this.t('xp_level', 'XP Level')}</div></div></div>
       </section>
       <section class="grid-2">

@@ -455,7 +455,7 @@ class App {
     const progress = await this.getProgress.execute();
     if (progress.dailyLog?.workoutCompleted) return;
 
-    const notification = this.notifications.workoutReminder(user.goal.replaceAll('_', ' '));
+    const notification = this.notifications.workoutReminder(this.i18n.translateValue(user.goal));
     if (notification) {
       this.prefs.set('reminderLastShownDate', todayDate);
     }

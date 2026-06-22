@@ -15,6 +15,10 @@ export class ChallengeView {
     return this.ctx.i18n?.t(key) || fallback;
   }
 
+  translateValue(value) {
+    return this.ctx.i18n?.translateValue?.(value) || String(value || '').replaceAll('_', ' ');
+  }
+
   async render() {
     const challenge = this.ctx.challengeData;
     const viewModel = await this.ctx.getChallenge.getViewModel(challenge, this.selectedDay);
@@ -27,7 +31,7 @@ export class ChallengeView {
       <p class="page-subtitle">${this.t('challenge_subtitle', 'One calendar, thirty small wins, plus monthly themed XP challenges.')}</p>
 
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>${challenge.name}</h2><p class="text-sm text-muted">${challenge.description}</p></div><span class="chip">${viewModel.progress}%</span></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.translateValue(challenge.name)}</h2><p class="text-sm text-muted">${challenge.description}</p></div><span class="chip">${viewModel.progress}%</span></div>
         <div class="challenge-grid">${challenge.days.map((day) => {
           const classes = ['challenge-day', this.selectedDay === day.day ? 'current' : '', viewModel.completedDays.includes(day.day) ? 'done' : '', day.type === 'rest' ? 'rest' : '', day.day > viewModel.currentDay ? 'locked' : ''].filter(Boolean).join(' ');
           return `<button class="${classes}" data-action="select-day" data-day="${day.day}"><strong>${day.day}</strong><span>${day.type === 'rest' ? this.t('rest_day', 'Rest') : this.t('train_day', 'Train')}</span></button>`;
@@ -35,7 +39,7 @@ export class ChallengeView {
       </section>
 
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('day', 'Day')} ${selected.day}: ${selected.label}</h2><p class="text-sm text-muted">${selected.type === 'rest' ? this.t('recovery_focus', 'Recovery focus') : `${this.t('intensity', 'Intensity')} ${(selected.intensity || 0) * 100}%`}</p></div><span class="badge ${selected.type === 'rest' ? 'badge-yoga' : 'badge-intermediate'}">${selected.type === 'rest' ? this.t('rest_day', 'Rest') : this.t('train_day', 'Train')}</span></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('day', 'Day')} ${selected.day}: ${this.translateValue(selected.label)}</h2><p class="text-sm text-muted">${selected.type === 'rest' ? this.t('recovery_focus', 'Recovery focus') : `${this.t('intensity', 'Intensity')} ${(selected.intensity || 0) * 100}%`}</p></div><span class="badge ${selected.type === 'rest' ? 'badge-yoga' : 'badge-intermediate'}">${selected.type === 'rest' ? this.t('rest_day', 'Rest') : this.t('train_day', 'Train')}</span></div>
         <div class="mb-16">${selected.exercises.map((item) => {
           const exercise = this.ctx.getExercises.getById(item.exerciseId);
           return `<div class="history-item"><div class="history-info"><h4>${exercise?.emoji || '💪'} ${exercise?.name || item.exerciseId}</h4><p>${item.sets} ${this.t('sets', 'Sets').toLowerCase()}${item.sets > 1 ? '' : ''} • ${exercise?.type === 'time' ? `${exercise.getTarget(user.level)} ${this.t('seconds', 'sec')}` : `${exercise?.getTarget(user.level)} ${this.t('reps', 'Reps').toLowerCase()}`}</p></div></div>`;
