@@ -3,19 +3,47 @@
  * Uses date-seeded randomization for daily variety.
  * Handles rest days, missed workouts, and adaptive scheduling.
  */
-import { dateSeed, seededShuffle } from '../../core/utils/dateUtils.js';
+const defaultGetDateStr = (date = new Date()) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+const dateSeed = (date, getDateStr) => {
+  const str = getDateStr(date);
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+};
+
+const seededShuffle = (array, seed) => {
+  const arr = [...array];
+  let s = seed;
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0x7fffffff;
+    const j = s % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
 
 export class SchedulerEngine {
   #exerciseRepo;
   #workoutRepo;
+  #getDateStr;
   
-  constructor(exerciseRepo, workoutRepo) {
+  constructor(exerciseRepo, workoutRepo, getDateStr = defaultGetDateStr) {
     this.#exerciseRepo = exerciseRepo;
     this.#workoutRepo = workoutRepo;
+    this.#getDateStr = getDateStr;
   }
   
   generateDaily(user, date = new Date(), options = {}) {
-    const seed = dateSeed(date);
+    const seed = dateSeed(date, this.#getDateStr);
     const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
     
     // Rest day check (every 3rd day)
@@ -36,7 +64,7 @@ export class SchedulerEngine {
     
     return {
       isRestDay: false,
-      date: date.toISOString().split('T')[0],
+      date: this.#getDateStr(date),
       category: todayCategory,
       warmUp,
       main,

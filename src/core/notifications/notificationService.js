@@ -3,6 +3,10 @@
  */
 export class NotificationService {
   #permitted = false;
+
+  constructor() {
+    this.#permitted = ('Notification' in window && Notification.permission === 'granted');
+  }
   
   get isAvailable() { return 'Notification' in window; }
   
@@ -16,8 +20,8 @@ export class NotificationService {
   notify(title, options = {}) {
     if (!this.#permitted) return null;
     return new Notification(title, {
-      icon: '/assets/icons/icon-192.svg',
-      badge: '/assets/icons/icon-72.svg',
+      icon: './assets/icons/icon-512.svg',
+      badge: './assets/icons/icon-512.svg',
       ...options
     });
   }

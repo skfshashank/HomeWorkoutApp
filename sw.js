@@ -1,34 +1,46 @@
-const CACHE_NAME = 'openfit-v2';
-const BASE = self.location.pathname.replace(/sw\.js$/, '');
-const ASSETS = [
+const CACHE_NAME = 'openfit-v3';
+const PRECACHE = [
   'index.html',
   'manifest.json',
-  'sw.js',
   'css/main.css',
   'css/components.css',
   'css/animations.css',
-  'js/app.js',
-  'js/data/exercises.js',
-  'js/data/plans.js',
-  'js/data/challenges.js',
-  'js/data/quotes.js',
-  'js/models/profile.js',
-  'js/models/workout.js',
-  'js/models/progress.js',
-  'js/services/storage.js',
-  'js/services/audio.js',
-  'js/services/voice.js',
-  'js/services/generator.js',
-  'js/services/rpe.js',
-  'js/services/timer.js',
-  'js/services/motion.js',
-  'js/services/desk.js',
-  'js/views/home.js',
-  'js/views/workouts.js',
-  'js/views/trainer.js',
-  'js/views/challenge.js',
-  'js/views/progress.js',
-  'js/views/profile.js',
+  'src/main.js',
+  'src/app/bootstrap.js',
+  'src/app/eventBus.js',
+  'src/app/router.js',
+  'src/application/challenges/GetChallenge.js',
+  'src/application/exercises/GetExercises.js',
+  'src/application/habits/TrackHabit.js',
+  'src/application/profile/UpdateProfile.js',
+  'src/application/progress/GetProgress.js',
+  'src/application/recovery/GetRecovery.js',
+  'src/application/workouts/CompleteWorkout.js',
+  'src/application/workouts/StartWorkout.js',
+  'src/core/backup/backupService.js',
+  'src/core/logger/logger.js',
+  'src/core/notifications/notificationService.js',
+  'src/core/speech/speechService.js',
+  'src/core/storage/indexedDb.js',
+  'src/core/storage/preferences.js',
+  'src/core/utils/audioEngine.js',
+  'src/core/utils/dateUtils.js',
+  'src/domain/entities/Exercise.js',
+  'src/domain/entities/Habit.js',
+  'src/domain/entities/User.js',
+  'src/domain/entities/Workout.js',
+  'src/domain/repositories/ExerciseRepository.js',
+  'src/domain/repositories/WorkoutRepository.js',
+  'src/domain/services/ProgressionEngine.js',
+  'src/domain/services/RecoveryEngine.js',
+  'src/domain/services/SchedulerEngine.js',
+  'src/features/challenge/ChallengeView.js',
+  'src/features/dashboard/DashboardView.js',
+  'src/features/dashboard/OnboardingView.js',
+  'src/features/progressTracker/ProgressView.js',
+  'src/features/settings/SettingsView.js',
+  'src/features/workoutPlayer/TrainerView.js',
+  'src/features/workoutPlayer/WorkoutsView.js',
   'assets/icons/icon-512.svg',
   'assets/plans/challenge_30day_v1.json',
   'assets/plans/exercise_catalog_v1.json',
@@ -39,7 +51,7 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
+      .then((cache) => cache.addAll(PRECACHE))
       .then(() => self.skipWaiting())
   );
 });
@@ -66,4 +78,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-

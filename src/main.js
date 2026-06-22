@@ -13,6 +13,7 @@ import { WorkoutRepository } from './domain/repositories/WorkoutRepository.js';
 import { RecoveryEngine } from './domain/services/RecoveryEngine.js';
 import { SchedulerEngine } from './domain/services/SchedulerEngine.js';
 import { ProgressionEngine } from './domain/services/ProgressionEngine.js';
+import { AchievementEngine } from './domain/services/AchievementEngine.js';
 import { GetExercises } from './application/exercises/GetExercises.js';
 import { StartWorkout } from './application/workouts/StartWorkout.js';
 import { CompleteWorkout } from './application/workouts/CompleteWorkout.js';
@@ -20,9 +21,16 @@ import { GetProgress } from './application/progress/GetProgress.js';
 import { DashboardView } from './features/dashboard/DashboardView.js';
 import { WorkoutsView } from './features/workoutPlayer/WorkoutsView.js';
 import { TrainerView } from './features/workoutPlayer/TrainerView.js';
+import { CustomWorkoutView } from './features/workoutPlayer/CustomWorkoutView.js';
+import { TimerModesView } from './features/workoutPlayer/TimerModesView.js';
 import { ChallengeView } from './features/challenge/ChallengeView.js';
 import { ProgressView } from './features/progressTracker/ProgressView.js';
 import { SettingsView } from './features/settings/SettingsView.js';
+import { ProfileManager } from './features/settings/ProfileManager.js';
+import { AchievementView } from './features/achievements/AchievementView.js';
+import { ExerciseLibraryView } from './features/exerciseLibrary/ExerciseLibraryView.js';
+import { HabitTrackerView } from './features/habitTracker/HabitTrackerView.js';
+import { SorenessMapView } from './features/sorenessMap/SorenessMapView.js';
 import { OnboardingView } from './features/dashboard/OnboardingView.js';
 
 class App {
@@ -46,6 +54,9 @@ class App {
     this.audio.setEnabled(this.prefs.get('soundEnabled', true));
     this.speech.setEnabled(this.prefs.get('voiceEnabled', true));
 
+    this.profileManager = new ProfileManager(this.db, this.prefs, this.bus);
+    const existingProfile = await this.profileManager.init();
+
     const [exerciseData, planData, challengeData, quotesData] = await Promise.all([
       this.loadJSON('assets/plans/exercise_catalog_v1.json'),
       this.loadJSON('assets/plans/workout_plans_v1.json'),
@@ -53,27 +64,28 @@ class App {
       this.loadJSON('assets/plans/quotes_v1.json')
     ]);
 
-    this.exerciseRepo = new ExerciseRepository();
+    this.exerciseRepo = new ExerciseRepository(this.db, () => this.profileManager.getActiveProfileId());
     this.exerciseRepo.load(exerciseData.exercises || []);
 
     this.workoutRepo = new WorkoutRepository();
     this.workoutRepo.load(planData.plans || []);
 
-    this.recovery = new RecoveryEngine(this.db);
+    this.recovery = new RecoveryEngine(this.db, () => this.profileManager.getActiveProfileId());
     this.scheduler = new SchedulerEngine(this.exerciseRepo, this.workoutRepo);
-    this.progression = new ProgressionEngine(this.db, this.prefs);
+    this.progression = new ProgressionEngine(this.db, this.prefs, () => this.profileManager.getActiveProfileId());
+    this.achievementEngine = new AchievementEngine(this.db, this.bus, () => this.profileManager.getActiveProfileId(), this.exerciseRepo);
+    this.achievementEngine.init();
 
     this.getExercises = new GetExercises(this.exerciseRepo);
     this.startWorkout = new StartWorkout(this.exerciseRepo, this.progression, this.bus);
-    this.completeWorkout = new CompleteWorkout(this.db, this.bus, this.progression);
-    this.getProgress = new GetProgress(this.db);
+    this.completeWorkout = new CompleteWorkout(this.db, this.bus, this.progression, () => this.profileManager.getActiveProfileId(), this.exerciseRepo);
+    this.getProgress = new GetProgress(this.db, () => this.profileManager.getActiveProfileId());
     this.backup = new BackupService(this.db, this.prefs);
 
-    const userData = this.prefs.get('user');
-    if (!userData) {
+    if (!existingProfile) {
       this.showOnboarding(challengeData, quotesData);
     } else {
-      this.initViews(new User(userData), challengeData, quotesData);
+      this.initViews(new User(existingProfile), challengeData, quotesData);
     }
 
     this.setupNav();
@@ -85,10 +97,11 @@ class App {
   showOnboarding(challengeData, quotesData) {
     const onboarding = new OnboardingView(this.prefs, this.bus);
     onboarding.render();
-    const off = this.bus.on(Events.PROFILE_UPDATED, (user) => {
+    const off = this.bus.on(Events.PROFILE_UPDATED, async (user) => {
       off();
+      const savedProfile = await this.profileManager.saveProfile(user, { setActive: true });
       document.getElementById('onboarding').classList.remove('active');
-      this.initViews(new User(user), challengeData, quotesData);
+      this.initViews(new User(savedProfile), challengeData, quotesData);
       this.router.navigate('dashboard');
     });
   }
@@ -107,6 +120,8 @@ class App {
       scheduler: this.scheduler,
       progression: this.progression,
       recovery: this.recovery,
+      achievementEngine: this.achievementEngine,
+      profileManager: this.profileManager,
       getExercises: this.getExercises,
       startWorkout: this.startWorkout,
       completeWorkout: this.completeWorkout,
@@ -115,6 +130,7 @@ class App {
       challengeData,
       quotesData,
       logger: this.logger,
+      getActiveProfileId: () => this.profileManager.getActiveProfileId(),
       getUser: () => new User(this.prefs.get('user') || user)
     };
 
@@ -125,56 +141,26 @@ class App {
     this.views.settings = new SettingsView(ctx);
     this.views.trainer = new TrainerView(ctx);
 
+    this.views.exerciseLibrary = new ExerciseLibraryView();
+    this.views.exerciseLibrary.init(document.querySelector('[data-page="exercises"]'), ctx);
+
+    this.views.customWorkout = new CustomWorkoutView();
+    this.views.customWorkout.init(document.querySelector('[data-page="custom-workouts"]'), ctx);
+    ctx.customWorkoutView = this.views.customWorkout;
+
+    this.views.habits = new HabitTrackerView();
+    this.views.habits.init(document.querySelector('[data-page="habits"]'), ctx);
+
+    this.views.soreness = new SorenessMapView();
+    this.views.soreness.init(document.querySelector('[data-page="recovery"]'), ctx);
+
+    this.views.achievements = new AchievementView();
+    this.views.achievements.init(document.querySelector('[data-page="achievements"]'), ctx);
+
+    this.views.timers = new TimerModesView();
+    this.views.timers.init(document.querySelector('[data-page="timers"]'), ctx);
+
     Object.values(this.views).forEach((view) => view.render?.());
-    this.renderSupportPages(ctx);
-
-    this.bus.on(Events.PROFILE_UPDATED, () => this.renderSupportPages(ctx));
-  }
-
-  renderSupportPages(ctx) {
-    const user = ctx.getUser();
-    const exercises = ctx.exerciseRepo.getAll().slice(0, 8);
-    const exercisesPage = document.querySelector('[data-page="exercises"]');
-    if (exercisesPage) {
-      exercisesPage.innerHTML = `
-        <div class="page-title">Exercise Library</div>
-        <p class="page-subtitle">Quick catalog preview powered by the loaded exercise JSON.</p>
-        <div class="grid-2">
-          ${exercises.map((exercise) => `
-            <article class="card">
-              <div class="flex flex-between gap-8 mb-8">
-                <strong>${exercise.emoji} ${exercise.name}</strong>
-                <span class="badge badge-${exercise.difficulty}">${exercise.difficulty}</span>
-              </div>
-              <p class="text-sm text-muted">${exercise.description}</p>
-            </article>`).join('')}
-        </div>`;
-    }
-
-    const habitsPage = document.querySelector('[data-page="habits"]');
-    if (habitsPage) {
-      habitsPage.innerHTML = `
-        <div class="page-title">Habit Signals</div>
-        <p class="page-subtitle">Hydration, workouts, and recovery signals are tracked automatically.</p>
-        <div class="card">
-          <div class="grid-3">
-            <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">Water Goal</div></div>
-            <div class="stat-card"><div class="stat-value">${user.dailyMinutes}</div><div class="stat-label">Daily Minutes</div></div>
-            <div class="stat-card"><div class="stat-value">${user.level}</div><div class="stat-label">Current Level</div></div>
-          </div>
-        </div>`;
-    }
-
-    const recoveryPage = document.querySelector('[data-page="recovery"]');
-    if (recoveryPage) {
-      recoveryPage.innerHTML = `
-        <div class="page-title">Recovery</div>
-        <p class="page-subtitle">OpenFit adapts intensity using streaks, habits, and RPE feedback.</p>
-        <div class="card">
-          <h3>Adaptive engine ready</h3>
-          <p class="text-sm text-muted">Finish workouts, rate effort, and the recovery engine will automatically guide lighter or harder days.</p>
-        </div>`;
-    }
   }
 
   setupNav() {
@@ -187,8 +173,8 @@ class App {
     try {
       const res = await fetch(path);
       return await res.json();
-    } catch (e) {
-      this.logger.error(`Failed to load ${path}:`, e);
+    } catch (error) {
+      this.logger.error(`Failed to load ${path}:`, error);
       return { exercises: [], plans: [], days: [], quotes: [] };
     }
   }
@@ -201,4 +187,4 @@ class App {
 }
 
 const app = new App();
-app.init().catch((err) => console.error('Boot failed:', err));
+app.init().catch((error) => console.error('Boot failed:', error));

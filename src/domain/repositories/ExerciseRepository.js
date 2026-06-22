@@ -1,53 +1,151 @@
 /**
  * ExerciseRepository - provides access to the exercise catalog.
- * Reads from static JSON catalog bundled with app.
  */
 import { Exercise } from '../entities/Exercise.js';
 
 export class ExerciseRepository {
+  #db;
+  #getProfileId;
   #exercises = [];
   #byId = new Map();
   #byCategory = new Map();
   #byMuscle = new Map();
-  
+  #byTag = new Map();
+
+  constructor(db = null, getProfileId = () => 'default') {
+    this.#db = db;
+    this.#getProfileId = getProfileId;
+  }
+
   load(rawData) {
-    this.#exercises = rawData.map(d => new Exercise(d));
-    this.#exercises.forEach(ex => {
-      this.#byId.set(ex.id, ex);
-      // Index by category
-      if (!this.#byCategory.has(ex.category)) this.#byCategory.set(ex.category, []);
-      this.#byCategory.get(ex.category).push(ex);
-      // Index by muscle
-      ex.muscles.forEach(m => {
-        if (!this.#byMuscle.has(m)) this.#byMuscle.set(m, []);
-        this.#byMuscle.get(m).push(ex);
+    this.#exercises = rawData.map((data) => new Exercise({ ...data, tags: this.#resolveTags(data) }));
+    this.#byId.clear();
+    this.#byCategory.clear();
+    this.#byMuscle.clear();
+    this.#byTag.clear();
+
+    this.#exercises.forEach((exercise) => {
+      this.#byId.set(exercise.id, exercise);
+      if (!this.#byCategory.has(exercise.category)) this.#byCategory.set(exercise.category, []);
+      this.#byCategory.get(exercise.category).push(exercise);
+      exercise.muscles.forEach((muscle) => {
+        if (!this.#byMuscle.has(muscle)) this.#byMuscle.set(muscle, []);
+        this.#byMuscle.get(muscle).push(exercise);
+      });
+      exercise.tags.forEach((tag) => {
+        if (!this.#byTag.has(tag)) this.#byTag.set(tag, []);
+        this.#byTag.get(tag).push(exercise);
       });
     });
   }
-  
+
   getById(id) { return this.#byId.get(id) || null; }
   getAll() { return [...this.#exercises]; }
-  getByCategory(cat) { return this.#byCategory.get(cat) || []; }
+  getByCategory(category) { return this.#byCategory.get(category) || []; }
   getByMuscle(muscle) { return this.#byMuscle.get(muscle) || []; }
+  getByTag(tag) { return this.#byTag.get(tag) || []; }
   getCategories() { return [...this.#byCategory.keys()]; }
   getMuscleGroups() { return [...this.#byMuscle.keys()]; }
-  
+  getTags() { return [...this.#byTag.keys()].sort(); }
+  getEquipmentTypes() { return [...new Set(this.#exercises.map((exercise) => exercise.equipment))].sort(); }
+
   search(query) {
-    const q = query.toLowerCase();
-    return this.#exercises.filter(ex => 
-      ex.name.toLowerCase().includes(q) || 
-      ex.nameHindi.toLowerCase().includes(q) ||
-      ex.category.includes(q) ||
-      ex.muscles.some(m => m.includes(q))
+    const q = String(query || '').trim().toLowerCase();
+    if (!q) return this.getAll();
+    return this.#exercises.filter((exercise) =>
+      exercise.name.toLowerCase().includes(q)
+      || exercise.nameHindi.toLowerCase().includes(q)
+      || exercise.category.toLowerCase().includes(q)
+      || exercise.muscles.some((muscle) => muscle.toLowerCase().includes(q))
+      || exercise.tags.some((tag) => tag.toLowerCase().includes(q))
+      || exercise.equipment.toLowerCase().includes(q)
     );
   }
-  
-  filter({ category, muscle, difficulty, type }) {
-    let results = this.#exercises;
-    if (category) results = results.filter(e => e.category === category);
-    if (muscle) results = results.filter(e => e.muscles.includes(muscle));
-    if (difficulty) results = results.filter(e => e.difficulty === difficulty);
-    if (type) results = results.filter(e => e.type === type);
-    return results;
+
+  filter(filters = {}) {
+    const {
+      search = '',
+      category = '',
+      muscle = '',
+      difficulty = '',
+      equipment = '',
+      tag = '',
+      type = ''
+    } = filters;
+
+    return this.search(search).filter((exercise) => {
+      if (category && category !== 'all' && exercise.category !== category) return false;
+      if (muscle && muscle !== 'all' && !exercise.muscles.includes(muscle)) return false;
+      if (difficulty && difficulty !== 'all' && exercise.difficulty !== difficulty) return false;
+      if (equipment && equipment !== 'all' && exercise.equipment !== equipment) return false;
+      if (tag && tag !== 'all' && !exercise.tags.includes(tag)) return false;
+      if (type && type !== 'all' && exercise.type !== type) return false;
+      return true;
+    });
+  }
+
+  async toggleFavorite(exerciseId) {
+    if (!this.#db) return false;
+    const profileId = this.#getProfileId();
+    const id = `${profileId}:${exerciseId}`;
+    const current = (await this.#db.get('exerciseMeta', id)) || { id, profileId, exerciseId, favorite: false, useCount: 0 };
+    current.favorite = !current.favorite;
+    current.updatedAt = new Date().toISOString();
+    await this.#db.put('exerciseMeta', current);
+    return current.favorite;
+  }
+
+  async getFavorites() {
+    if (!this.#db) return [];
+    const profileId = this.#getProfileId();
+    const meta = await this.#db.getAll('exerciseMeta');
+    return meta
+      .filter((entry) => entry.profileId === profileId && entry.favorite)
+      .map((entry) => this.getById(entry.exerciseId))
+      .filter(Boolean);
+  }
+
+  async getRecentlyUsed(limit = 6) {
+    if (!this.#db) return [];
+    const profileId = this.#getProfileId();
+    const meta = await this.#db.getAll('exerciseMeta');
+    return meta
+      .filter((entry) => entry.profileId === profileId && entry.lastUsedAt)
+      .sort((a, b) => String(b.lastUsedAt).localeCompare(String(a.lastUsedAt)))
+      .slice(0, limit)
+      .map((entry) => this.getById(entry.exerciseId))
+      .filter(Boolean);
+  }
+
+  async recordUsage(exerciseIds = []) {
+    if (!this.#db || !exerciseIds.length) return;
+    const profileId = this.#getProfileId();
+    const usedAt = new Date().toISOString();
+
+    for (const exerciseId of [...new Set(exerciseIds)]) {
+      const id = `${profileId}:${exerciseId}`;
+      const current = (await this.#db.get('exerciseMeta', id)) || { id, profileId, exerciseId, favorite: false, useCount: 0 };
+      current.lastUsedAt = usedAt;
+      current.useCount = (current.useCount || 0) + 1;
+      current.updatedAt = usedAt;
+      await this.#db.put('exerciseMeta', current);
+    }
+  }
+
+  #resolveTags(data) {
+    const tags = new Set((data.tags || []).map((tag) => String(tag).toLowerCase()));
+    const category = String(data.category || '').toLowerCase();
+    const muscles = (data.muscles || []).map((muscle) => String(muscle).toLowerCase());
+    const id = String(data.id || '').toLowerCase();
+    const name = String(data.name || '').toLowerCase();
+
+    if (category.includes('yoga') || category.includes('pranayama')) tags.add('yoga');
+    if (category.includes('stretch') || category.includes('office')) tags.add('stretch');
+    if (category.includes('lower') || muscles.some((muscle) => ['quads', 'hamstrings', 'glutes', 'calves'].includes(muscle))) tags.add('legs');
+    if (muscles.some((muscle) => ['chest', 'shoulders', 'triceps'].includes(muscle)) || id.includes('push') || name.includes('push')) tags.add('push');
+    if (muscles.some((muscle) => ['back', 'lats', 'biceps'].includes(muscle)) || id.includes('pull') || id.includes('row') || name.includes('pull')) tags.add('pull');
+    if (category.includes('hiit') || category.includes('full_body') || /jump|burpee|climber|jack|high-knee|run|cardio/.test(id + name)) tags.add('cardio');
+
+    return [...tags];
   }
 }

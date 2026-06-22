@@ -19,7 +19,10 @@ export class Router {
     }
     // Update nav
     document.querySelectorAll('[data-nav]').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.nav === page);
+      const isActive = btn.dataset.nav === page;
+      btn.classList.toggle('active', isActive);
+      if (isActive) btn.setAttribute('aria-current', 'page');
+      else btn.removeAttribute('aria-current');
     });
   }
   

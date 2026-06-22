@@ -1,19 +1,31 @@
 /**
  * Date utilities used across the app.
  */
+export function getLocalDateStr(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+export function parseDateStr(dateStr) {
+  const [year, month, day] = String(dateStr).split('-').map(Number);
+  return new Date(year, (month || 1) - 1, day || 1);
+}
+
 export function today() {
-  return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  return getLocalDateStr();
 }
 
 export function daysBetween(date1, date2) {
-  const d1 = new Date(date1);
-  const d2 = new Date(date2);
+  const d1 = typeof date1 === 'string' ? parseDateStr(date1) : new Date(date1);
+  const d2 = typeof date2 === 'string' ? parseDateStr(date2) : new Date(date2);
   return Math.floor((d2 - d1) / 86400000);
 }
 
 export function dateSeed(date = new Date()) {
   // Deterministic seed from date for daily variety
-  const str = date.toISOString().split('T')[0];
+  const str = getLocalDateStr(date);
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = ((hash << 5) - hash) + str.charCodeAt(i);
@@ -46,7 +58,7 @@ export function getWeekDates() {
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
-    return d.toISOString().split('T')[0];
+    return getLocalDateStr(d);
   });
 }
 

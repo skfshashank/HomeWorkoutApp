@@ -1,6 +1,8 @@
 /**
  * BackupService - JSON export/import for data portability.
  */
+import { getLocalDateStr } from '../utils/dateUtils.js';
+
 export class BackupService {
   #db;
   #prefs;
@@ -32,7 +34,7 @@ export class BackupService {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `openfit_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `openfit_backup_${getLocalDateStr()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }

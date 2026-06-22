@@ -1,0 +1,142 @@
+export class ExerciseLibraryView {
+  constructor() {
+    this.ctx = null;
+    this.el = null;
+    this.filters = { search: '', muscle: 'all', difficulty: 'all', equipment: 'all', category: 'all', tag: 'all' };
+    this.modal = null;
+    this.modalContent = null;
+    this.modalCleanup = null;
+  }
+
+  init(container, deps) {
+    this.el = container;
+    this.ctx = deps;
+    this.modal = document.getElementById('modal-overlay');
+    this.modalContent = document.getElementById('modal-content');
+    this.el.addEventListener('click', (event) => this.handleClick(event));
+    this.el.addEventListener('input', (event) => this.handleInput(event));
+    this.el.addEventListener('change', (event) => this.handleInput(event));
+    this.ctx.bus.on('profile:updated', () => this.render());
+  }
+
+  async render() {
+    const [favorites, recent] = await Promise.all([
+      this.ctx.exerciseRepo.getFavorites(),
+      this.ctx.exerciseRepo.getRecentlyUsed(6)
+    ]);
+    const exercises = this.ctx.exerciseRepo.filter(this.filters);
+    const muscles = ['all', ...this.ctx.exerciseRepo.getMuscleGroups()];
+    const equipment = ['all', ...this.ctx.exerciseRepo.getEquipmentTypes()];
+    const categories = ['all', ...this.ctx.exerciseRepo.getCategories()];
+    const tags = ['all', ...this.ctx.exerciseRepo.getTags()];
+    const favoriteIds = new Set(favorites.map((exercise) => exercise.id));
+
+    this.el.innerHTML = `
+      <div class="page-title">Exercise Library</div>
+      <p class="page-subtitle">Search English + Hindi names, filter by muscle/difficulty/equipment/tags, and keep favorites local-first.</p>
+
+      <section class="card">
+        <div class="form-group"><label class="form-label">Search</label><input class="form-input" data-filter="search" value="${this.filters.search}" placeholder="Crunches / क्रंचेज / yoga"></div>
+        <div class="grid-2">
+          ${this.renderSelect('Muscle group', 'muscle', muscles, this.filters.muscle)}
+          ${this.renderSelect('Difficulty', 'difficulty', ['all', 'beginner', 'intermediate', 'advanced'], this.filters.difficulty)}
+          ${this.renderSelect('Equipment', 'equipment', equipment, this.filters.equipment)}
+          ${this.renderSelect('Category', 'category', categories, this.filters.category)}
+        </div>
+        <div class="form-group mt-16"><label class="form-label">Training tag</label><div class="tabs">${tags.map((tag) => `<button class="tab ${this.filters.tag === tag ? 'active' : ''}" data-action="set-tag" data-tag="${tag}">${tag}</button>`).join('')}</div></div>
+      </section>
+
+      <section class="card"><h2>Favorites</h2><div class="exercise-chip-row">${favorites.length ? favorites.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : '<span class="text-sm text-muted">Tap the star on any exercise to favorite it.</span>'}</div></section>
+      <section class="card"><h2>Recently Used</h2><div class="exercise-chip-row">${recent.length ? recent.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : '<span class="text-sm text-muted">Finish a workout and your recent exercises will appear here.</span>'}</div></section>
+      <section>${exercises.map((exercise) => this.renderCard(exercise, favoriteIds.has(exercise.id))).join('') || '<div class="card"><p class="text-sm text-muted">No exercises match those filters yet.</p></div>'}</section>`;
+  }
+
+  renderSelect(label, key, options, value) {
+    return `<div class="form-group"><label class="form-label">${label}</label><select class="form-input form-select" data-filter="${key}">${options.map((option) => `<option value="${option}" ${option === value ? 'selected' : ''}>${option.replaceAll('_', ' ')}</option>`).join('')}</select></div>`;
+  }
+
+  renderCard(exercise, favorite) {
+    return `
+      <article class="card exercise-library-card">
+        <div class="flex flex-between gap-12">
+          <div>
+            <h3>${exercise.emoji} ${exercise.name}</h3>
+            <p class="text-sm text-muted">${exercise.nameHindi || '—'} • ${exercise.tags.join(' • ') || exercise.category}</p>
+          </div>
+          <button class="favorite-btn ${favorite ? 'active' : ''}" data-action="toggle-favorite" data-exercise-id="${exercise.id}">${favorite ? '★' : '☆'}</button>
+        </div>
+        <div class="flex flex-wrap gap-8 mb-8"><span class="badge badge-${exercise.difficulty}">${exercise.difficulty}</span>${exercise.muscles.map((muscle) => `<span class="chip">${muscle}</span>`).join('')}</div>
+        <p class="text-sm text-muted mb-8">${exercise.description}</p>
+        <p class="text-sm mb-8"><strong>Instructions:</strong> ${(exercise.steps || []).slice(0, 2).join(' ')}</p>
+        <p class="text-sm text-muted"><strong>Breathing:</strong> ${exercise.breathing || 'Breathe steadily and keep good form.'}</p>
+        <div class="flex gap-8 mt-16 flex-wrap">
+          <button class="btn btn-secondary btn-sm" data-action="open-detail" data-exercise-id="${exercise.id}">View details</button>
+          <button class="btn btn-primary btn-sm" data-action="add-to-custom" data-exercise-id="${exercise.id}">Add to custom workout</button>
+        </div>
+      </article>`;
+  }
+
+  handleInput(event) {
+    const key = event.target.dataset.filter;
+    if (!key) return;
+    this.filters[key] = event.target.value;
+    this.render();
+  }
+
+  async handleClick(event) {
+    const button = event.target.closest('[data-action]');
+    if (!button) return;
+    const exerciseId = button.dataset.exerciseId;
+    if (button.dataset.action === 'toggle-favorite') {
+      await this.ctx.exerciseRepo.toggleFavorite(exerciseId);
+      this.render();
+    }
+    if (button.dataset.action === 'set-tag') {
+      this.filters.tag = button.dataset.tag;
+      this.render();
+    }
+    if (button.dataset.action === 'open-detail') this.openDetail(exerciseId);
+    if (button.dataset.action === 'add-to-custom') {
+      this.ctx.customWorkoutView.addExerciseById(exerciseId);
+      this.ctx.router.navigate('custom-workouts');
+    }
+  }
+
+  openDetail(exerciseId) {
+    const exercise = this.ctx.exerciseRepo.getById(exerciseId);
+    if (!exercise) return;
+    this.closeModal();
+    this.modalContent.innerHTML = `
+      <div class="exercise-detail">
+        <div class="exercise-demo w-full mb-16"><div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div><div class="exercise-demo__caption"><strong>${exercise.name}</strong><div class="text-sm text-muted">${exercise.nameHindi || 'Animated demo description'} • ${exercise.category.replaceAll('_', ' ')}</div></div></div>
+        <p class="text-sm mb-16">${exercise.description}</p>
+        <div class="card card-compact mb-16"><strong>How to do it</strong><ul style="padding-left:18px;list-style:disc;">${(exercise.steps || []).map((step) => `<li>${step}</li>`).join('')}</ul></div>
+        <div class="card card-compact mb-16"><strong>Breathing tips</strong><p class="text-sm text-muted">${exercise.breathing || 'Keep a smooth inhale/exhale rhythm.'}</p></div>
+        <div class="card card-compact mb-16"><strong>Coach tips</strong><p class="text-sm text-muted">${(exercise.tips || []).join(' • ') || 'Move slow, stay controlled, and stop if form breaks.'}</p></div>
+        <div class="grid-2"><button class="btn btn-secondary" data-close-modal="true">Close</button><button class="btn btn-primary" data-add-custom="${exercise.id}">Add to custom workout</button></div>
+      </div>`;
+    this.modal.classList.add('active');
+    this.modalCleanup = (event) => {
+      if (event.target === this.modal || event.target.closest('[data-close-modal]')) {
+        this.closeModal();
+        return;
+      }
+      const addButton = event.target.closest('[data-add-custom]');
+      if (addButton) {
+        this.ctx.customWorkoutView.addExerciseById(addButton.dataset.addCustom);
+        this.closeModal();
+        this.ctx.router.navigate('custom-workouts');
+      }
+    };
+    this.modal.addEventListener('click', this.modalCleanup);
+  }
+
+  closeModal() {
+    if (this.modalCleanup) {
+      this.modal.removeEventListener('click', this.modalCleanup);
+      this.modalCleanup = null;
+    }
+    this.modal.classList.remove('active');
+    this.modalContent.innerHTML = '';
+  }
+}

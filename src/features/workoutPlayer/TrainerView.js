@@ -11,6 +11,7 @@ export class TrainerView {
     this.modalContent = document.getElementById('modal-content');
     this.timerId = null;
     this.modalCleanup = null;
+    this.lastFocusedElement = null;
     this.session = null;
     this.queue = [];
     this.currentIndex = 0;
@@ -23,6 +24,14 @@ export class TrainerView {
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_STARTED, (session) => this.start(session));
+  }
+
+  renderExerciseName(exercise) {
+    return `<span class="exercise-name">${exercise.name}</span>${exercise.nameHindi ? `<span class="exercise-name-hindi">${exercise.nameHindi}</span>` : ''}`;
+  }
+
+  renderProgressLiveText(percent) {
+    return `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
   }
 
   render() {
@@ -72,19 +81,20 @@ export class TrainerView {
         </div>
         <button class="btn btn-secondary btn-sm" data-action="skip">Skip</button>
       </div>
-      <div class="progress-bar"><div class="fill" style="width:${percent}%"></div></div>
+      <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
+      <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
         <div class="exercise-demo w-full mb-16">
           <div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div>
           <div class="exercise-demo__caption">
-            <strong>${exercise.name}</strong>
+            <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
             <div class="text-sm text-muted">${item.phaseLabel}</div>
           </div>
         </div>
 
         <div class="text-center mb-16">
           <div class="text-sm text-muted">${exercise.description}</div>
-          <div class="timer-display">${displayValue}</div>
+          <div class="timer-display" aria-live="assertive" aria-atomic="true">${displayValue}</div>
           <div class="timer-label">${displayLabel}</div>
         </div>
 
@@ -115,16 +125,18 @@ export class TrainerView {
 
   renderRest() {
     const next = this.currentItem();
+    const percent = Math.round((this.currentIndex / Math.max(this.queue.length, 1)) * 100);
     this.el.classList.add('active');
     this.el.innerHTML = `
       <div class="fs-header">
         <div>
           <div class="text-sm text-muted">Recovery</div>
-          <strong>${next ? `Next: ${next.exercise.name}` : 'Almost done'}</strong>
+          ${next ? `<div class="exercise-name-stack">${this.renderExerciseName(next.exercise)}</div>` : '<strong>Almost done</strong>'}
         </div>
         <button class="btn btn-secondary btn-sm" data-action="skip">Skip rest</button>
       </div>
-      <div class="progress-bar"><div class="fill" style="width:${Math.round((this.currentIndex / Math.max(this.queue.length, 1)) * 100)}%"></div></div>
+      <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
+      <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
         <div class="exercise-demo w-full mb-16">
           <div class="exercise-demo__avatar anim-breathing">😮‍💨</div>
@@ -133,7 +145,7 @@ export class TrainerView {
             <div class="text-sm text-muted">Breathe, reset, and get ready.</div>
           </div>
         </div>
-        <div class="timer-display">${formatDuration(this.remaining)}</div>
+        <div class="timer-display" aria-live="assertive" aria-atomic="true">${formatDuration(this.remaining)}</div>
         <div class="timer-label">seconds until restart</div>
         <div class="grid-3 w-full mt-24">
           <button class="btn btn-secondary" data-action="previous">Previous</button>
@@ -321,7 +333,7 @@ export class TrainerView {
     return new Promise((resolve) => {
       this.openModal(`
         <div class="text-center mb-16">
-          <h2>How did that feel?</h2>
+          <h2 id="modal-title">How did that feel?</h2>
           <p class="text-sm text-muted">Your answer helps OpenFit adapt tomorrow's target.</p>
         </div>
         <div class="rpe-options">
@@ -344,7 +356,7 @@ export class TrainerView {
     const label = item.exercise.isTimeBased ? 'seconds' : 'reps';
 
     this.openModal(`
-      <h2 class="mb-16">Adjust target</h2>
+      <h2 class="mb-16" id="modal-title">Adjust target</h2>
       <form id="adjust-target-form">
         <div class="form-group">
           <label class="form-label">Target (${label})</label>
@@ -376,8 +388,10 @@ export class TrainerView {
 
   openModal(html, handler, closeOnBackdrop = true) {
     this.closeModal();
+    this.lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     this.modalContent.innerHTML = html;
     this.modal.classList.add('active');
+    this.modal.setAttribute('aria-hidden', 'false');
     this.modalCleanup = (event) => {
       if (closeOnBackdrop && event.target === this.modal) {
         this.closeModal();
@@ -387,6 +401,10 @@ export class TrainerView {
     };
     this.modal.addEventListener('click', this.modalCleanup);
     this.modal.addEventListener('submit', this.modalCleanup);
+    window.requestAnimationFrame(() => {
+      const focusTarget = this.modal.querySelector('[autofocus], button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])');
+      focusTarget?.focus();
+    });
   }
 
   closeModal() {
@@ -396,7 +414,13 @@ export class TrainerView {
       this.modalCleanup = null;
     }
     this.modal.classList.remove('active');
+    this.modal.setAttribute('aria-hidden', 'true');
     this.modalContent.innerHTML = '';
+    const focusTarget = this.lastFocusedElement;
+    this.lastFocusedElement = null;
+    if (focusTarget?.focus) {
+      window.requestAnimationFrame(() => focusTarget.focus());
+    }
   }
 
   cleanupTimer() {

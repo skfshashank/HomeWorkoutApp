@@ -1,7 +1,8 @@
 /**
  * Use Case: Start a workout session.
- * Orchestrates the workout state machine.
  */
+import { Events } from '../../app/eventBus.js';
+
 export class StartWorkout {
   #exerciseRepo;
   #progression;
@@ -18,14 +19,15 @@ export class StartWorkout {
     const shouldSubstitute = this.#progression.shouldSubstituteRecovery();
 
     const resolvePhase = (phase) => phase.map((item) => {
-      const ex = this.#exerciseRepo.getById(item.exerciseId);
-      if (!ex) return null;
-
-      const target = ex.getScaledTarget(userLevel, multiplier);
+      const exercise = this.#exerciseRepo.getById(item.exerciseId);
+      if (!exercise) return null;
+      const targetOverride = Number(item.targetOverride);
+      const target = targetOverride > 0 ? targetOverride : exercise.getScaledTarget(userLevel, multiplier);
 
       return {
-        exercise: ex,
-        sets: item.sets || 1,
+        exercise,
+        exerciseId: exercise.id,
+        sets: item.sets || exercise.setsDefault || 1,
         target,
         currentTarget: target,
         restSec: item.restSec || workoutPlan.restBetweenSets || 20,
@@ -37,13 +39,14 @@ export class StartWorkout {
     let main = resolvePhase(workoutPlan.main || []);
 
     if (shouldSubstitute && main.length > 0) {
-      const hardestIdx = main.reduce((maxIdx, item, idx, arr) => item.target > arr[maxIdx].target ? idx : maxIdx, 0);
+      const hardestIdx = main.reduce((maxIdx, item, idx, arr) => (item.target > arr[maxIdx].target ? idx : maxIdx), 0);
       const recoveryIds = this.#progression.getRecoverySubstitutes();
-      const recoveryEx = this.#exerciseRepo.getById(recoveryIds[0]);
-      if (recoveryEx) {
-        const recoveryTarget = recoveryEx.getTarget(userLevel);
+      const recoveryExercise = this.#exerciseRepo.getById(recoveryIds[0]);
+      if (recoveryExercise) {
+        const recoveryTarget = recoveryExercise.getTarget(userLevel);
         main[hardestIdx] = {
-          exercise: recoveryEx,
+          exercise: recoveryExercise,
+          exerciseId: recoveryExercise.id,
           sets: 1,
           target: recoveryTarget,
           currentTarget: recoveryTarget,
@@ -60,6 +63,7 @@ export class StartWorkout {
       workoutId: workoutPlan.id || null,
       workoutName: workoutPlan.name || 'Custom Workout',
       workoutCategory: workoutPlan.category || 'custom',
+      estimatedDuration: workoutPlan.duration || workoutPlan.estimatedDuration || 0,
       restBetweenSets: workoutPlan.restBetweenSets || 20,
       restBetweenExercises: workoutPlan.restBetweenExercises || 30,
       warmUp: resolvePhase(workoutPlan.warmUp || []),
@@ -73,7 +77,7 @@ export class StartWorkout {
       isPaused: false
     };
 
-    this.#bus.emit('workout:started', session);
+    this.#bus.emit(Events.WORKOUT_STARTED, session);
     return session;
   }
 }

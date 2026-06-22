@@ -6,10 +6,10 @@ export class Exercise {
     this.id = data.id;
     this.name = data.name;
     this.nameHindi = data.nameHindi || '';
-    this.category = data.category; // belly_fat|yoga|pranayama|hiit|upper|lower|core|stretch|office|full_body
+    this.category = data.category;
     this.muscles = data.muscles || [];
-    this.type = data.type; // 'reps' | 'time'
-    this.levels = data.levels; // { beginner: 12, intermediate: 20, advanced: 30 }
+    this.type = data.type;
+    this.levels = data.levels;
     this.setsDefault = data.setsDefault || 3;
     this.caloriesPerSet = data.caloriesPerSet || 5;
     this.animation = data.animation || '';
@@ -21,20 +21,21 @@ export class Exercise {
     this.commonMistakes = data.commonMistakes || [];
     this.equipment = data.equipment || 'none';
     this.difficulty = data.difficulty || 'beginner';
+    this.tags = data.tags || [];
   }
-  
+
   getTarget(level) {
     return this.levels[level] || this.levels.beginner;
   }
-  
+
   getScaledTarget(level, multiplier = 1.0) {
     const base = this.getTarget(level);
     return Math.round(base * multiplier);
   }
-  
+
   get isTimeBased() { return this.type === 'time'; }
   get isRepBased() { return this.type === 'reps'; }
-  
+
   get targetLabel() {
     return this.isTimeBased ? 'seconds' : 'reps';
   }

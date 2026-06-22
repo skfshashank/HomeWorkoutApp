@@ -1,7 +1,7 @@
 import { Events } from '../../app/eventBus.js';
 import { User } from '../../domain/entities/User.js';
 
-const userStores = ['users', 'sessions', 'measurements', 'habits', 'achievements', 'customWorkouts', 'dailyLogs'];
+const userStores = ['users', 'profiles', 'sessions', 'measurements', 'habits', 'achievements', 'customWorkouts', 'dailyLogs', 'exerciseMeta', 'lifetimeStats', 'sorenessLogs', 'monthlyChallenges'];
 const formatWeight = (user, units) => units === 'imperial' ? `${(user.weight * 2.20462).toFixed(1)} lb` : `${user.weight} kg`;
 const formatHeight = (user, units) => units === 'imperial' ? `${(user.height / 2.54).toFixed(1)} in` : `${user.height} cm`;
 
@@ -18,23 +18,24 @@ export class SettingsView {
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
   }
 
-  render() {
+  async render() {
     const user = this.ctx.getUser();
+    const profiles = await this.ctx.profileManager.getProfiles();
     const units = this.ctx.prefs.get('units', 'metric');
     const soundEnabled = this.ctx.prefs.get('soundEnabled', true);
     const voiceEnabled = this.ctx.prefs.get('voiceEnabled', true);
 
     this.el.innerHTML = `
       <div class="page-title">Settings</div>
-      <p class="page-subtitle">Manage your profile, feedback options, and local backup controls.</p>
+      <p class="page-subtitle">Manage profiles, audio options, local backups, and storage.</p>
 
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
-            <h2>${user.name || 'OpenFit Athlete'}</h2>
+            <h2>${user.avatar} ${user.name || 'OpenFit Athlete'}</h2>
             <p class="text-sm text-muted">${user.goal.replaceAll('_', ' ')} • ${user.focusArea.replaceAll('_', ' ')} focus • ${user.level}</p>
           </div>
-          <button class="btn btn-primary btn-sm" data-action="edit-profile">Edit</button>
+          <button class="btn btn-primary btn-sm" data-action="edit-profile" data-profile-id="${user.id}">Edit</button>
         </div>
         <div class="setting-row"><span class="setting-label">Age</span><span class="setting-value">${user.age}</span></div>
         <div class="setting-row"><span class="setting-label">Height</span><span class="setting-value">${formatHeight(user, units)}</span></div>
@@ -43,56 +44,44 @@ export class SettingsView {
       </section>
 
       <section class="card">
-        <div class="setting-row">
+        <div class="flex flex-between gap-12 mb-16">
           <div>
-            <div class="setting-label">Sound</div>
-            <div class="setting-value">Workout beeps and completion tones</div>
+            <h2>Profiles</h2>
+            <p class="text-sm text-muted">Switching profiles swaps workout history, habits, measurements, and achievements.</p>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}>
-            <span class="toggle-slider"></span>
-          </label>
+          <button class="btn btn-primary btn-sm" data-action="add-profile">Add Profile</button>
         </div>
-        <div class="setting-row">
-          <div>
-            <div class="setting-label">Voice Coach</div>
-            <div class="setting-value">Exercise prompts and rest guidance</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-row">
-          <div>
-            <div class="setting-label">Units</div>
-            <div class="setting-value">Choose how height and weight are displayed</div>
-          </div>
-          <div class="flex gap-8">
-            <button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button>
-            <button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button>
-          </div>
-        </div>
+        ${profiles.map((profile) => `
+          <div class="profile-switcher ${profile.id === user.id ? 'active' : ''}">
+            <div>
+              <strong>${profile.avatar} ${profile.name || 'Unnamed profile'}</strong>
+              <p class="text-sm text-muted">${profile.goal.replaceAll('_', ' ')} • ${profile.level}</p>
+            </div>
+            <div class="flex gap-8 flex-wrap">
+              ${profile.id !== user.id ? `<button class="btn btn-secondary btn-sm" data-action="switch-profile" data-profile-id="${profile.id}">Switch</button>` : '<span class="chip">Active</span>'}
+              <button class="btn btn-secondary btn-sm" data-action="edit-profile" data-profile-id="${profile.id}">Edit</button>
+              ${profiles.length > 1 ? `<button class="btn btn-danger btn-sm" data-action="delete-profile" data-profile-id="${profile.id}">Delete</button>` : ''}
+            </div>
+          </div>`).join('')}
       </section>
 
       <section class="card">
-        <button class="btn btn-secondary w-full mb-16" data-action="export-backup">Export backup</button>
-        <button class="btn btn-secondary w-full mb-16" data-action="import-backup">Import backup</button>
-        <input type="file" id="backup-file-input" accept="application/json" class="hidden">
-        <button class="btn btn-danger w-full" data-action="reset-data">Reset all local data</button>
+        <div class="setting-row"><div><div class="setting-label">Sound</div><div class="setting-value">Workout beeps and completion tones</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">Voice Coach</div><div class="setting-value">Exercise prompts and rest guidance</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">Units</div><div class="setting-value">Choose how height and weight are displayed</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button></div></div>
       </section>
 
-      <section class="card">
-        <div class="setting-row"><span class="setting-label">App version</span><span class="setting-value">OpenFit Local v1</span></div>
-        <div class="setting-row"><span class="setting-label">Storage</span><span class="setting-value">Offline-first browser storage</span></div>
-      </section>`;
+      <section class="card"><button class="btn btn-secondary w-full mb-16" data-action="export-backup">Export backup</button><button class="btn btn-secondary w-full mb-16" data-action="import-backup">Import backup</button><input type="file" id="backup-file-input" accept="application/json" class="hidden"><button class="btn btn-danger w-full" data-action="reset-data">Reset all local data</button></section>
+      <section class="card"><div class="setting-row"><span class="setting-label">App version</span><span class="setting-value">OpenFit Local v2</span></div><div class="setting-row"><span class="setting-label">Storage</span><span class="setting-value">Offline-first browser storage</span></div></section>`;
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     const button = event.target.closest('[data-action]');
     if (!button) return;
-
-    if (button.dataset.action === 'edit-profile') this.openProfileEditor();
+    if (button.dataset.action === 'edit-profile') this.openProfileEditor(button.dataset.profileId);
+    if (button.dataset.action === 'add-profile') this.openProfileEditor();
+    if (button.dataset.action === 'switch-profile') await this.ctx.profileManager.switchProfile(button.dataset.profileId);
+    if (button.dataset.action === 'delete-profile') await this.deleteProfile(button.dataset.profileId);
     if (button.dataset.action === 'units') {
       this.ctx.prefs.set('units', button.dataset.value);
       this.render();
@@ -117,36 +106,22 @@ export class SettingsView {
     if (event.target.id === 'backup-file-input') this.importBackup(event.target.files?.[0]);
   }
 
-  openProfileEditor() {
-    const user = this.ctx.getUser();
+  async openProfileEditor(profileId = '') {
+    const profiles = await this.ctx.profileManager.getProfiles();
+    const existing = profiles.find((profile) => profile.id === profileId) || new User({ avatar: '🙂' });
     this.closeModal();
     this.modalContent.innerHTML = `
-      <h2 class="mb-16">Edit profile</h2>
+      <h2 class="mb-16">${profileId ? 'Edit profile' : 'Add profile'}</h2>
       <form id="profile-form">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" name="name" value="${user.name}"></div>
-        <div class="grid-2">
-          <div class="form-group"><label class="form-label">Age</label><input class="form-input" name="age" type="number" value="${user.age}"></div>
-          <div class="form-group"><label class="form-label">Gender</label><select class="form-input form-select" name="gender"><option value="" ${!user.gender ? 'selected' : ''}>Prefer not to say</option><option value="male" ${user.gender === 'male' ? 'selected' : ''}>Male</option><option value="female" ${user.gender === 'female' ? 'selected' : ''}>Female</option></select></div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input" name="height" type="number" value="${user.height}"></div>
-          <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" name="weight" type="number" step="0.1" value="${user.weight}"></div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group"><label class="form-label">Goal</label><select class="form-input form-select" name="goal"><option value="fat_loss" ${user.goal === 'fat_loss' ? 'selected' : ''}>Fat loss</option><option value="strength" ${user.goal === 'strength' ? 'selected' : ''}>Strength</option><option value="flexibility" ${user.goal === 'flexibility' ? 'selected' : ''}>Flexibility</option><option value="stress_relief" ${user.goal === 'stress_relief' ? 'selected' : ''}>Stress relief</option></select></div>
-          <div class="form-group"><label class="form-label">Focus</label><select class="form-input form-select" name="focusArea"><option value="core" ${user.focusArea === 'core' ? 'selected' : ''}>Core</option><option value="full_body" ${user.focusArea === 'full_body' ? 'selected' : ''}>Full body</option><option value="upper" ${user.focusArea === 'upper' ? 'selected' : ''}>Upper body</option><option value="lower" ${user.focusArea === 'lower' ? 'selected' : ''}>Lower body</option></select></div>
-        </div>
-        <div class="grid-2">
-          <div class="form-group"><label class="form-label">Level</label><select class="form-input form-select" name="level"><option value="beginner" ${user.level === 'beginner' ? 'selected' : ''}>Beginner</option><option value="intermediate" ${user.level === 'intermediate' ? 'selected' : ''}>Intermediate</option><option value="advanced" ${user.level === 'advanced' ? 'selected' : ''}>Advanced</option></select></div>
-          <div class="form-group"><label class="form-label">Daily Minutes</label><input class="form-input" name="dailyMinutes" type="number" value="${user.dailyMinutes}"></div>
-        </div>
-        <div class="grid-2 mt-24">
-          <button type="button" class="btn btn-secondary" data-close-profile="true">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">Avatar emoji</label><input class="form-input" name="avatar" value="${existing.avatar || '🙂'}"></div><div class="form-group"><label class="form-label">Name</label><input class="form-input" name="name" value="${existing.name || ''}"></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">Age</label><input class="form-input" name="age" type="number" value="${existing.age || 25}"></div><div class="form-group"><label class="form-label">Gender</label><select class="form-input form-select" name="gender"><option value="" ${!existing.gender ? 'selected' : ''}>Prefer not to say</option><option value="male" ${existing.gender === 'male' ? 'selected' : ''}>Male</option><option value="female" ${existing.gender === 'female' ? 'selected' : ''}>Female</option></select></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input" name="height" type="number" value="${existing.height || 170}"></div><div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" name="weight" type="number" step="0.1" value="${existing.weight || 70}"></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">Goal</label><select class="form-input form-select" name="goal"><option value="fat_loss" ${existing.goal === 'fat_loss' ? 'selected' : ''}>Fat loss</option><option value="strength" ${existing.goal === 'strength' ? 'selected' : ''}>Strength</option><option value="flexibility" ${existing.goal === 'flexibility' ? 'selected' : ''}>Flexibility</option><option value="stress_relief" ${existing.goal === 'stress_relief' ? 'selected' : ''}>Stress relief</option></select></div><div class="form-group"><label class="form-label">Focus</label><select class="form-input form-select" name="focusArea"><option value="core" ${existing.focusArea === 'core' ? 'selected' : ''}>Core</option><option value="full_body" ${existing.focusArea === 'full_body' ? 'selected' : ''}>Full body</option><option value="upper" ${existing.focusArea === 'upper' ? 'selected' : ''}>Upper body</option><option value="lower" ${existing.focusArea === 'lower' ? 'selected' : ''}>Lower body</option></select></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">Level</label><select class="form-input form-select" name="level"><option value="beginner" ${existing.level === 'beginner' ? 'selected' : ''}>Beginner</option><option value="intermediate" ${existing.level === 'intermediate' ? 'selected' : ''}>Intermediate</option><option value="advanced" ${existing.level === 'advanced' ? 'selected' : ''}>Advanced</option></select></div><div class="form-group"><label class="form-label">Daily Minutes</label><input class="form-input" name="dailyMinutes" type="number" value="${existing.dailyMinutes || 30}"></div></div>
+        <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close-profile="true">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
       </form>`;
     this.modal.classList.add('active');
-    this.modalCleanup = (event) => {
+    this.modalCleanup = async (event) => {
       if (event.type === 'click' && (event.target === this.modal || event.target.closest('[data-close-profile]'))) {
         this.closeModal();
         return;
@@ -156,29 +131,42 @@ export class SettingsView {
       event.preventDefault();
       const data = new FormData(form);
       const next = new User({
-        ...user,
+        ...existing,
+        id: existing.id || undefined,
+        avatar: data.get('avatar') || '🙂',
         name: data.get('name') || '',
-        age: Number(data.get('age')) || user.age,
+        age: Number(data.get('age')) || existing.age,
         gender: data.get('gender') || '',
-        height: Number(data.get('height')) || user.height,
-        weight: Number(data.get('weight')) || user.weight,
-        goal: data.get('goal') || user.goal,
-        focusArea: data.get('focusArea') || user.focusArea,
-        level: data.get('level') || user.level,
-        dailyMinutes: Number(data.get('dailyMinutes')) || user.dailyMinutes
+        height: Number(data.get('height')) || existing.height,
+        weight: Number(data.get('weight')) || existing.weight,
+        goal: data.get('goal') || existing.goal,
+        focusArea: data.get('focusArea') || existing.focusArea,
+        level: data.get('level') || existing.level,
+        dailyMinutes: Number(data.get('dailyMinutes')) || existing.dailyMinutes
       });
-      this.ctx.prefs.set('user', next);
-      this.ctx.bus.emit(Events.PROFILE_UPDATED, next);
+      const saved = await this.ctx.profileManager.saveProfile(next, { setActive: true });
+      this.ctx.bus.emit(Events.PROFILE_UPDATED, saved);
       this.closeModal();
     };
     this.modal.addEventListener('click', this.modalCleanup);
     this.modal.addEventListener('submit', this.modalCleanup);
   }
 
+  async deleteProfile(profileId) {
+    if (!confirm('Delete this profile from the active switcher?')) return;
+    try {
+      await this.ctx.profileManager.deleteProfile(profileId);
+      this.render();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   async importBackup(file) {
     if (!file) return;
     try {
       await this.ctx.backup.importFromJSON(file);
+      await this.ctx.profileManager.init();
       const restoredUser = this.ctx.prefs.get('user');
       if (restoredUser) this.ctx.bus.emit(Events.PROFILE_UPDATED, restoredUser);
       this.render();

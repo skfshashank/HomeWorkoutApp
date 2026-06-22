@@ -33,13 +33,23 @@ export class OnboardingView {
 
     content.querySelectorAll('.goal-option').forEach((opt) => {
       opt.addEventListener('click', () => {
-        content.querySelectorAll('.goal-option').forEach((o) => o.classList.remove('selected'));
+        const { key, value } = opt.dataset;
+        content.querySelectorAll(`.goal-option[data-key="${key}"]`).forEach((o) => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-pressed', 'false');
+        });
         opt.classList.add('selected');
-        this.#data[opt.dataset.key] = opt.dataset.value;
+        opt.setAttribute('aria-pressed', 'true');
+        this.#data[key] = value;
       });
     });
 
     document.getElementById('onb-next').addEventListener('click', () => this.#next());
+  }
+
+  #renderOption(key, value, emoji, label) {
+    const selected = this.#data[key] === value;
+    return `<button type="button" class="goal-option ${selected ? 'selected' : ''}" data-key="${key}" data-value="${value}" aria-pressed="${selected ? 'true' : 'false'}"><span class="goal-emoji">${emoji}</span><span class="goal-text">${label}</span></button>`;
   }
 
   #next() {
@@ -61,43 +71,43 @@ export class OnboardingView {
 
   #stepGoal() {
     return `<div class="onb-step active">
-      <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:6px;">🎯 What's your goal?</h1>
+      <h2 style="font:var(--text-display);margin-bottom:6px;">🎯 What's your goal?</h2>
       <p class="text-muted mb-24">We'll customize everything for you</p>
-      <div class="goal-option" data-key="goal" data-value="fat_loss"><span class="goal-emoji">🔥</span><span class="goal-text">Lose Fat / Reduce Belly</span></div>
-      <div class="goal-option" data-key="goal" data-value="strength"><span class="goal-emoji">💪</span><span class="goal-text">Build Strength</span></div>
-      <div class="goal-option" data-key="goal" data-value="flexibility"><span class="goal-emoji">🧘</span><span class="goal-text">Improve Flexibility</span></div>
-      <div class="goal-option" data-key="goal" data-value="stress_relief"><span class="goal-emoji">🧠</span><span class="goal-text">Reduce Stress</span></div>
+      ${this.#renderOption('goal', 'fat_loss', '🔥', 'Lose Fat / Reduce Belly')}
+      ${this.#renderOption('goal', 'strength', '💪', 'Build Strength')}
+      ${this.#renderOption('goal', 'flexibility', '🧘', 'Improve Flexibility')}
+      ${this.#renderOption('goal', 'stress_relief', '🧠', 'Reduce Stress')}
     </div>`;
   }
 
   #stepFocus() {
     return `<div class="onb-step active">
-      <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:6px;">📍 Focus Area</h1>
+      <h2 style="font:var(--text-display);margin-bottom:6px;">📍 Focus Area</h2>
       <p class="text-muted mb-24">Which area do you want to target most?</p>
-      <div class="goal-option" data-key="focus" data-value="core"><span class="goal-emoji">🎯</span><span class="goal-text">Core / Belly Fat</span></div>
-      <div class="goal-option" data-key="focus" data-value="full_body"><span class="goal-emoji">🏃</span><span class="goal-text">Full Body</span></div>
-      <div class="goal-option" data-key="focus" data-value="upper"><span class="goal-emoji">💪</span><span class="goal-text">Upper Body</span></div>
-      <div class="goal-option" data-key="focus" data-value="lower"><span class="goal-emoji">🦵</span><span class="goal-text">Lower Body</span></div>
+      ${this.#renderOption('focus', 'core', '🎯', 'Core / Belly Fat')}
+      ${this.#renderOption('focus', 'full_body', '🏃', 'Full Body')}
+      ${this.#renderOption('focus', 'upper', '💪', 'Upper Body')}
+      ${this.#renderOption('focus', 'lower', '🦵', 'Lower Body')}
     </div>`;
   }
 
   #stepTime() {
     return `<div class="onb-step active">
-      <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:6px;">⏰ Daily Time</h1>
+      <h2 style="font:var(--text-display);margin-bottom:6px;">⏰ Daily Time</h2>
       <p class="text-muted mb-24">How many minutes can you dedicate?</p>
-      <div class="goal-option" data-key="time" data-value="15"><span class="goal-emoji">⚡</span><span class="goal-text">15 min - Quick & effective</span></div>
-      <div class="goal-option" data-key="time" data-value="30"><span class="goal-emoji">💪</span><span class="goal-text">30 min - Balanced</span></div>
-      <div class="goal-option" data-key="time" data-value="45"><span class="goal-emoji">🔥</span><span class="goal-text">45 min - Intensive</span></div>
+      ${this.#renderOption('time', '15', '⚡', '15 min - Quick & effective')}
+      ${this.#renderOption('time', '30', '💪', '30 min - Balanced')}
+      ${this.#renderOption('time', '45', '🔥', '45 min - Intensive')}
     </div>`;
   }
 
   #stepLevel() {
     return `<div class="onb-step active">
-      <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:6px;">💪 Fitness Level</h1>
+      <h2 style="font:var(--text-display);margin-bottom:6px;">💪 Fitness Level</h2>
       <p class="text-muted mb-24">Be honest — we'll adjust intensity perfectly</p>
-      <div class="goal-option" data-key="level" data-value="beginner"><span class="goal-emoji">🌱</span><span class="goal-text">Beginner - New to exercise</span></div>
-      <div class="goal-option" data-key="level" data-value="intermediate"><span class="goal-emoji">🌿</span><span class="goal-text">Intermediate - Exercise sometimes</span></div>
-      <div class="goal-option" data-key="level" data-value="advanced"><span class="goal-emoji">🌳</span><span class="goal-text">Advanced - Exercise regularly</span></div>
+      ${this.#renderOption('level', 'beginner', '🌱', 'Beginner - New to exercise')}
+      ${this.#renderOption('level', 'intermediate', '🌿', 'Intermediate - Exercise sometimes')}
+      ${this.#renderOption('level', 'advanced', '🌳', 'Advanced - Exercise regularly')}
     </div>`;
   }
 }
