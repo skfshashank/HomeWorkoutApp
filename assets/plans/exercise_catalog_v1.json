@@ -1,0 +1,4287 @@
+{
+  "version": 1,
+  "exercises": [
+    {
+      "id": "crunches",
+      "name": "Crunches",
+      "nameHindi": "क्रंचेज",
+      "category": "belly_fat",
+      "muscles": [
+        "abs"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-crunch",
+      "emoji": "💥",
+      "description": "Classic abdominal move for strengthening the front core and improving trunk control.",
+      "steps": [
+        "Lie on your back with knees bent and feet flat on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Lift your shoulders by tightening the abs without yanking on the neck.",
+        "Lower slowly until your upper back lightly touches the floor, then repeat."
+      ],
+      "tips": [
+        "Keep a fist-sized gap between chin and chest.",
+        "Press the lower back gently toward the floor.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you crunch up, inhale as you lower down.",
+      "commonMistakes": [
+        "Pulling the head forward with the hands.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bicycle-crunches",
+      "name": "Bicycle Crunches",
+      "nameHindi": "साइकिल क्रंचेज",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "obliques"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-bicycle-crunch",
+      "emoji": "🚴",
+      "description": "Twisting core exercise targeting abs and obliques for a stronger midsection.",
+      "steps": [
+        "Lie on your back with hands behind your head and knees lifted.",
+        "Brace your core and keep your posture steady.",
+        "Rotate your torso to bring opposite elbow and knee toward each other while extending the other leg.",
+        "Return through the center and alternate sides in a smooth rhythm."
+      ],
+      "tips": [
+        "Rotate through the ribs, not just the elbows.",
+        "Fully extend the straight leg without arching the back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on each twist, inhale through center.",
+      "commonMistakes": [
+        "Moving only the elbows instead of rotating the torso.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "reverse-crunches",
+      "name": "Reverse Crunches",
+      "nameHindi": "रिवर्स क्रंचेज",
+      "category": "belly_fat",
+      "muscles": [
+        "lower_abs"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 28
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-reverse-crunch",
+      "emoji": "↩️",
+      "description": "Lower-ab focused movement that teaches pelvic control and core tension.",
+      "steps": [
+        "Lie flat with arms by your sides and knees bent to ninety degrees.",
+        "Brace your core and keep your posture steady.",
+        "Curl the pelvis to bring knees toward the chest instead of swinging the legs.",
+        "Lower the hips back down with control before the next rep."
+      ],
+      "tips": [
+        "Think about lifting the tailbone, not throwing the feet upward.",
+        "Keep the movement small and controlled.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the hips curl up, inhale on the way down.",
+      "commonMistakes": [
+        "Using momentum and kicking the legs.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "leg-raises",
+      "name": "Leg Raises",
+      "nameHindi": "लेग रेज़ेस",
+      "category": "belly_fat",
+      "muscles": [
+        "lower_abs",
+        "hip_flexors"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 26
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-leg-raise",
+      "emoji": "🦵",
+      "description": "Straight-leg core drill that challenges the lower abs and hip control.",
+      "steps": [
+        "Lie on your back with legs straight and hands under your hips if needed.",
+        "Brace your core and keep your posture steady.",
+        "Raise both legs until they are roughly vertical while keeping the lower back stable.",
+        "Lower the legs slowly without letting the heels crash down."
+      ],
+      "tips": [
+        "Bend the knees slightly if hamstrings feel too tight.",
+        "Only lower as far as you can without the back arching.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as legs rise, inhale as they lower.",
+      "commonMistakes": [
+        "Arching the lower back off the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "flutter-kicks",
+      "name": "Flutter Kicks",
+      "nameHindi": "फ्लटर किक्स",
+      "category": "belly_fat",
+      "muscles": [
+        "lower_abs",
+        "hip_flexors"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-flutter-kick",
+      "emoji": "🫧",
+      "description": "Small alternating kicks that keep the lower abs under constant tension.",
+      "steps": [
+        "Lie on your back with legs extended and core braced.",
+        "Brace your core and keep your posture steady.",
+        "Lift both legs a few inches and alternate short up-down kicks.",
+        "Finish the count, then lower the legs with control."
+      ],
+      "tips": [
+        "Keep the kicks quick but small.",
+        "Press the lower back into the mat throughout.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale softly every few kicks, inhale steadily through the nose.",
+      "commonMistakes": [
+        "Lifting the legs too high and losing core tension.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "russian-twists",
+      "name": "Russian Twists",
+      "nameHindi": "रशियन ट्विस्ट्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "obliques"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-russian-twist",
+      "emoji": "🌀",
+      "description": "Seated twisting exercise that works the obliques and deep core stabilizers.",
+      "steps": [
+        "Sit with knees bent, chest lifted, and heels lightly on the floor or lifted.",
+        "Brace your core and keep your posture steady.",
+        "Rotate your torso from side to side, reaching hands beside the hips.",
+        "Return to center tall after each twist instead of collapsing."
+      ],
+      "tips": [
+        "Keep the spine long instead of rounding the lower back.",
+        "Slow down and touch each side with control.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you twist, inhale back through the middle.",
+      "commonMistakes": [
+        "Swinging the arms without turning the torso.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "plank-hold",
+      "name": "Plank Hold",
+      "nameHindi": "प्लैंक होल्ड",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "glutes"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 50
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-plank",
+      "emoji": "🧱",
+      "description": "Full-core isometric hold that builds abdominal endurance and posture strength.",
+      "steps": [
+        "Place forearms on the floor with elbows under shoulders and legs extended.",
+        "Lift the body into a straight line from head to heels by squeezing abs and glutes.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower one knee at a time and rest before the next set."
+      ],
+      "tips": [
+        "Push the floor away to keep the shoulders active.",
+        "Keep hips level instead of sagging or hiking.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take short nasal breaths while keeping the belly tight.",
+      "commonMistakes": [
+        "Dropping the hips and stressing the lower back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "side-plank",
+      "name": "Side Plank",
+      "nameHindi": "साइड प्लैंक",
+      "category": "belly_fat",
+      "muscles": [
+        "obliques",
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-side-plank",
+      "emoji": "📏",
+      "description": "Side-body hold that strengthens obliques and helps trim waistline support muscles.",
+      "steps": [
+        "Lie on one side with elbow under shoulder and legs stacked.",
+        "Lift hips off the floor so your body forms one straight line.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the hips slowly, switch sides, and repeat."
+      ],
+      "tips": [
+        "Press firmly through the supporting forearm.",
+        "Stack shoulders and hips one above the other.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe slowly into the ribs while keeping the waist lifted.",
+      "commonMistakes": [
+        "Rolling the chest down toward the floor.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "plank-hip-dips",
+      "name": "Plank Hip Dips",
+      "nameHindi": "प्लैंक हिप डिप्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "obliques"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 32
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-plank-hip-dip",
+      "emoji": "🌊",
+      "description": "Forearm plank variation that lights up the obliques and deep core.",
+      "steps": [
+        "Start in a forearm plank with feet slightly wider than hip-width.",
+        "Brace your core and keep your posture steady.",
+        "Rotate the hips to tap one side toward the floor, then sweep to the other side.",
+        "Return to a flat plank after each side-to-side dip."
+      ],
+      "tips": [
+        "Move from the torso, not just the feet.",
+        "Keep shoulders steady over elbows.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the hips dip, inhale back through center.",
+      "commonMistakes": [
+        "Bouncing the hips without control.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "mountain-climbers",
+      "name": "Mountain Climbers",
+      "nameHindi": "माउंटेन क्लाइम्बर्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "hip_flexors"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-mountain-climber",
+      "emoji": "⛰️",
+      "description": "Fast plank cardio move that raises heart rate while training the core.",
+      "steps": [
+        "Begin in a high plank with hands under shoulders.",
+        "Brace your core and keep your posture steady.",
+        "Drive one knee toward the chest, switch legs quickly, and keep alternating.",
+        "Slow down briefly if form slips, then finish the rep target."
+      ],
+      "tips": [
+        "Keep shoulders stacked over wrists.",
+        "Tap the floor softly with each foot change.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe out every two to three switches and keep inhaling through the nose.",
+      "commonMistakes": [
+        "Letting the hips bounce high in the air.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "v-ups",
+      "name": "V-Ups",
+      "nameHindi": "वी-अप्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "hip_flexors"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-v-up",
+      "emoji": "🔺",
+      "description": "Advanced abdominal movement that folds the body into a V shape.",
+      "steps": [
+        "Lie long on your back with arms overhead and legs straight.",
+        "Brace your core and keep your posture steady.",
+        "Lift arms and legs together to meet near the middle while keeping them as straight as possible.",
+        "Lower back down slowly so the core stays loaded."
+      ],
+      "tips": [
+        "Use a small knee bend if full straight legs are too hard.",
+        "Control the lowering phase to protect the back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you fold up, inhale as you lower.",
+      "commonMistakes": [
+        "Throwing the arms and legs up with momentum.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "dead-bug",
+      "name": "Dead Bug",
+      "nameHindi": "डेड बग",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "deep_core"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 20,
+        "advanced": 28
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-dead-bug",
+      "emoji": "🐞",
+      "description": "Low-impact core drill that teaches bracing and lower-back protection.",
+      "steps": [
+        "Lie on your back with arms up and knees bent above hips.",
+        "Brace your core and keep your posture steady.",
+        "Extend one arm and the opposite leg without letting the lower back lift.",
+        "Return to the start and alternate sides slowly."
+      ],
+      "tips": [
+        "Move only as far as you can keep the ribs down.",
+        "Think of flattening the floor with your lower back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on each reach, inhale when returning to center.",
+      "commonMistakes": [
+        "Arching the back as the leg lowers.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "heel-taps",
+      "name": "Heel Taps",
+      "nameHindi": "हील टैप्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "obliques"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-heel-tap",
+      "emoji": "👣",
+      "description": "Gentle side-reaching move that targets the obliques without jumping.",
+      "steps": [
+        "Lie on your back with knees bent and shoulders slightly lifted.",
+        "Brace your core and keep your posture steady.",
+        "Reach one hand toward the same-side heel, then alternate sides.",
+        "Keep the shoulders hovering until the set is complete."
+      ],
+      "tips": [
+        "Use short controlled reaches instead of jerking.",
+        "Keep the chin neutral and eyes upward.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on each side tap, inhale through the middle.",
+      "commonMistakes": [
+        "Dropping the shoulders fully between taps.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "toe-touches",
+      "name": "Toe Touches",
+      "nameHindi": "टो टचेज",
+      "category": "belly_fat",
+      "muscles": [
+        "upper_abs"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-toe-touch",
+      "emoji": "🦶",
+      "description": "Upper-ab reach exercise performed with legs raised toward the ceiling.",
+      "steps": [
+        "Lie on your back with legs extended upward and arms reaching to the sky.",
+        "Brace your core and keep your posture steady.",
+        "Crunch upward to reach toward your toes without swinging the arms.",
+        "Lower the shoulders down with control and repeat."
+      ],
+      "tips": [
+        "Keep legs as straight as comfortable.",
+        "Lift from the ribs rather than from the neck.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you reach up, inhale as you lower.",
+      "commonMistakes": [
+        "Trying to touch the toes by jerking the shoulders.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "scissor-kicks",
+      "name": "Scissor Kicks",
+      "nameHindi": "सिज़र किक्स",
+      "category": "belly_fat",
+      "muscles": [
+        "lower_abs",
+        "hip_flexors"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-scissor-kick",
+      "emoji": "✂️",
+      "description": "Alternating straight-leg crossing move that challenges the lower core.",
+      "steps": [
+        "Lie on your back with legs extended and core pulled in.",
+        "Brace your core and keep your posture steady.",
+        "Lift the legs slightly off the floor and cross them over-under in an alternating pattern.",
+        "Finish the count, uncross, and lower slowly."
+      ],
+      "tips": [
+        "Keep the crossing small and controlled.",
+        "Support your hips with your hands if needed.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale softly every few crosses, inhale steadily through the nose.",
+      "commonMistakes": [
+        "Letting the lower back arch off the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "plank-shoulder-taps",
+      "name": "Plank Shoulder Taps",
+      "nameHindi": "प्लैंक शोल्डर टैप्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-shoulder-tap",
+      "emoji": "🤚",
+      "description": "Anti-rotation plank move that trains the abs to resist shifting.",
+      "steps": [
+        "Set up in a high plank with feet wider than hips.",
+        "Brace your core and keep your posture steady.",
+        "Tap one shoulder with the opposite hand while keeping the hips square, then alternate.",
+        "Place the hand down softly each rep and stay balanced."
+      ],
+      "tips": [
+        "Keep the legs active to reduce body sway.",
+        "Move slower if your hips are rocking.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale during each tap, inhale as the hand returns to the floor.",
+      "commonMistakes": [
+        "Twisting the hips side to side.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "knee-to-elbow-plank",
+      "name": "Knee-to-Elbow Plank",
+      "nameHindi": "नी-टू-एल्बो प्लैंक",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "obliques",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-knee-elbow",
+      "emoji": "🔗",
+      "description": "Dynamic plank exercise that combines crunching and shoulder stability.",
+      "steps": [
+        "Start in a high plank with the body long and strong.",
+        "Brace your core and keep your posture steady.",
+        "Drive one knee out and toward the same-side elbow, then return and switch sides.",
+        "Place the foot back quietly before the next rep."
+      ],
+      "tips": [
+        "Round slightly through the upper back to feel the abs engage.",
+        "Keep the supporting shoulder directly over the wrist.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as knee meets elbow, inhale as the leg reaches back.",
+      "commonMistakes": [
+        "Stepping the foot forward instead of driving from the core.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "boat-hold",
+      "name": "Boat Hold (Naukasana)",
+      "nameHindi": "नौकासन होल्ड",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "hip_flexors"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-boat-hold",
+      "emoji": "🚣",
+      "description": "Seated balancing hold that strengthens the entire core and improves posture.",
+      "steps": [
+        "Sit tall with knees bent and hands lightly behind the thighs.",
+        "Lean back slightly, lift the feet, and hold a proud chest in a V position.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the feet down gently and sit upright to recover."
+      ],
+      "tips": [
+        "Keep the chest open rather than rounding the spine.",
+        "Start with bent knees before trying straighter legs.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Use slow nasal breathing while keeping the belly drawn in.",
+      "commonMistakes": [
+        "Collapsing the chest and rounding the lower back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "plank-jacks",
+      "name": "Plank Jacks",
+      "nameHindi": "प्लैंक जैक्स",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-plank-jack",
+      "emoji": "⭐",
+      "description": "Plank variation that adds light cardio while forcing the core to stay braced.",
+      "steps": [
+        "Begin in a high plank with feet together.",
+        "Brace your core and keep your posture steady.",
+        "Jump the feet out and back in while keeping shoulders over wrists.",
+        "Land softly and keep the hips level for every rep."
+      ],
+      "tips": [
+        "Step the feet out and in if jumping is too much.",
+        "Keep the stomach tight to stop the lower back from sagging.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe out on the jump apart, inhale on the jump together.",
+      "commonMistakes": [
+        "Bouncing the hips high with each jump.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "burpees",
+      "name": "Burpees",
+      "nameHindi": "बर्पीज़",
+      "category": "belly_fat",
+      "muscles": [
+        "abs",
+        "legs",
+        "chest",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 18
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 10,
+      "animation": "anim-burpee",
+      "emoji": "🔥",
+      "description": "Full-body calorie burner that mixes squat, plank, and jump for fat loss.",
+      "steps": [
+        "Stand tall, squat down, and place your hands on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Kick the feet back to plank, return them under the hips, and stand or jump up.",
+        "Land softly and flow into the next rep."
+      ],
+      "tips": [
+        "Step back instead of jumping if you need less impact.",
+        "Keep the chest lifted as you stand up from the squat.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you jump or stand up, inhale as you move down to plank.",
+      "commonMistakes": [
+        "Rounding the back while dropping to the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "surya-namaskar",
+      "name": "Surya Namaskar",
+      "nameHindi": "सूर्य नमस्कार",
+      "category": "yoga",
+      "muscles": [
+        "full_body",
+        "shoulders",
+        "legs",
+        "core"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 12,
+        "advanced": 24
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 8,
+      "animation": "anim-surya-namaskar",
+      "emoji": "🌞",
+      "description": "Traditional sun salutation flow that warms the whole body; one set equals 12 rounds.",
+      "steps": [
+        "Stand tall at the top of the mat with palms joined near the chest.",
+        "Brace your core and keep your posture steady.",
+        "Flow through the classic sun salutation sequence with steady transitions and matched breath.",
+        "Complete all rounds with smooth control, then stand quietly for a few breaths."
+      ],
+      "tips": [
+        "Move at a pace that lets you breathe through the full flow.",
+        "Keep the knees soft during forward folds.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the lifts and lengthening phases, exhale on folds and lowering phases.",
+      "commonMistakes": [
+        "Racing through the rounds without syncing movement and breath.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "tadasana",
+      "name": "Tadasana",
+      "nameHindi": "ताड़ासन",
+      "category": "yoga",
+      "muscles": [
+        "posture",
+        "legs",
+        "core"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-tadasana",
+      "emoji": "🗻",
+      "description": "Foundational standing pose that improves posture, grounding, and body awareness.",
+      "steps": [
+        "Stand with feet hip-width or together and arms by your sides.",
+        "Lengthen through the spine, root the feet down, and lift gently through the crown.",
+        "Hold the position for the target time with calm, even control.",
+        "Relax the arms and step out of the pose softly."
+      ],
+      "tips": [
+        "Spread the toes and balance weight evenly.",
+        "Keep the chin level and ribs stacked over hips.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take slow breaths through the nose while standing tall.",
+      "commonMistakes": [
+        "Locking the knees and leaning back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "utkatasana",
+      "name": "Utkatasana",
+      "nameHindi": "उत्कटासन",
+      "category": "yoga",
+      "muscles": [
+        "quads",
+        "glutes",
+        "core"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-chair-pose",
+      "emoji": "🪑",
+      "description": "Chair pose strengthens legs and core while elevating the heart rate slightly.",
+      "steps": [
+        "Stand tall with feet hip-width and arms by your sides.",
+        "Bend the knees, send hips back, and raise the arms while keeping chest lifted.",
+        "Hold the position for the target time with calm, even control.",
+        "Press through the feet to stand tall and release the arms."
+      ],
+      "tips": [
+        "Keep more weight in the heels than the toes.",
+        "Draw the lower ribs in so the back does not overarch.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lengthen the spine, exhale to sit deeper into the pose.",
+      "commonMistakes": [
+        "Letting the knees collapse inward.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "virabhadrasana-i",
+      "name": "Virabhadrasana I",
+      "nameHindi": "वीरभद्रासन I",
+      "category": "yoga",
+      "muscles": [
+        "legs",
+        "glutes",
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-warrior-one",
+      "emoji": "⚔️",
+      "description": "Warrior I opens the chest and hips while building lower-body endurance.",
+      "steps": [
+        "Step one foot back and turn it out slightly while the front knee bends.",
+        "Square the chest forward and reach both arms overhead.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the arms, step forward, and switch sides."
+      ],
+      "tips": [
+        "Keep the front knee stacked above the ankle.",
+        "Lift through the side waist instead of dumping into the low back.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lengthen upward, exhale to settle into the lunge.",
+      "commonMistakes": [
+        "Forcing the back heel flat at the cost of balance.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "virabhadrasana-ii",
+      "name": "Virabhadrasana II",
+      "nameHindi": "वीरभद्रासन II",
+      "category": "yoga",
+      "muscles": [
+        "legs",
+        "glutes",
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 50
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-warrior-two",
+      "emoji": "🛡️",
+      "description": "Warrior II strengthens legs and improves balance, stamina, and focus.",
+      "steps": [
+        "Take a wide stance with one foot turned out and the back foot slightly in.",
+        "Bend the front knee, extend the arms wide, and gaze over the front hand.",
+        "Hold the position for the target time with calm, even control.",
+        "Straighten the leg, lower the arms, and repeat on the other side."
+      ],
+      "tips": [
+        "Keep the torso centered between both legs.",
+        "Press the outer edge of the back foot into the floor.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to grow tall, exhale to root into the legs.",
+      "commonMistakes": [
+        "Leaning the chest too far over the front thigh.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "trikonasana",
+      "name": "Trikonasana",
+      "nameHindi": "त्रिकोणासन",
+      "category": "yoga",
+      "muscles": [
+        "obliques",
+        "hamstrings",
+        "hips"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-triangle-pose",
+      "emoji": "🔺",
+      "description": "Triangle pose lengthens the side body and opens hamstrings and hips.",
+      "steps": [
+        "Stand wide with one foot turned out and arms extended at shoulder height.",
+        "Reach forward and tip the torso to place one hand on shin while the other arm lifts.",
+        "Hold the position for the target time with calm, even control.",
+        "Rise up with a strong core and switch sides."
+      ],
+      "tips": [
+        "Keep both sides of the waist long.",
+        "Rest the lower hand lightly instead of dumping weight into it.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lengthen, exhale to rotate the chest open.",
+      "commonMistakes": [
+        "Collapsing the bottom side waist.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "downward-dog",
+      "name": "Adho Mukha Svanasana",
+      "nameHindi": "अधो मुख श्वानासन",
+      "category": "yoga",
+      "muscles": [
+        "shoulders",
+        "hamstrings",
+        "calves"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-downward-dog",
+      "emoji": "🐕",
+      "description": "Downward dog stretches the back body and strengthens shoulders and arms.",
+      "steps": [
+        "Start on hands and knees with fingers spread wide.",
+        "Lift hips up and back to form an inverted V while pressing the chest toward the thighs.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the knees back to the floor to exit."
+      ],
+      "tips": [
+        "Bend the knees slightly if hamstrings are tight.",
+        "Push the floor away to protect the shoulders.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take deep breaths into the ribs and slowly exhale through the nose.",
+      "commonMistakes": [
+        "Rounding the upper back and collapsing into the wrists.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bhujangasana",
+      "name": "Bhujangasana",
+      "nameHindi": "भुजंगासन",
+      "category": "yoga",
+      "muscles": [
+        "lower_back",
+        "chest",
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-cobra-pose",
+      "emoji": "🐍",
+      "description": "Cobra pose opens the chest and helps counter long hours of desk sitting.",
+      "steps": [
+        "Lie on your stomach with palms beside the lower ribs.",
+        "Press lightly into the hands and lift the chest while keeping the pelvis grounded.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the chest down slowly and rest the forehead."
+      ],
+      "tips": [
+        "Lift only as high as the lower back feels comfortable.",
+        "Keep elbows close to the body.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale as the chest lifts, exhale as you lower with control.",
+      "commonMistakes": [
+        "Shrugging the shoulders toward the ears.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dhanurasana",
+      "name": "Dhanurasana",
+      "nameHindi": "धनुरासन",
+      "category": "yoga",
+      "muscles": [
+        "back",
+        "quads",
+        "chest"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-bow-pose",
+      "emoji": "🏹",
+      "description": "Bow pose opens the front body and strengthens the entire posterior chain.",
+      "steps": [
+        "Lie on your stomach and bend the knees to reach for the ankles.",
+        "Kick the feet into the hands to lift chest and thighs off the floor.",
+        "Hold the position for the target time with calm, even control.",
+        "Release gently back to the mat and rest."
+      ],
+      "tips": [
+        "Keep the knees about hip-width apart.",
+        "Think of lengthening forward before lifting higher.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale as you lift the chest, exhale softly while holding.",
+      "commonMistakes": [
+        "Flaring the knees too wide apart.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "naukasana",
+      "name": "Naukasana",
+      "nameHindi": "नौकासन",
+      "category": "yoga",
+      "muscles": [
+        "abs",
+        "hip_flexors"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-naukasana",
+      "emoji": "🚣",
+      "description": "Boat pose challenges the core and improves balance and concentration.",
+      "steps": [
+        "Sit tall with knees bent and feet on the floor.",
+        "Lean back, lift the feet, and extend the arms forward while keeping the spine long.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the feet with control and sit upright."
+      ],
+      "tips": [
+        "Keep the chest proud instead of rounding.",
+        "Use bent knees until you can hold steady balance.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take slow nasal breaths while the core stays firm.",
+      "commonMistakes": [
+        "Locking the breath and shaking through the pose.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "setu-bandhasana",
+      "name": "Setu Bandhasana",
+      "nameHindi": "सेतु बंधासन",
+      "category": "yoga",
+      "muscles": [
+        "glutes",
+        "hamstrings",
+        "lower_back"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-bridge-pose",
+      "emoji": "🌉",
+      "description": "Bridge pose strengthens the backside and opens the chest after prolonged sitting.",
+      "steps": [
+        "Lie on your back with knees bent and feet hip-width apart.",
+        "Press through the feet to lift the hips while keeping knees tracking forward.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the spine down one segment at a time."
+      ],
+      "tips": [
+        "Keep the chin slightly tucked and neck relaxed.",
+        "Squeeze glutes gently instead of over-clenching.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale at the bottom, exhale as hips rise, then breathe softly in the hold.",
+      "commonMistakes": [
+        "Pushing the knees outward or inward unevenly.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "balasana",
+      "name": "Balasana",
+      "nameHindi": "बालासन",
+      "category": "yoga",
+      "muscles": [
+        "lower_back",
+        "hips"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 45,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-child-pose",
+      "emoji": "🧘",
+      "description": "Child's pose gently relaxes the spine, hips, and nervous system.",
+      "steps": [
+        "Kneel on the floor and sit the hips back toward the heels.",
+        "Fold the torso forward with arms extended or resting by your sides.",
+        "Hold the position for the target time with calm, even control.",
+        "Walk the hands back and rise slowly when finished."
+      ],
+      "tips": [
+        "Place a cushion under the hips if heels feel far away.",
+        "Let the belly soften with each exhale.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale into the back ribs, exhale and melt the chest toward the floor.",
+      "commonMistakes": [
+        "Forcing the forehead down when the neck feels strained.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "vajrasana",
+      "name": "Vajrasana",
+      "nameHindi": "वज्रासन",
+      "category": "yoga",
+      "muscles": [
+        "posture",
+        "hips",
+        "ankles"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 60,
+        "advanced": 90
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-vajrasana",
+      "emoji": "💎",
+      "description": "Diamond pose supports digestion and trains a calm upright seated posture.",
+      "steps": [
+        "Kneel and sit back on your heels with knees together or slightly apart.",
+        "Lengthen the spine and rest the hands on the thighs.",
+        "Hold the position for the target time with calm, even control.",
+        "Lean forward onto the hands and come out slowly if ankles feel tired."
+      ],
+      "tips": [
+        "Use a folded towel between calves and thighs for comfort.",
+        "Keep the shoulders relaxed over the hips.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe quietly through the nose with a tall spine.",
+      "commonMistakes": [
+        "Collapsing the chest or leaning too far back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "paschimottanasana",
+      "name": "Paschimottanasana",
+      "nameHindi": "पश्चिमोत्तानासन",
+      "category": "yoga",
+      "muscles": [
+        "hamstrings",
+        "lower_back"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 50
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-seated-forward-bend",
+      "emoji": "📐",
+      "description": "Seated forward bend stretches the back body and can help wind down the mind.",
+      "steps": [
+        "Sit with legs extended and spine upright on the floor.",
+        "Hinge forward from the hips and hold the legs, ankles, or feet without forcing.",
+        "Hold the position for the target time with calm, even control.",
+        "Lengthen up before releasing the fold and sitting tall again."
+      ],
+      "tips": [
+        "Bend the knees slightly if hamstrings pull strongly.",
+        "Lead with the chest instead of rounding first.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lengthen the spine, exhale to soften deeper into the fold.",
+      "commonMistakes": [
+        "Yanking on the feet and straining the neck.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ustrasana",
+      "name": "Ustrasana",
+      "nameHindi": "उष्ट्रासन",
+      "category": "yoga",
+      "muscles": [
+        "quads",
+        "hip_flexors",
+        "chest"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 35
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-camel-pose",
+      "emoji": "🐪",
+      "description": "Camel pose stretches the front body deeply and opens tight chest muscles.",
+      "steps": [
+        "Kneel upright with thighs vertical and hands at the low back.",
+        "Lift the chest and gently arch back, reaching hands toward the heels if comfortable.",
+        "Hold the position for the target time with calm, even control.",
+        "Support the low back and rise back up slowly."
+      ],
+      "tips": [
+        "Press hips forward so the bend spreads through the whole spine.",
+        "Keep the neck long and only drop the head if it feels safe.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lift the chest, exhale to ease into the backbend.",
+      "commonMistakes": [
+        "Dumping all the bend into the lower back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "halasana",
+      "name": "Halasana",
+      "nameHindi": "हलासन",
+      "category": "yoga",
+      "muscles": [
+        "spine",
+        "shoulders",
+        "hamstrings"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 35
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 5,
+      "animation": "anim-plow-pose",
+      "emoji": "🌾",
+      "description": "Plow pose stretches the spine and shoulders and requires controlled entry and exit.",
+      "steps": [
+        "Lie on your back and lift the legs overhead with support from the hands if needed.",
+        "Bring the feet toward the floor behind you while keeping the neck still.",
+        "Hold the position for the target time with calm, even control.",
+        "Roll down very slowly through the spine to exit safely."
+      ],
+      "tips": [
+        "Use a folded blanket under the shoulders if available for neck comfort.",
+        "Only go as far as you can without pain or strain.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Keep the breath slow and smooth throughout the pose.",
+      "commonMistakes": [
+        "Turning the head while in the pose.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "matsyasana",
+      "name": "Matsyasana",
+      "nameHindi": "मत्स्यासन",
+      "category": "yoga",
+      "muscles": [
+        "chest",
+        "neck",
+        "upper_back"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 35
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-fish-pose",
+      "emoji": "🐟",
+      "description": "Fish pose opens the chest and front shoulders after long hours of slouching.",
+      "steps": [
+        "Lie on your back with legs extended and hands under the hips.",
+        "Press the elbows down to lift the chest and gently tip the crown backward.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower the chest and head back down slowly."
+      ],
+      "tips": [
+        "Keep weight mostly on the elbows, not the head.",
+        "Open through the sternum instead of cranking the neck.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale into the chest, exhale slowly without collapsing.",
+      "commonMistakes": [
+        "Dumping too much pressure into the neck.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "cat-cow",
+      "name": "Marjaryasana-Bitilasana",
+      "nameHindi": "मार्जरीआसन-बितिलासन",
+      "category": "yoga",
+      "muscles": [
+        "spine",
+        "core"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 45,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-cat-cow",
+      "emoji": "🐈",
+      "description": "Gentle spinal flow that improves mobility and reduces desk stiffness.",
+      "steps": [
+        "Come onto hands and knees with wrists under shoulders and knees under hips.",
+        "Alternate arching the spine and rounding it one segment at a time.",
+        "Hold the position for the target time with calm, even control.",
+        "Return to a neutral tabletop when the timer ends."
+      ],
+      "tips": [
+        "Move slowly so each part of the spine joins the motion.",
+        "Keep pressure even through both hands and knees.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale into cow pose, exhale into cat pose.",
+      "commonMistakes": [
+        "Whipping the head and tailbone too fast.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "shavasana",
+      "name": "Shavasana",
+      "nameHindi": "शवासन",
+      "category": "yoga",
+      "muscles": [
+        "recovery",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 60,
+        "intermediate": 90,
+        "advanced": 180
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-shavasana",
+      "emoji": "😌",
+      "description": "Final relaxation pose that helps the body absorb the session and calm the mind.",
+      "steps": [
+        "Lie on your back with legs relaxed apart and palms facing upward.",
+        "Close the eyes and let the whole body soften into the floor.",
+        "Hold the position for the target time with calm, even control.",
+        "Deepen the breath slightly, then roll to one side before sitting up."
+      ],
+      "tips": [
+        "Cover the body lightly if the room feels cool.",
+        "Let the tongue and jaw relax completely.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe naturally and allow each exhale to feel longer than the inhale.",
+      "commonMistakes": [
+        "Fidgeting instead of settling into stillness.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "padmasana",
+      "name": "Padmasana",
+      "nameHindi": "पद्मासन",
+      "category": "yoga",
+      "muscles": [
+        "hips",
+        "posture",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 60,
+        "advanced": 120
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-lotus-pose",
+      "emoji": "🪷",
+      "description": "Lotus pose is a meditative seat for breathwork when the hips allow it comfortably.",
+      "steps": [
+        "Sit on the floor and cross the legs into a comfortable meditative seat.",
+        "Place each foot onto the opposite thigh only if the knees and hips feel safe.",
+        "Hold the position for the target time with calm, even control.",
+        "Uncross the legs gently and change sides or use a simpler seat next time."
+      ],
+      "tips": [
+        "Choose easy cross-legged if full lotus is not available.",
+        "Sit on a cushion to help the knees drop lower than the hips.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Keep the breath smooth and unforced through the nose.",
+      "commonMistakes": [
+        "Forcing the feet into place and straining the knees.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "kapalbhati",
+      "name": "Kapalbhati",
+      "nameHindi": "कपालभाति",
+      "category": "pranayama",
+      "muscles": [
+        "diaphragm",
+        "deep_core"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 45,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-kapalbhati",
+      "emoji": "🌬️",
+      "description": "Cleansing breath practice with active exhalations that energize the body and mind.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Take a light inhale, then perform short sharp exhalations by snapping the lower belly inward.",
+        "Let the inhalations happen passively between each active exhale.",
+        "Slow the breath down, breathe normally, and rest before standing up."
+      ],
+      "tips": [
+        "Keep the chest quiet and let the belly do the work.",
+        "Start slowly if you are new to forceful breathing.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Rapid active exhales with passive inhales through the nose.",
+      "commonMistakes": [
+        "Puffing the cheeks or forcing giant breaths.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "anulom-vilom",
+      "name": "Anulom Vilom",
+      "nameHindi": "अनुलोम विलोम",
+      "category": "pranayama",
+      "muscles": [
+        "lungs",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 60,
+        "intermediate": 90,
+        "advanced": 120
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-anulom-vilom",
+      "emoji": "🫁",
+      "description": "Alternate nostril breathing that promotes calm focus and balance.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Use the right hand to close one nostril and inhale through the open side, then switch for the exhale.",
+        "Continue alternating sides with slow even inhales and exhales.",
+        "Lower the hand, breathe normally, and notice the calmer state."
+      ],
+      "tips": [
+        "Keep the pressure on the nostril light.",
+        "Sit tall so the lungs have room to expand.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Inhale through one nostril, exhale through the other in a smooth steady pattern.",
+      "commonMistakes": [
+        "Breathing too quickly and losing the rhythm.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bhramari",
+      "name": "Bhramari",
+      "nameHindi": "भ्रामरी",
+      "category": "pranayama",
+      "muscles": [
+        "lungs",
+        "mindfulness",
+        "throat"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 45,
+        "intermediate": 60,
+        "advanced": 90
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-bhramari",
+      "emoji": "🐝",
+      "description": "Bee breath uses a humming exhale to calm stress and mental agitation.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Inhale deeply through the nose and gently close the lips.",
+        "Exhale with a smooth humming sound that vibrates the face and skull.",
+        "Pause in silence after the final hum and return to normal breathing."
+      ],
+      "tips": [
+        "Keep the hum soft and soothing rather than loud.",
+        "Lengthen the exhale more than the inhale for a calming effect.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Inhale through the nose, exhale with a gentle humming sound.",
+      "commonMistakes": [
+        "Squeezing the throat or pushing the sound aggressively.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "ujjayi",
+      "name": "Ujjayi",
+      "nameHindi": "उज्जायी",
+      "category": "pranayama",
+      "muscles": [
+        "lungs",
+        "throat",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 45,
+        "intermediate": 60,
+        "advanced": 90
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-ujjayi",
+      "emoji": "🌊",
+      "description": "Ocean breath creates a soft throat whisper that builds focus during yoga or recovery.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Inhale through the nose while slightly narrowing the throat as if fogging a mirror with the mouth closed.",
+        "Exhale through the nose with the same gentle throat control to create a soft ocean sound.",
+        "Release the throat effort and return to natural breathing."
+      ],
+      "tips": [
+        "Make the sound quiet enough that only you can hear it.",
+        "Keep the jaw and facial muscles relaxed.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Use slow nasal inhales and exhales with a soft throat whisper.",
+      "commonMistakes": [
+        "Forcing a harsh raspy sound from the throat.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sheetali",
+      "name": "Sheetali",
+      "nameHindi": "शीतली",
+      "category": "pranayama",
+      "muscles": [
+        "lungs",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 45,
+        "intermediate": 60,
+        "advanced": 90
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-sheetali",
+      "emoji": "❄️",
+      "description": "Cooling breath practice that can feel refreshing after heat or stress.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Curl the tongue into a tube if possible and inhale through the mouth, or sip through the teeth if not.",
+        "Close the mouth and exhale slowly through the nose.",
+        "Repeat calmly, then breathe normally for a few cycles."
+      ],
+      "tips": [
+        "Practice in a clean indoor environment rather than dusty air.",
+        "Keep the inhale smooth instead of gasping.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Inhale through the curled tongue or teeth, exhale through the nose.",
+      "commonMistakes": [
+        "Lifting the shoulders during the inhale.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "deep-belly-breathing",
+      "name": "Deep Belly Breathing",
+      "nameHindi": "गहरी पेट श्वास",
+      "category": "pranayama",
+      "muscles": [
+        "diaphragm",
+        "mindfulness"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 60,
+        "intermediate": 90,
+        "advanced": 120
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-belly-breathing",
+      "emoji": "🫶",
+      "description": "Diaphragmatic breathing encourages fuller breaths and a calmer nervous system.",
+      "steps": [
+        "Sit upright in a quiet place with shoulders relaxed.",
+        "Place one hand on the chest and one hand on the belly.",
+        "Inhale slowly so the belly rises first, then exhale and feel it fall back down.",
+        "Continue until the breath feels steady and relaxed."
+      ],
+      "tips": [
+        "Keep the chest as quiet as possible while the belly expands.",
+        "Lie down if sitting upright feels tense.",
+        "Practice on an empty or lightly filled stomach."
+      ],
+      "breathing": "Inhale through the nose into the belly, exhale slowly through nose or pursed lips.",
+      "commonMistakes": [
+        "Shrugging the shoulders instead of filling the belly.",
+        "Tensing the shoulders or face.",
+        "Forcing the breath more than feels comfortable."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "jumping-jacks",
+      "name": "Jumping Jacks",
+      "nameHindi": "जंपिंग जैक्स",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 50
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-jumping-jack",
+      "emoji": "🤸",
+      "description": "Simple full-body cardio move that quickly increases heart rate at home.",
+      "steps": [
+        "Stand tall with feet together and arms by your sides.",
+        "Brace your core and keep your posture steady.",
+        "Jump feet apart as arms sweep overhead, then jump back to the start.",
+        "Land softly each rep and keep the pace rhythmic."
+      ],
+      "tips": [
+        "Stay light on the balls of the feet.",
+        "Use step jacks if impact bothers your joints.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe out as arms rise, inhale as they lower.",
+      "commonMistakes": [
+        "Landing stiff-legged and pounding the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "high-knees",
+      "name": "High Knees",
+      "nameHindi": "हाई नीज़",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "core",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 24,
+        "intermediate": 36,
+        "advanced": 50
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 9,
+      "animation": "anim-high-knees",
+      "emoji": "🏃",
+      "description": "Fast running-in-place drill that boosts calorie burn and core engagement.",
+      "steps": [
+        "Stand tall with elbows bent by your sides.",
+        "Brace your core and keep your posture steady.",
+        "Run in place and drive the knees up toward hip height one at a time.",
+        "Pump the arms and finish with quick light contacts on the floor."
+      ],
+      "tips": [
+        "Stay tall rather than leaning backward.",
+        "Think quick feet, not heavy stomps.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Use sharp exhales every few steps and keep inhaling through the nose when possible.",
+      "commonMistakes": [
+        "Letting the feet slam loudly onto the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "butt-kicks",
+      "name": "Butt Kicks",
+      "nameHindi": "बट किक्स",
+      "category": "hiit",
+      "muscles": [
+        "hamstrings",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 24,
+        "intermediate": 36,
+        "advanced": 50
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-butt-kick",
+      "emoji": "🦶",
+      "description": "Low-complexity cardio drill that wakes up hamstrings and raises heart rate.",
+      "steps": [
+        "Stand tall with a light bend in the elbows.",
+        "Brace your core and keep your posture steady.",
+        "Jog in place and kick heels up toward the glutes in quick alternation.",
+        "Keep the steps light and continuous until the count is complete."
+      ],
+      "tips": [
+        "Keep the knees pointing down rather than forward.",
+        "Use the arms naturally to help rhythm.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe steadily and keep a smooth pace.",
+      "commonMistakes": [
+        "Leaning too far forward from the hips.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "jump-squats-hiit",
+      "name": "Jump Squats",
+      "nameHindi": "जंप स्क्वाट्स",
+      "category": "hiit",
+      "muscles": [
+        "quads",
+        "glutes",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 9,
+      "animation": "anim-jump-squat",
+      "emoji": "⬆️",
+      "description": "Explosive squat variation that spikes heart rate and strengthens legs.",
+      "steps": [
+        "Stand with feet shoulder-width apart and chest proud.",
+        "Brace your core and keep your posture steady.",
+        "Sit into a squat, drive through the feet, and jump upward powerfully.",
+        "Land softly back into the next squat with knees bent."
+      ],
+      "tips": [
+        "Keep the knees tracking over the toes.",
+        "Use a regular squat if impact feels too high.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the way down, exhale as you jump up.",
+      "commonMistakes": [
+        "Landing with straight stiff knees.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "star-jumps",
+      "name": "Star Jumps",
+      "nameHindi": "स्टार जंप्स",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 9,
+      "animation": "anim-star-jump",
+      "emoji": "🌟",
+      "description": "Big explosive jump that challenges coordination and full-body power.",
+      "steps": [
+        "Start in a quarter squat with arms by your sides.",
+        "Brace your core and keep your posture steady.",
+        "Jump up and open arms and legs wide into a star shape in the air.",
+        "Land softly, gather back to the start, and repeat."
+      ],
+      "tips": [
+        "Absorb the landing quietly through bent knees.",
+        "Use smaller range if you live in an apartment.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale during the jump, inhale on the landing.",
+      "commonMistakes": [
+        "Losing balance by looking down.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "skaters",
+      "name": "Skaters",
+      "nameHindi": "स्केटर्स",
+      "category": "hiit",
+      "muscles": [
+        "glutes",
+        "quads",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-skater",
+      "emoji": "⛸️",
+      "description": "Side-to-side power move that trains balance, legs, and fat-burning cardio.",
+      "steps": [
+        "Stand on one leg with knees soft and chest slightly forward.",
+        "Brace your core and keep your posture steady.",
+        "Leap sideways to the other leg and sweep the free leg behind you.",
+        "Keep bouncing side to side in a smooth athletic rhythm."
+      ],
+      "tips": [
+        "Land over the middle of the foot, not on the toes alone.",
+        "Start with step-outs if lateral jumps are too hard.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe steadily and exhale on each push across.",
+      "commonMistakes": [
+        "Letting the front knee cave inward on landing.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "tuck-jumps",
+      "name": "Tuck Jumps",
+      "nameHindi": "टक जंप्स",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "core",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 16
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 10,
+      "animation": "anim-tuck-jump",
+      "emoji": "🚀",
+      "description": "High-impact plyometric move that drives conditioning and explosive power.",
+      "steps": [
+        "Stand tall with feet hip-width and arms ready to swing.",
+        "Brace your core and keep your posture steady.",
+        "Jump upward and lift the knees toward the chest before landing softly.",
+        "Reset your balance after each jump and repeat with control."
+      ],
+      "tips": [
+        "Focus on a quiet landing more than maximum height.",
+        "Rest briefly between reps if power drops off fast.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on takeoff, inhale as you land and reset.",
+      "commonMistakes": [
+        "Trying to jump again before regaining balance.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "squat-thrusts",
+      "name": "Squat Thrusts",
+      "nameHindi": "स्क्वाट थ्रस्ट्स",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "core",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-squat-thrust",
+      "emoji": "💨",
+      "description": "Burpee-style conditioning move without the final jump, good for tight spaces.",
+      "steps": [
+        "Stand tall, squat down, and place your hands on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Kick the feet back to plank, return them under the body, and stand tall.",
+        "Repeat with quick but tidy transitions."
+      ],
+      "tips": [
+        "Step the feet back one at a time if needed.",
+        "Keep the core tight as the legs shoot back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as feet come back in, inhale as you move toward the floor.",
+      "commonMistakes": [
+        "Letting the hips sag in the plank position.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "plank-jacks-hiit",
+      "name": "Plank Jacks",
+      "nameHindi": "प्लैंक जैक्स",
+      "category": "hiit",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-plank-jack-fast",
+      "emoji": "⭐",
+      "description": "Cardio-focused plank jack for apartment-friendly conditioning.",
+      "steps": [
+        "Start in a strong high plank with feet together.",
+        "Brace your core and keep your posture steady.",
+        "Jump or step the feet out and back in while keeping the trunk firm.",
+        "Stay light on the floor and finish each rep under control."
+      ],
+      "tips": [
+        "Widen the feet a little more if balance is shaky.",
+        "Step instead of jump to reduce noise and impact.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale when feet move apart, inhale when they come together.",
+      "commonMistakes": [
+        "Shoulders drifting behind the wrists.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "burpees-hiit",
+      "name": "Burpees",
+      "nameHindi": "बर्पीज़",
+      "category": "hiit",
+      "muscles": [
+        "legs",
+        "core",
+        "chest",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 18
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 10,
+      "animation": "anim-burpee-hiit",
+      "emoji": "🔥",
+      "description": "Classic HIIT staple for total-body effort and quick calorie burn.",
+      "steps": [
+        "From standing, squat down and place your hands on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Jump or step back to plank, return forward, and explode up to standing.",
+        "Land softly and keep moving with good form."
+      ],
+      "tips": [
+        "Use a no-push-up version to keep pace steady.",
+        "Keep the neck neutral as you lower down.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you rise up, inhale during the down phase.",
+      "commonMistakes": [
+        "Collapsing the chest in the plank position.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "fast-feet",
+      "name": "Fast Feet",
+      "nameHindi": "फास्ट फीट",
+      "category": "hiit",
+      "muscles": [
+        "calves",
+        "cardio",
+        "legs"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 40,
+        "advanced": 60
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-fast-feet",
+      "emoji": "⚡",
+      "description": "Rapid tiny steps in place that create a strong cardio effect without much space.",
+      "steps": [
+        "Stand in a light athletic stance with knees softly bent.",
+        "Brace your core and keep your posture steady.",
+        "Take very quick short steps in place while pumping the arms lightly.",
+        "Stay low and springy until the full count is done."
+      ],
+      "tips": [
+        "Keep the heels light and contacts quiet.",
+        "Stay on a comfortable pace you can maintain cleanly.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Use short quick breaths and keep the ribcage relaxed.",
+      "commonMistakes": [
+        "Standing too upright and stomping heavily.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "lateral-shuffles",
+      "name": "Lateral Shuffles",
+      "nameHindi": "लेटरल शफल्स",
+      "category": "hiit",
+      "muscles": [
+        "glutes",
+        "quads",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-lateral-shuffle",
+      "emoji": "↔️",
+      "description": "Sideways quick-step drill that works legs and gets the heart pumping.",
+      "steps": [
+        "Stand with knees bent and chest lifted in an athletic stance.",
+        "Brace your core and keep your posture steady.",
+        "Shuffle two to three steps to one side, then reverse to the other side.",
+        "Stay low and light as you change direction."
+      ],
+      "tips": [
+        "Lead with the foot in the direction you are traveling.",
+        "Take smaller shuffles if space is limited.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe naturally and exhale as you push into each direction change.",
+      "commonMistakes": [
+        "Crossing the feet and losing balance.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "push-ups-standard",
+      "name": "Push-Ups",
+      "nameHindi": "पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 14,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-push-up",
+      "emoji": "💪",
+      "description": "Bodyweight upper-body staple that builds pressing strength and trunk stability.",
+      "steps": [
+        "Start in a high plank with hands slightly wider than shoulders.",
+        "Brace your core and keep your posture steady.",
+        "Bend the elbows to lower the chest close to the floor, then press back up.",
+        "Lock in the plank again before starting the next rep."
+      ],
+      "tips": [
+        "Keep the elbows about forty-five degrees from the body.",
+        "Squeeze glutes and abs to avoid a sagging back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the way down, exhale as you press up.",
+      "commonMistakes": [
+        "Flaring the elbows straight out.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "wide-push-ups",
+      "name": "Wide Push-Ups",
+      "nameHindi": "वाइड पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "chest",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 20
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-wide-push-up",
+      "emoji": "👐",
+      "description": "Push-up variation that emphasizes the chest more strongly.",
+      "steps": [
+        "Set up in a plank with hands placed wider than shoulder width.",
+        "Brace your core and keep your posture steady.",
+        "Lower the chest under control, then press the floor away to return up.",
+        "Rebuild the straight body line before each next rep."
+      ],
+      "tips": [
+        "Turn the hands only slightly outward if wrists need comfort.",
+        "Use knee support if the wide position feels too heavy.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale down, exhale up.",
+      "commonMistakes": [
+        "Dropping the head and leading with the chin.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "diamond-push-ups",
+      "name": "Diamond Push-Ups",
+      "nameHindi": "डायमंड पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "triceps",
+        "chest",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 16
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-diamond-push-up",
+      "emoji": "💎",
+      "description": "Close-hand push-up that strongly targets the triceps.",
+      "steps": [
+        "Place the hands close together beneath the chest to form a diamond or narrow shape.",
+        "Brace your core and keep your posture steady.",
+        "Lower the body with elbows tracking back, then press back to plank.",
+        "Pause briefly at the top to regain full-body tension."
+      ],
+      "tips": [
+        "Start from knees if the close grip is too demanding.",
+        "Keep the wrists comfortable by spreading the fingers wide.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale down, exhale on the press upward.",
+      "commonMistakes": [
+        "Letting the elbows flare wide away from the body.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "pike-push-ups",
+      "name": "Pike Push-Ups",
+      "nameHindi": "पाइक पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "shoulders",
+        "triceps",
+        "upper_chest"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 16
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-pike-push-up",
+      "emoji": "🔻",
+      "description": "Shoulder-focused press that mimics overhead pushing with bodyweight.",
+      "steps": [
+        "Begin in a pike position with hips high and hands on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Bend the elbows to lower the head toward the space between the hands, then press back up.",
+        "Return to the strong pike shape between reps."
+      ],
+      "tips": [
+        "Shorten the range if shoulders feel pinchy.",
+        "Keep more weight in the hands than the feet.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the descent, exhale as you press away.",
+      "commonMistakes": [
+        "Shrugging the shoulders into the ears.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "knee-push-ups",
+      "name": "Knee Push-Ups",
+      "nameHindi": "घुटनों वाले पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-knee-push-up",
+      "emoji": "🦵",
+      "description": "Regression for building push-up strength with good full-range control.",
+      "steps": [
+        "Set up in a straight line from knees to head with hands under shoulders.",
+        "Brace your core and keep your posture steady.",
+        "Lower the chest toward the floor, then press back up without bending at the waist.",
+        "Reset the body line at the top before the next rep."
+      ],
+      "tips": [
+        "Keep hips slightly forward of the knees.",
+        "Use a folded mat under the knees for comfort.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lower, exhale as you push up.",
+      "commonMistakes": [
+        "Breaking at the hips instead of moving as one unit.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "tricep-dips-chair",
+      "name": "Tricep Dips",
+      "nameHindi": "ट्राइसेप डिप्स",
+      "category": "upper",
+      "muscles": [
+        "triceps",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 14,
+        "advanced": 20
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-tricep-dip",
+      "emoji": "🪑",
+      "description": "Chair-based dip for the triceps and front shoulders.",
+      "steps": [
+        "Sit on the edge of a sturdy chair and place hands beside the hips.",
+        "Brace your core and keep your posture steady.",
+        "Slide the hips forward, bend the elbows to lower, and press back up.",
+        "Step the feet in and sit down carefully after the set."
+      ],
+      "tips": [
+        "Keep the chair stable against a wall if needed.",
+        "Only lower until the shoulders feel comfortable.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the dip, exhale on the press up.",
+      "commonMistakes": [
+        "Dropping too low and stressing the shoulders.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "chair",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "superman-hold",
+      "name": "Superman Hold",
+      "nameHindi": "सुपरमैन होल्ड",
+      "category": "upper",
+      "muscles": [
+        "upper_back",
+        "glutes",
+        "lower_back"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-superman-hold",
+      "emoji": "🦸",
+      "description": "Posterior-chain hold that fights rounded desk posture by training the back body.",
+      "steps": [
+        "Lie on your stomach with arms extended forward and legs long.",
+        "Lift arms, chest, and legs slightly off the floor while keeping the neck neutral.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower everything down gently and rest the forehead."
+      ],
+      "tips": [
+        "Think long rather than just high.",
+        "Keep the glutes lightly active to support the low back.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe softly into the belly while holding.",
+      "commonMistakes": [
+        "Cranking the head upward and compressing the neck.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "arm-circles",
+      "name": "Arm Circles",
+      "nameHindi": "आर्म सर्कल्स",
+      "category": "upper",
+      "muscles": [
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 2,
+      "caloriesPerSet": 4,
+      "animation": "anim-arm-circles",
+      "emoji": "⭕",
+      "description": "Simple shoulder endurance exercise useful for warm-ups and desk breaks.",
+      "steps": [
+        "Stand tall with arms extended out to the sides at shoulder height.",
+        "Brace your core and keep your posture steady.",
+        "Make small forward circles for half the count, then reverse direction.",
+        "Lower the arms, shake them out, and repeat if needed."
+      ],
+      "tips": [
+        "Keep the shoulders down away from the ears.",
+        "Use small fast circles rather than big sloppy ones.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe naturally and keep the chest open.",
+      "commonMistakes": [
+        "Shrugging the shoulders as the arms tire.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "inchworms",
+      "name": "Inchworms",
+      "nameHindi": "इंचवर्म्स",
+      "category": "upper",
+      "muscles": [
+        "shoulders",
+        "core",
+        "hamstrings"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 16
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-inchworm",
+      "emoji": "🐛",
+      "description": "Full-body movement that warms the shoulders, core, and hamstrings.",
+      "steps": [
+        "Stand tall, hinge forward, and place your hands on the floor.",
+        "Brace your core and keep your posture steady.",
+        "Walk the hands out to plank, pause, then walk them back toward the feet.",
+        "Stand up tall before beginning the next rep."
+      ],
+      "tips": [
+        "Bend the knees enough to place the hands down cleanly.",
+        "Keep the core braced during the plank phase.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale while walking out, inhale as you return and stand.",
+      "commonMistakes": [
+        "Sagging the lower back in the plank.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "shoulder-taps-plank",
+      "name": "Shoulder Taps",
+      "nameHindi": "शोल्डर टैप्स",
+      "category": "upper",
+      "muscles": [
+        "shoulders",
+        "core"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 16,
+        "intermediate": 24,
+        "advanced": 36
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-upper-shoulder-tap",
+      "emoji": "🤚",
+      "description": "Plank drill that improves shoulder stability and anti-rotation strength.",
+      "steps": [
+        "Take a high plank with feet a bit wider than hip-width.",
+        "Brace your core and keep your posture steady.",
+        "Tap one shoulder with the opposite hand while keeping the torso steady, then switch.",
+        "Set the hand down gently every rep and stay square."
+      ],
+      "tips": [
+        "Press the floor away with the supporting arm.",
+        "Move slower if the hips sway too much.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale during the tap, inhale as the hand returns.",
+      "commonMistakes": [
+        "Rocking the body side to side.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "reverse-snow-angels",
+      "name": "Reverse Snow Angels",
+      "nameHindi": "रिवर्स स्नो एंजेल्स",
+      "category": "upper",
+      "muscles": [
+        "upper_back",
+        "rear_shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-reverse-snow-angel",
+      "emoji": "👼",
+      "description": "Prone shoulder exercise that strengthens upper back muscles for better posture.",
+      "steps": [
+        "Lie face down with arms extended overhead and palms facing down.",
+        "Brace your core and keep your posture steady.",
+        "Lift the arms slightly and sweep them out and down toward the hips, then return overhead.",
+        "Move slowly and keep the forehead relaxed toward the floor."
+      ],
+      "tips": [
+        "Keep thumbs pointing upward if shoulders feel better that way.",
+        "Use a small lift rather than over-arching the back.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the arms sweep down, inhale as they return.",
+      "commonMistakes": [
+        "Jerking the arms instead of using the upper back muscles.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "wall-push-ups",
+      "name": "Wall Push-Ups",
+      "nameHindi": "वॉल पुश-अप्स",
+      "category": "upper",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 4,
+      "animation": "anim-wall-push-up",
+      "emoji": "🧱",
+      "description": "Beginner-friendly push-up performed against a wall for low joint stress.",
+      "steps": [
+        "Stand facing a wall with hands placed at chest height.",
+        "Brace your core and keep your posture steady.",
+        "Bend the elbows to bring the chest toward the wall, then press back out.",
+        "Keep the body straight from head to heels throughout."
+      ],
+      "tips": [
+        "Walk the feet farther back to make it harder.",
+        "Keep wrists in line with the forearms.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lean in, exhale as you press away.",
+      "commonMistakes": [
+        "Bending at the hips and breaking the body line.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "wall",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bodyweight-squats",
+      "name": "Bodyweight Squats",
+      "nameHindi": "बॉडीवेट स्क्वाट्स",
+      "category": "lower",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-squat",
+      "emoji": "🏋️",
+      "description": "Fundamental leg exercise for strength, mobility, and calorie burn.",
+      "steps": [
+        "Stand with feet about shoulder-width and toes slightly turned out.",
+        "Brace your core and keep your posture steady.",
+        "Sit the hips back and down, then drive through the feet to stand tall.",
+        "Finish each rep by squeezing the glutes without leaning back."
+      ],
+      "tips": [
+        "Keep the chest proud and knees tracking over toes.",
+        "Use a chair behind you as a depth guide if needed.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale on the descent, exhale as you stand.",
+      "commonMistakes": [
+        "Letting the heels lift off the floor.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "sumo-squats",
+      "name": "Sumo Squats",
+      "nameHindi": "सूमो स्क्वाट्स",
+      "category": "lower",
+      "muscles": [
+        "inner_thighs",
+        "glutes",
+        "quads"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-sumo-squat",
+      "emoji": "🦵",
+      "description": "Wide-stance squat that targets inner thighs and glutes.",
+      "steps": [
+        "Take a wide stance with toes turned out more than a regular squat.",
+        "Brace your core and keep your posture steady.",
+        "Lower straight down between the hips and press back up through the whole foot.",
+        "Stand tall and reset your posture between reps."
+      ],
+      "tips": [
+        "Keep the knees moving in line with the toes.",
+        "Do not force extra depth if hips feel pinchy.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lower, exhale as you rise.",
+      "commonMistakes": [
+        "Folding forward and losing the upright chest.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "forward-lunges",
+      "name": "Lunges",
+      "nameHindi": "फॉरवर्ड लंजेस",
+      "category": "lower",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-forward-lunge",
+      "emoji": "🚶",
+      "description": "Forward lunge builds single-leg strength, balance, and leg definition.",
+      "steps": [
+        "Stand tall with feet under hips and hands on hips or chest.",
+        "Brace your core and keep your posture steady.",
+        "Step one foot forward, bend both knees, and push back to the start before switching sides.",
+        "Keep the torso tall and land softly each rep."
+      ],
+      "tips": [
+        "Take a step long enough so the front knee stays above the ankle.",
+        "Lightly tap the back knee toward the floor instead of crashing it.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lower, exhale as you push back.",
+      "commonMistakes": [
+        "Letting the front knee collapse inward.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "reverse-lunges",
+      "name": "Reverse Lunges",
+      "nameHindi": "रिवर्स लंजेस",
+      "category": "lower",
+      "muscles": [
+        "glutes",
+        "quads"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-reverse-lunge",
+      "emoji": "↩️",
+      "description": "Backward lunge that is often friendlier on the knees than forward lunges.",
+      "steps": [
+        "Stand tall and step one foot back behind you.",
+        "Brace your core and keep your posture steady.",
+        "Lower into a lunge, then drive through the front foot to return and switch sides.",
+        "Stay balanced and controlled rather than rushing the step."
+      ],
+      "tips": [
+        "Keep most of the weight in the front heel.",
+        "Use a small step back if balance is limited.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lower, exhale as you stand up.",
+      "commonMistakes": [
+        "Pushing off mainly from the back foot.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "jump-squats-lower",
+      "name": "Jump Squats",
+      "nameHindi": "जंप स्क्वाट्स",
+      "category": "lower",
+      "muscles": [
+        "quads",
+        "glutes",
+        "calves"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 18
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-lower-jump-squat",
+      "emoji": "⬆️",
+      "description": "Explosive lower-body move for power and a stronger calorie burn.",
+      "steps": [
+        "Stand with feet shoulder-width and sink into a squat.",
+        "Brace your core and keep your posture steady.",
+        "Drive upward into a jump and land back into the next squat softly.",
+        "Pause if needed to keep every landing clean and quiet."
+      ],
+      "tips": [
+        "Land with knees bent and chest lifted.",
+        "Use bodyweight squats if jumping irritates joints.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale down, exhale on takeoff.",
+      "commonMistakes": [
+        "Landing with knees caving inward.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "wall-sit",
+      "name": "Wall Sit",
+      "nameHindi": "वॉल सिट",
+      "category": "lower",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 50
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-wall-sit",
+      "emoji": "🧱",
+      "description": "Isometric leg hold that quickly builds thigh endurance without equipment.",
+      "steps": [
+        "Stand with your back against a wall and feet a step forward.",
+        "Slide down until knees and hips are roughly bent to ninety degrees.",
+        "Hold the position for the target time with calm, even control.",
+        "Press through the feet to stand up when the timer ends."
+      ],
+      "tips": [
+        "Keep the knees stacked above the ankles.",
+        "Place hands lightly on thighs only if balance is needed.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take slow steady breaths while keeping the abs lightly engaged.",
+      "commonMistakes": [
+        "Sliding too low and straining the knees.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "wall",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "glute-bridges",
+      "name": "Glute Bridges",
+      "nameHindi": "ग्लूट ब्रिजेस",
+      "category": "lower",
+      "muscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-glute-bridge",
+      "emoji": "🍑",
+      "description": "Hip bridge that strengthens glutes and supports lower-back comfort.",
+      "steps": [
+        "Lie on your back with knees bent and feet flat near the hips.",
+        "Brace your core and keep your posture steady.",
+        "Press through the heels to lift the hips until the body forms a line from knees to shoulders.",
+        "Lower one vertebra at a time and repeat."
+      ],
+      "tips": [
+        "Keep the ribs down so the movement comes from the hips.",
+        "Drive through the heels more than the toes.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the hips rise, inhale as you lower.",
+      "commonMistakes": [
+        "Overarching the lower back at the top.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "single-leg-bridges",
+      "name": "Single Leg Bridges",
+      "nameHindi": "सिंगल लेग ब्रिजेस",
+      "category": "lower",
+      "muscles": [
+        "glutes",
+        "hamstrings",
+        "core"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 18
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-single-leg-bridge",
+      "emoji": "1️⃣",
+      "description": "Unilateral bridge that builds glute strength and pelvic stability.",
+      "steps": [
+        "Set up for a bridge and extend one leg straight without moving the thighs.",
+        "Brace your core and keep your posture steady.",
+        "Press through the grounded heel to lift the hips, then lower with control before switching sides.",
+        "Keep the pelvis level throughout each rep."
+      ],
+      "tips": [
+        "Start with a smaller lift if the hamstring cramps.",
+        "Keep the working foot close enough to the hips.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale up, inhale down.",
+      "commonMistakes": [
+        "Twisting the hips as you lift.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "calf-raises",
+      "name": "Calf Raises",
+      "nameHindi": "काफ रेज़ेस",
+      "category": "lower",
+      "muscles": [
+        "calves"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 18,
+        "intermediate": 26,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 4,
+      "animation": "anim-calf-raise",
+      "emoji": "🦶",
+      "description": "Simple lower-leg exercise that improves ankle strength and walking stamina.",
+      "steps": [
+        "Stand tall with feet hip-width and fingertips on a wall for balance if needed.",
+        "Brace your core and keep your posture steady.",
+        "Rise up onto the balls of your feet, pause briefly, and lower slowly.",
+        "Finish the set standing tall with the heels grounded."
+      ],
+      "tips": [
+        "Move through the full range instead of bouncing.",
+        "Keep weight even across the big toe and little toe.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you rise, inhale as you lower.",
+      "commonMistakes": [
+        "Dropping the heels quickly without control.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "donkey-kicks",
+      "name": "Donkey Kicks",
+      "nameHindi": "डॉन्की किक्स",
+      "category": "lower",
+      "muscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-donkey-kick",
+      "emoji": "🐴",
+      "description": "Mat move for glute activation and hip control.",
+      "steps": [
+        "Come to hands and knees with the spine neutral.",
+        "Brace your core and keep your posture steady.",
+        "Kick one bent leg upward by pressing the heel toward the ceiling, then lower and switch sides.",
+        "Keep the core steady so the low back does not sway."
+      ],
+      "tips": [
+        "Lift only as high as the glute can control.",
+        "Square the hips to the floor throughout.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the heel drives up, inhale as the knee lowers.",
+      "commonMistakes": [
+        "Arching the back to fake extra height.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "fire-hydrants",
+      "name": "Fire Hydrants",
+      "nameHindi": "फायर हाइड्रेंट्स",
+      "category": "lower",
+      "muscles": [
+        "glutes",
+        "outer_hips"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-fire-hydrant",
+      "emoji": "🚒",
+      "description": "Outer-hip exercise that helps strengthen glute medius and hip stability.",
+      "steps": [
+        "Start on hands and knees with a neutral spine.",
+        "Brace your core and keep your posture steady.",
+        "Lift one knee out to the side without shifting the torso, then lower and switch.",
+        "Move slowly so the working hip does the lifting."
+      ],
+      "tips": [
+        "Keep the arms straight but not locked.",
+        "Think of shining the knee to the side, not rolling open the whole body.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as the knee lifts, inhale as it lowers.",
+      "commonMistakes": [
+        "Leaning heavily into the opposite shoulder.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "side-leg-raises",
+      "name": "Side Leg Raises",
+      "nameHindi": "साइड लेग रेज़ेस",
+      "category": "lower",
+      "muscles": [
+        "outer_hips",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 14,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 4,
+      "animation": "anim-side-leg-raise",
+      "emoji": "➡️",
+      "description": "Simple floor exercise for outer thighs, hip stability, and glute tone.",
+      "steps": [
+        "Lie on one side with legs long and head supported comfortably.",
+        "Brace your core and keep your posture steady.",
+        "Lift the top leg to hip height or slightly higher, then lower with control before switching sides.",
+        "Keep the toes facing forward instead of up toward the ceiling."
+      ],
+      "tips": [
+        "Stay long through the waist rather than collapsing into the floor.",
+        "Use a small range if the hip pinches.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on the lift, inhale on the lowering phase.",
+      "commonMistakes": [
+        "Rolling the top hip backward.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "plank-hold-core",
+      "name": "Plank Hold",
+      "nameHindi": "प्लैंक होल्ड",
+      "category": "core",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "glutes"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 35,
+        "advanced": 60
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-core-plank",
+      "emoji": "🧱",
+      "description": "Core endurance hold for full trunk stability and better posture.",
+      "steps": [
+        "Set forearms under shoulders and extend the legs behind you.",
+        "Lift the body into one straight line and brace the core firmly.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower to the floor with control when time is up."
+      ],
+      "tips": [
+        "Keep the head in line with the spine.",
+        "Squeeze the glutes to protect the lower back.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Use calm nasal breaths while bracing the abs.",
+      "commonMistakes": [
+        "Piking the hips too high.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "side-plank-core",
+      "name": "Side Plank",
+      "nameHindi": "साइड प्लैंक",
+      "category": "core",
+      "muscles": [
+        "obliques",
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-core-side-plank",
+      "emoji": "📏",
+      "description": "Core stability hold for the obliques and lateral chain.",
+      "steps": [
+        "Stack the feet and place one elbow under the shoulder.",
+        "Lift the hips so the body forms a straight line from ankles to head.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower slowly and switch to the other side."
+      ],
+      "tips": [
+        "Use a bent-bottom-knee option if full version is too hard.",
+        "Press the floor away and keep the neck relaxed.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take smooth ribcage breaths while keeping the waist lifted.",
+      "commonMistakes": [
+        "Letting the top shoulder roll forward.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "dead-bug-core",
+      "name": "Dead Bug",
+      "nameHindi": "डेड बग",
+      "category": "core",
+      "muscles": [
+        "abs",
+        "deep_core"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 20,
+        "advanced": 30
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-core-dead-bug",
+      "emoji": "🐞",
+      "description": "Foundational anti-extension exercise for safer, stronger core control.",
+      "steps": [
+        "Lie on your back with knees over hips and arms pointing upward.",
+        "Brace your core and keep your posture steady.",
+        "Reach opposite arm and leg away while keeping the ribs tucked down.",
+        "Return to start and alternate sides slowly."
+      ],
+      "tips": [
+        "Move with control more than speed.",
+        "Press the lower back into the mat each rep.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on the reach, inhale on the return.",
+      "commonMistakes": [
+        "Letting the belly pop up and ribs flare.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "bird-dog",
+      "name": "Bird Dog",
+      "nameHindi": "बर्ड डॉग",
+      "category": "core",
+      "muscles": [
+        "core",
+        "glutes",
+        "lower_back"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 18,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 4,
+      "animation": "anim-bird-dog",
+      "emoji": "🐦",
+      "description": "Cross-body stability drill that strengthens the back line and improves balance.",
+      "steps": [
+        "Start on hands and knees with the spine neutral.",
+        "Brace your core and keep your posture steady.",
+        "Reach one arm forward and the opposite leg back without shifting your torso.",
+        "Bring them back in and switch sides slowly."
+      ],
+      "tips": [
+        "Think of balancing a glass of water on your low back.",
+        "Reach long through fingers and heel instead of lifting too high.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you reach, inhale as you return.",
+      "commonMistakes": [
+        "Twisting the hips or shoulders open.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "hollow-hold",
+      "name": "Hollow Hold",
+      "nameHindi": "हॉलो होल्ड",
+      "category": "core",
+      "muscles": [
+        "abs",
+        "deep_core"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-hollow-hold",
+      "emoji": "🥚",
+      "description": "Gymnast-style hold that builds deep anterior core strength.",
+      "steps": [
+        "Lie on your back and press the lower back firmly into the floor.",
+        "Lift shoulders and legs slightly off the ground while keeping ribs tucked.",
+        "Hold the position for the target time with calm, even control.",
+        "Bring the knees in or lower down once the timer ends."
+      ],
+      "tips": [
+        "Bend the knees or keep arms by sides to scale it down.",
+        "Quality matters more than making the hold look dramatic.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take shallow but steady breaths without losing the back position.",
+      "commonMistakes": [
+        "Arching the back to keep legs too low.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "superman-core",
+      "name": "Superman",
+      "nameHindi": "सुपरमैन",
+      "category": "core",
+      "muscles": [
+        "lower_back",
+        "glutes"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 15,
+        "intermediate": 25,
+        "advanced": 40
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 5,
+      "animation": "anim-superman-core",
+      "emoji": "🦸",
+      "description": "Back-body hold that balances heavy front-core work and supports posture.",
+      "steps": [
+        "Lie face down with arms extended and legs long.",
+        "Lift arms and legs slightly while keeping the neck in line.",
+        "Hold the position for the target time with calm, even control.",
+        "Lower smoothly and rest the forehead when time is complete."
+      ],
+      "tips": [
+        "Keep the glutes lightly on instead of squeezing too hard.",
+        "Lengthen away through fingers and toes.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe quietly into the abdomen while holding.",
+      "commonMistakes": [
+        "Jerking upward and compressing the low back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "plank-walk",
+      "name": "Plank Walk",
+      "nameHindi": "प्लैंक वॉक",
+      "category": "core",
+      "muscles": [
+        "abs",
+        "shoulders",
+        "chest"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-plank-walk",
+      "emoji": "🚶",
+      "description": "Dynamic plank drill that trains the core to resist rotation during movement.",
+      "steps": [
+        "Begin in a forearm plank or high plank with a tight midline.",
+        "Brace your core and keep your posture steady.",
+        "Move one hand or forearm at a time to travel between positions or slightly side to side.",
+        "Keep the body steady and controlled for every step."
+      ],
+      "tips": [
+        "Take smaller steps to minimize hip sway.",
+        "Widen the feet if balance is challenging.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on each step, inhale between changes.",
+      "commonMistakes": [
+        "Rushing and bouncing through the shoulders.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "ab-rollout-towel",
+      "name": "Ab Roll-out",
+      "nameHindi": "एब रोल-आउट",
+      "category": "core",
+      "muscles": [
+        "abs",
+        "lats",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 16
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 6,
+      "animation": "anim-ab-rollout",
+      "emoji": "🧻",
+      "description": "Towel rollout on a smooth floor that challenges anti-extension core strength.",
+      "steps": [
+        "Kneel on the floor with hands on a folded towel placed in front of you.",
+        "Brace your core and keep your posture steady.",
+        "Slide the towel forward as the hips stay tucked, then pull back using the abs.",
+        "Return to tall kneeling and reset before the next rep."
+      ],
+      "tips": [
+        "Only roll out as far as you can keep the ribs down.",
+        "Use extra padding under the knees for comfort.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale as you pull back in, inhale as you glide forward.",
+      "commonMistakes": [
+        "Letting the lower back arch during the rollout.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "towel",
+      "difficulty": "advanced"
+    },
+    {
+      "id": "neck-rolls",
+      "name": "Neck Rolls",
+      "nameHindi": "नेक रोल्स",
+      "category": "stretch",
+      "muscles": [
+        "neck",
+        "upper_traps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 8,
+        "advanced": 10
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-neck-roll",
+      "emoji": "🌀",
+      "description": "Gentle neck mobility drill to reduce stiffness from long screen time.",
+      "steps": [
+        "Sit or stand tall with shoulders relaxed.",
+        "Brace your core and keep your posture steady.",
+        "Slowly roll the head in a comfortable semicircle or full circle, then reverse direction.",
+        "Return to a neutral head position and pause."
+      ],
+      "tips": [
+        "Move only through a pain-free range.",
+        "Keep the shoulders soft and heavy.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe slowly and avoid holding tension in the jaw.",
+      "commonMistakes": [
+        "Rolling too fast and compressing the neck.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "shoulder-stretch",
+      "name": "Shoulder Stretch",
+      "nameHindi": "शोल्डर स्ट्रेच",
+      "category": "stretch",
+      "muscles": [
+        "shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-shoulder-stretch",
+      "emoji": "🤲",
+      "description": "Cross-body shoulder stretch for easing tight delts and upper back tension.",
+      "steps": [
+        "Stand tall and bring one arm across the chest.",
+        "Use the other arm to hug it closer without lifting the shoulder.",
+        "Hold the position for the target time with calm, even control.",
+        "Release gently and switch arms."
+      ],
+      "tips": [
+        "Keep the shoulder of the stretching arm relaxed down.",
+        "Stand tall instead of twisting the torso.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take slow calm breaths and soften deeper on each exhale.",
+      "commonMistakes": [
+        "Yanking the arm aggressively across the body.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "chest-opener",
+      "name": "Chest Opener",
+      "nameHindi": "चेस्ट ओपनर",
+      "category": "stretch",
+      "muscles": [
+        "chest",
+        "front_shoulders"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-chest-opener",
+      "emoji": "🫶",
+      "description": "Simple chest stretch that counters rounded shoulders from desk posture.",
+      "steps": [
+        "Stand or kneel tall and clasp the hands behind your back if comfortable.",
+        "Lift the chest and gently draw the knuckles away from the body.",
+        "Hold the position for the target time with calm, even control.",
+        "Release the hands slowly and shake out the arms."
+      ],
+      "tips": [
+        "Bend the elbows if clasping straight arms feels intense.",
+        "Keep the chin level rather than jutting it forward.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to widen the chest, exhale and soften the shoulders down.",
+      "commonMistakes": [
+        "Forcing the shoulders back with pain.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "quad-stretch",
+      "name": "Quad Stretch",
+      "nameHindi": "क्वाड स्ट्रेच",
+      "category": "stretch",
+      "muscles": [
+        "quads",
+        "hip_flexors"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-quad-stretch",
+      "emoji": "🦵",
+      "description": "Standing thigh stretch that helps after squats, walking, or sitting.",
+      "steps": [
+        "Stand tall and hold a wall for balance if needed.",
+        "Bend one knee and draw the heel toward the glute while keeping knees close together.",
+        "Hold the position for the target time with calm, even control.",
+        "Release slowly and switch legs."
+      ],
+      "tips": [
+        "Tuck the tailbone slightly to deepen the stretch safely.",
+        "Keep the chest upright instead of leaning forward.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Breathe slowly and relax the front of the thigh on each exhale.",
+      "commonMistakes": [
+        "Pulling the foot so hard the knee feels strained.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "hamstring-stretch-standing",
+      "name": "Hamstring Stretch",
+      "nameHindi": "हैमस्ट्रिंग स्ट्रेच",
+      "category": "stretch",
+      "muscles": [
+        "hamstrings"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-standing-hamstring-stretch",
+      "emoji": "🧘",
+      "description": "Standing hamstring stretch for the back of the legs and lower back comfort.",
+      "steps": [
+        "Stand with one heel slightly forward and toes pulled upward.",
+        "Hinge at the hips with a long spine until you feel the stretch behind the thigh.",
+        "Hold the position for the target time with calm, even control.",
+        "Stand back up slowly and switch legs."
+      ],
+      "tips": [
+        "Keep a soft bend in the standing knee.",
+        "Reach the hips back instead of rounding the spine.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to lengthen, exhale to hinge a little deeper.",
+      "commonMistakes": [
+        "Locking the knee and forcing the stretch.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "hip-flexor-stretch",
+      "name": "Hip Flexor Stretch",
+      "nameHindi": "हिप फ्लेक्सर स्ट्रेच",
+      "category": "stretch",
+      "muscles": [
+        "hip_flexors",
+        "quads"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-hip-flexor-stretch",
+      "emoji": "🦿",
+      "description": "Lunge-based stretch for tight front hips caused by prolonged sitting.",
+      "steps": [
+        "Step one foot forward into a split stance or low kneeling lunge.",
+        "Tuck the pelvis slightly and shift forward until the front of the rear hip stretches.",
+        "Hold the position for the target time with calm, even control.",
+        "Ease out gently and switch sides."
+      ],
+      "tips": [
+        "Keep the ribs stacked over the pelvis.",
+        "Use a smaller stance if balance is difficult.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale tall, exhale and gently sink into the stretch.",
+      "commonMistakes": [
+        "Overarching the low back instead of tucking the pelvis.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "cat-cow-stretch",
+      "name": "Cat-Cow Stretch",
+      "nameHindi": "कैट-काउ स्ट्रेच",
+      "category": "stretch",
+      "muscles": [
+        "spine"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 30,
+        "intermediate": 45,
+        "advanced": 60
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-cat-cow-stretch",
+      "emoji": "🐈",
+      "description": "Gentle mobility stretch for the entire spine and ribcage.",
+      "steps": [
+        "Come onto hands and knees with a neutral tabletop position.",
+        "Alternate between arching and rounding the spine in a slow flowing pattern.",
+        "Hold the position for the target time with calm, even control.",
+        "Return to neutral when the time ends and sit back to rest."
+      ],
+      "tips": [
+        "Move with your breath rather than with speed.",
+        "Keep the hands pressing evenly into the floor.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale into cow, exhale into cat.",
+      "commonMistakes": [
+        "Throwing the head back sharply.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "spinal-twist-lying",
+      "name": "Spinal Twist",
+      "nameHindi": "लेटे हुए स्पाइनल ट्विस्ट",
+      "category": "stretch",
+      "muscles": [
+        "lower_back",
+        "glutes"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-spinal-twist",
+      "emoji": "🛌",
+      "description": "Lying spinal twist helps release the lower back and outer hips.",
+      "steps": [
+        "Lie on your back and draw one knee toward the chest.",
+        "Guide the knee across the body while the opposite shoulder stays heavy on the floor.",
+        "Hold the position for the target time with calm, even control.",
+        "Come back through center and repeat on the other side."
+      ],
+      "tips": [
+        "Use a cushion under the knee if the twist feels too intense.",
+        "Keep the twist easy and restorative rather than forced.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Take slow breaths into the belly and soften more on each exhale.",
+      "commonMistakes": [
+        "Pulling the knee down aggressively and straining the back.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "desk-neck-rolls",
+      "name": "Desk Neck Rolls",
+      "nameHindi": "डेस्क नेक रोल्स",
+      "category": "office",
+      "muscles": [
+        "neck",
+        "upper_traps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 8,
+        "advanced": 10
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-desk-neck-roll",
+      "emoji": "🖥️",
+      "description": "Quick desk break move to release neck stiffness during long workdays.",
+      "steps": [
+        "Sit tall near the front of your chair with feet flat.",
+        "Brace your core and keep your posture steady.",
+        "Roll the head gently from shoulder to shoulder and complete easy circles, then reverse.",
+        "Pause upright and let the neck settle before returning to work."
+      ],
+      "tips": [
+        "Keep the circles slow and comfortable.",
+        "Drop the shoulders away from the ears.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe slowly and unclench the jaw.",
+      "commonMistakes": [
+        "Moving too quickly and making yourself dizzy.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "seated-shoulder-shrugs",
+      "name": "Seated Shoulder Shrugs",
+      "nameHindi": "बैठे हुए शोल्डर श्रग्स",
+      "category": "office",
+      "muscles": [
+        "upper_traps",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 12,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-shoulder-shrug",
+      "emoji": "⬆️",
+      "description": "Mini posture reset that relaxes the upper traps after screen work.",
+      "steps": [
+        "Sit or stand tall with arms relaxed by your sides.",
+        "Brace your core and keep your posture steady.",
+        "Lift the shoulders toward the ears, pause briefly, then release them down slowly.",
+        "Repeat in a relaxed rhythm without tensing the neck."
+      ],
+      "tips": [
+        "Make the lowering phase slower than the lifting phase.",
+        "Keep the chin level and chest open.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as shoulders rise, exhale as they melt down.",
+      "commonMistakes": [
+        "Jerking the shoulders instead of moving smoothly.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "seated-spinal-twist",
+      "name": "Seated Spinal Twist",
+      "nameHindi": "बैठा हुआ स्पाइनल ट्विस्ट",
+      "category": "office",
+      "muscles": [
+        "spine",
+        "obliques"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-seated-spinal-twist",
+      "emoji": "🪑",
+      "description": "Chair-friendly twist that refreshes the mid-back after meetings and calls.",
+      "steps": [
+        "Sit tall on a chair with both feet flat on the floor.",
+        "Turn the torso gently to one side using the chair back for light support.",
+        "Hold the position for the target time with calm, even control.",
+        "Return to center slowly and repeat on the other side."
+      ],
+      "tips": [
+        "Lengthen the spine before turning deeper.",
+        "Keep the twist comfortable and smooth.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale to sit taller, exhale to rotate gently.",
+      "commonMistakes": [
+        "Forcing the neck farther than the torso turns.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "chair",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "wrist-circles",
+      "name": "Wrist Circles",
+      "nameHindi": "कलाई घुमाव",
+      "category": "office",
+      "muscles": [
+        "wrists",
+        "forearms"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 16,
+        "advanced": 24
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-wrist-circles",
+      "emoji": "✋",
+      "description": "Small mobility drill to ease typing and mouse-related wrist stiffness.",
+      "steps": [
+        "Extend your arms forward or rest elbows by your sides.",
+        "Brace your core and keep your posture steady.",
+        "Make smooth circles through the wrists in one direction, then reverse.",
+        "Shake the hands out and finish with relaxed fingers."
+      ],
+      "tips": [
+        "Spread the fingers wide to encourage mobility.",
+        "Keep the circles slow and controlled.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Breathe naturally and relax the forearms.",
+      "commonMistakes": [
+        "Moving only the fingers instead of the wrists.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "desk-chair-squats",
+      "name": "Desk Chair Squats",
+      "nameHindi": "चेयर स्क्वाट्स",
+      "category": "office",
+      "muscles": [
+        "quads",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 14,
+        "advanced": 20
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-chair-squat",
+      "emoji": "🪑",
+      "description": "Quick office-friendly leg wake-up using your chair as a depth guide.",
+      "steps": [
+        "Stand in front of a stable chair with feet hip-width apart.",
+        "Brace your core and keep your posture steady.",
+        "Sit the hips back to lightly tap the chair, then stand back up strongly.",
+        "Repeat smoothly without dropping your full weight heavily onto the seat."
+      ],
+      "tips": [
+        "Keep the chest lifted and weight through the heels.",
+        "Use the chair only as a target, not for support if possible.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you sit back, exhale as you stand.",
+      "commonMistakes": [
+        "Letting the knees shoot far forward and heels lift.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "chair",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "standing-calf-raises",
+      "name": "Standing Calf Raises",
+      "nameHindi": "स्टैंडिंग काफ रेज़ेस",
+      "category": "office",
+      "muscles": [
+        "calves"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 18,
+        "intermediate": 24,
+        "advanced": 32
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-standing-calf-raise",
+      "emoji": "🦶",
+      "description": "Desk break move to promote circulation after sitting for hours.",
+      "steps": [
+        "Stand tall near a desk or wall for balance.",
+        "Brace your core and keep your posture steady.",
+        "Lift the heels up as high as comfortable, pause, and lower them slowly.",
+        "Keep the body upright and finish grounded through the full foot."
+      ],
+      "tips": [
+        "Use the desk lightly rather than leaning on it.",
+        "Pause at the top for a stronger calf squeeze.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Exhale on the lift, inhale on the descent.",
+      "commonMistakes": [
+        "Bouncing quickly instead of controlling the movement.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "desk-push-ups",
+      "name": "Desk Push-Ups",
+      "nameHindi": "डेस्क पुश-अप्स",
+      "category": "office",
+      "muscles": [
+        "chest",
+        "shoulders",
+        "triceps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 14,
+        "advanced": 20
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 4,
+      "animation": "anim-desk-push-up",
+      "emoji": "🖥️",
+      "description": "Incline push-up against a desk for a fast upper-body energizer.",
+      "steps": [
+        "Place hands on a sturdy desk and walk feet back into a straight body line.",
+        "Brace your core and keep your posture steady.",
+        "Lower the chest toward the desk edge, then press back out strongly.",
+        "Stay rigid through the torso for every rep."
+      ],
+      "tips": [
+        "Check that the desk is stable before starting.",
+        "Keep elbows angled slightly back rather than straight out.",
+        "Stop the set when your form starts to slip."
+      ],
+      "breathing": "Inhale as you lower, exhale as you press away.",
+      "commonMistakes": [
+        "Letting the hips sag toward the desk.",
+        "Rushing through the movement.",
+        "Holding your breath instead of using a steady rhythm."
+      ],
+      "equipment": "desk",
+      "difficulty": "beginner"
+    },
+    {
+      "id": "hip-flexor-stretch-standing",
+      "name": "Hip Flexor Stretch",
+      "nameHindi": "खड़े होकर हिप फ्लेक्सर स्ट्रेच",
+      "category": "office",
+      "muscles": [
+        "hip_flexors",
+        "quads"
+      ],
+      "type": "time",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 40
+      },
+      "setsDefault": 1,
+      "caloriesPerSet": 3,
+      "animation": "anim-standing-hip-flexor-stretch",
+      "emoji": "🦿",
+      "description": "Standing lunge stretch to undo tight hips from back-to-back sitting.",
+      "steps": [
+        "Step one foot back into a gentle split stance while holding a chair or desk if needed.",
+        "Tuck the pelvis slightly and bend the front knee until the rear hip feels a stretch.",
+        "Hold the position for the target time with calm, even control.",
+        "Come back to standing and switch sides slowly."
+      ],
+      "tips": [
+        "Keep the torso tall instead of arching the back.",
+        "Use a shorter stance if balance feels wobbly.",
+        "Keep your face and jaw relaxed while you work."
+      ],
+      "breathing": "Inhale tall, exhale and melt into the front of the rear hip.",
+      "commonMistakes": [
+        "Leaning far forward and missing the hip stretch.",
+        "Letting posture collapse before the timer ends.",
+        "Forgetting to keep the core gently engaged."
+      ],
+      "equipment": "none",
+      "difficulty": "beginner"
+    }
+  ]
+}

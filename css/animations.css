@@ -1,0 +1,175 @@
+/* ===== EXERCISE ANIMATIONS ===== */
+/* Each exercise type has a CSS animation applied to the demo emoji */
+
+.anim-crunch { animation: anim-crunch 1.5s ease-in-out infinite; }
+.anim-reverse-crunch { animation: anim-crunch 1.5s ease-in-out infinite; }
+.anim-bicycle-crunch { animation: anim-twist 1.2s ease-in-out infinite; }
+.anim-russian-twist { animation: anim-twist 1.2s ease-in-out infinite; }
+.anim-plank { animation: anim-plank 2.5s ease-in-out infinite; }
+.anim-plank-hip-dips { animation: anim-hip-dip 1.5s ease-in-out infinite; }
+.anim-push-up { animation: anim-push-up 1.8s ease-in-out infinite; }
+.anim-squat { animation: anim-squat 1.8s ease-in-out infinite; }
+.anim-lunge { animation: anim-lunge 1.8s ease-in-out infinite; }
+.anim-jumping-jack { animation: anim-jumping-jack 1s ease-in-out infinite; }
+.anim-burpee { animation: anim-burpee 2.2s ease-in-out infinite; }
+.anim-mountain-climber { animation: anim-mountain-climber 0.8s ease-in-out infinite; }
+.anim-flutter-kicks { animation: anim-flutter 0.6s ease-in-out infinite; }
+.anim-leg-raise { animation: anim-leg-raise 1.8s ease-in-out infinite; }
+.anim-yoga-flow { animation: anim-yoga 3s ease-in-out infinite; }
+.anim-breathing { animation: anim-breathing 4s ease-in-out infinite; }
+.anim-stretch { animation: anim-stretch 2.5s ease-in-out infinite; }
+.anim-high-knees { animation: anim-high-knees 0.6s ease-in-out infinite; }
+.anim-bridge { animation: anim-bridge 1.8s ease-in-out infinite; }
+.anim-superman { animation: anim-superman 2s ease-in-out infinite; }
+.anim-v-up { animation: anim-v-up 1.5s ease-in-out infinite; }
+.anim-dead-bug { animation: anim-dead-bug 2s ease-in-out infinite; }
+.anim-calf-raise { animation: anim-calf-raise 1.5s ease-in-out infinite; }
+.anim-donkey-kick { animation: anim-donkey-kick 1.5s ease-in-out infinite; }
+.anim-surya-namaskar { animation: anim-surya 4s ease-in-out infinite; }
+
+/* ===== KEYFRAMES ===== */
+@keyframes anim-crunch {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-15deg); }
+}
+
+@keyframes anim-twist {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+@keyframes anim-plank {
+  0%, 100% { transform: translateY(0) scaleX(1); }
+  50% { transform: translateY(-2px) scaleX(1.02); }
+}
+
+@keyframes anim-hip-dip {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(8deg); }
+  75% { transform: rotate(-8deg); }
+}
+
+@keyframes anim-push-up {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(12px) scale(0.95); }
+}
+
+@keyframes anim-squat {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(12px) scaleY(0.8); }
+}
+
+@keyframes anim-lunge {
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  50% { transform: translateX(6px) scaleY(0.85); }
+}
+
+@keyframes anim-jumping-jack {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  50% { transform: scaleX(1.25) scaleY(0.92); }
+}
+
+@keyframes anim-burpee {
+  0% { transform: scaleY(1) translateY(0); }
+  20% { transform: scaleY(0.7) translateY(12px); }
+  40% { transform: scaleY(0.5) translateY(15px) scaleX(1.2); }
+  60% { transform: scaleY(0.7) translateY(12px); }
+  80% { transform: scaleY(1.15) translateY(-10px); }
+  100% { transform: scaleY(1) translateY(0); }
+}
+
+@keyframes anim-mountain-climber {
+  0%, 100% { transform: skewX(0deg) translateX(0); }
+  25% { transform: skewX(4deg) translateX(3px); }
+  75% { transform: skewX(-4deg) translateX(-3px); }
+}
+
+@keyframes anim-flutter {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  75% { transform: rotate(-3deg); }
+}
+
+@keyframes anim-leg-raise {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes anim-yoga {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(2deg); }
+  50% { transform: scale(1) rotate(0deg); }
+  75% { transform: scale(1.05) rotate(-2deg); }
+}
+
+@keyframes anim-breathing {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes anim-stretch {
+  0%, 100% { transform: scaleX(1) rotate(0deg); }
+  50% { transform: scaleX(1.1) rotate(3deg); }
+}
+
+@keyframes anim-high-knees {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes anim-bridge {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-10px) scaleY(1.1); }
+}
+
+@keyframes anim-superman {
+  0%, 100% { transform: translateY(0) scaleX(1); }
+  50% { transform: translateY(-6px) scaleX(1.1); }
+}
+
+@keyframes anim-v-up {
+  0%, 100% { transform: scaleY(1) rotate(0deg); }
+  50% { transform: scaleY(0.7) rotate(-10deg); }
+}
+
+@keyframes anim-dead-bug {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+@keyframes anim-calf-raise {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes anim-donkey-kick {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(-5deg) translateY(-5px); }
+}
+
+@keyframes anim-surya {
+  0% { transform: scale(1) translateY(0); }
+  15% { transform: scale(1.1) translateY(-5px); }
+  30% { transform: scale(0.9) translateY(5px); }
+  45% { transform: scale(1.05) translateY(-3px) rotate(3deg); }
+  60% { transform: scale(0.95) translateY(3px) rotate(-3deg); }
+  75% { transform: scale(1.08) translateY(-4px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* ===== UI TRANSITIONS ===== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+.animate-fade { animation: fadeIn 0.3s ease; }
+.animate-slide-up { animation: slideUp 0.3s ease; }
+.animate-scale { animation: scaleIn 0.25s ease; }
+.animate-pulse { animation: pulse 1.5s ease infinite; }
+.animate-bounce { animation: bounce 1s ease infinite; }

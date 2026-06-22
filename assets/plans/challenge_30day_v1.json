@@ -1,0 +1,741 @@
+{
+  "version": 1,
+  "name": "30-Day Belly Fat Blast",
+  "description": "Progressive 30-day challenge to reduce belly fat with recovery built in.",
+  "days": [
+    {
+      "day": 1,
+      "label": "Core Ignition",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "crunches",
+          "sets": 2
+        },
+        {
+          "exerciseId": "dead-bug",
+          "sets": 2
+        },
+        {
+          "exerciseId": "plank-hold",
+          "sets": 2
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 2
+        }
+      ],
+      "motivation": "Every journey begins with a single rep. Let's go! 💪"
+    },
+    {
+      "day": 2,
+      "label": "Twist and Tighten",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "bicycle-crunches",
+          "sets": 2
+        },
+        {
+          "exerciseId": "russian-twists",
+          "sets": 2
+        },
+        {
+          "exerciseId": "heel-taps",
+          "sets": 2
+        },
+        {
+          "exerciseId": "plank-hip-dips",
+          "sets": 2
+        }
+      ],
+      "motivation": "Small consistent efforts beat big excuses."
+    },
+    {
+      "day": 3,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest is where muscles grow. You earned this."
+    },
+    {
+      "day": 4,
+      "label": "Lower Belly Lift",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "plank-shoulder-taps",
+          "sets": 2
+        },
+        {
+          "exerciseId": "knee-to-elbow-plank",
+          "sets": 2
+        },
+        {
+          "exerciseId": "side-plank",
+          "sets": 2
+        },
+        {
+          "exerciseId": "boat-hold",
+          "sets": 2
+        }
+      ],
+      "motivation": "Lower belly strength starts with patient control."
+    },
+    {
+      "day": 5,
+      "label": "Steady Burner",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "plank-jacks",
+          "sets": 2
+        },
+        {
+          "exerciseId": "burpees",
+          "sets": 2
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 2
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 2
+        }
+      ],
+      "motivation": "You are building discipline, not just abs."
+    },
+    {
+      "day": 6,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Breathe, recover, and come back sharper tomorrow."
+    },
+    {
+      "day": 7,
+      "label": "Foundation Finisher",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "bicycle-crunches",
+          "sets": 2
+        },
+        {
+          "exerciseId": "russian-twists",
+          "sets": 2
+        },
+        {
+          "exerciseId": "heel-taps",
+          "sets": 2
+        },
+        {
+          "exerciseId": "plank-hip-dips",
+          "sets": 2
+        }
+      ],
+      "motivation": "Finish the week proud, not perfect."
+    },
+    {
+      "day": 8,
+      "label": "Building Momentum",
+      "type": "workout",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "reverse-crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "leg-raises",
+          "sets": 3
+        },
+        {
+          "exerciseId": "toe-touches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "scissor-kicks",
+          "sets": 3
+        }
+      ],
+      "motivation": "Momentum loves routine. Show up again."
+    },
+    {
+      "day": 9,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Recovery keeps your fat-loss engine running."
+    },
+    {
+      "day": 10,
+      "label": "Waistline Wake-Up",
+      "type": "workout",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "plank-jacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "burpees",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 3
+        }
+      ],
+      "motivation": "Twist with control and own every rep."
+    },
+    {
+      "day": 11,
+      "label": "Plank and Power",
+      "type": "workout",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "dead-bug",
+          "sets": 3
+        },
+        {
+          "exerciseId": "plank-hold",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        }
+      ],
+      "motivation": "Strong planks build a stronger you."
+    },
+    {
+      "day": 12,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "A lighter day keeps the long game alive."
+    },
+    {
+      "day": 13,
+      "label": "Midsection Builder",
+      "type": "workout",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "reverse-crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "leg-raises",
+          "sets": 3
+        },
+        {
+          "exerciseId": "toe-touches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "scissor-kicks",
+          "sets": 3
+        }
+      ],
+      "motivation": "One more session, one more step forward."
+    },
+    {
+      "day": 14,
+      "label": "Week Two Finish",
+      "type": "workout",
+      "intensity": 0.85,
+      "exercises": [
+        {
+          "exerciseId": "plank-shoulder-taps",
+          "sets": 3
+        },
+        {
+          "exerciseId": "knee-to-elbow-plank",
+          "sets": 3
+        },
+        {
+          "exerciseId": "side-plank",
+          "sets": 3
+        },
+        {
+          "exerciseId": "boat-hold",
+          "sets": 3
+        }
+      ],
+      "motivation": "You are stronger than last week already."
+    },
+    {
+      "day": 15,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "anulom-vilom",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest today so you can attack tomorrow."
+    },
+    {
+      "day": 16,
+      "label": "Peak Core Charge",
+      "type": "workout",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "dead-bug",
+          "sets": 3
+        },
+        {
+          "exerciseId": "plank-hold",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        }
+      ],
+      "motivation": "Peak week starts now. Bring focus."
+    },
+    {
+      "day": 17,
+      "label": "Strong Center",
+      "type": "workout",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "bicycle-crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "russian-twists",
+          "sets": 3
+        },
+        {
+          "exerciseId": "heel-taps",
+          "sets": 3
+        },
+        {
+          "exerciseId": "plank-hip-dips",
+          "sets": 3
+        }
+      ],
+      "motivation": "A stable core powers every daily movement."
+    },
+    {
+      "day": 18,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "anulom-vilom",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Recharge well. Consistency wins the month."
+    },
+    {
+      "day": 19,
+      "label": "Intensity Boost",
+      "type": "workout",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "plank-shoulder-taps",
+          "sets": 3
+        },
+        {
+          "exerciseId": "knee-to-elbow-plank",
+          "sets": 3
+        },
+        {
+          "exerciseId": "side-plank",
+          "sets": 3
+        },
+        {
+          "exerciseId": "boat-hold",
+          "sets": 3
+        }
+      ],
+      "motivation": "Intensity is earned, and you have earned it."
+    },
+    {
+      "day": 20,
+      "label": "Shred Session",
+      "type": "workout",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "plank-jacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "burpees",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 3
+        }
+      ],
+      "motivation": "This is where office fatigue loses the battle."
+    },
+    {
+      "day": 21,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 1.0,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "anulom-vilom",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Recovery is productive too."
+    },
+    {
+      "day": 22,
+      "label": "Maximum Burn Start",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "bicycle-crunches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "russian-twists",
+          "sets": 4
+        },
+        {
+          "exerciseId": "heel-taps",
+          "sets": 4
+        },
+        {
+          "exerciseId": "plank-hip-dips",
+          "sets": 4
+        }
+      ],
+      "motivation": "Week four is your proof of progress."
+    },
+    {
+      "day": 23,
+      "label": "Waist Sculptor",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "reverse-crunches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "leg-raises",
+          "sets": 4
+        },
+        {
+          "exerciseId": "toe-touches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "scissor-kicks",
+          "sets": 4
+        }
+      ],
+      "motivation": "Controlled reps carve confidence."
+    },
+    {
+      "day": 24,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "anulom-vilom",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Pause, breathe, and protect your momentum."
+    },
+    {
+      "day": 25,
+      "label": "Core and Cardio Surge",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "plank-jacks",
+          "sets": 4
+        },
+        {
+          "exerciseId": "burpees",
+          "sets": 4
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 4
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 4
+        }
+      ],
+      "motivation": "You are training grit as much as muscle."
+    },
+    {
+      "day": 26,
+      "label": "Stamina Builder",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "crunches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "dead-bug",
+          "sets": 4
+        },
+        {
+          "exerciseId": "plank-hold",
+          "sets": 4
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 4
+        }
+      ],
+      "motivation": "Stay smooth, stay steady, stay in the game."
+    },
+    {
+      "day": 27,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "cat-cow",
+          "sets": 1
+        },
+        {
+          "exerciseId": "anulom-vilom",
+          "sets": 1
+        },
+        {
+          "exerciseId": "balasana",
+          "sets": 1
+        },
+        {
+          "exerciseId": "deep-belly-breathing",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest now, finish stronger later."
+    },
+    {
+      "day": 28,
+      "label": "Power Flow",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "reverse-crunches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "leg-raises",
+          "sets": 4
+        },
+        {
+          "exerciseId": "toe-touches",
+          "sets": 4
+        },
+        {
+          "exerciseId": "scissor-kicks",
+          "sets": 4
+        }
+      ],
+      "motivation": "Your weekend self will thank today's effort."
+    },
+    {
+      "day": 29,
+      "label": "Final Prep",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "plank-shoulder-taps",
+          "sets": 4
+        },
+        {
+          "exerciseId": "knee-to-elbow-plank",
+          "sets": 4
+        },
+        {
+          "exerciseId": "side-plank",
+          "sets": 4
+        },
+        {
+          "exerciseId": "boat-hold",
+          "sets": 4
+        }
+      ],
+      "motivation": "One final setup before the big finish."
+    },
+    {
+      "day": 30,
+      "label": "Grand Finish",
+      "type": "workout",
+      "intensity": 1.1,
+      "exercises": [
+        {
+          "exerciseId": "plank-jacks",
+          "sets": 4
+        },
+        {
+          "exerciseId": "burpees",
+          "sets": 4
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 4
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 4
+        }
+      ],
+      "motivation": "Thirty days of effort. Finish with pride! 🔥"
+    }
+  ]
+}
