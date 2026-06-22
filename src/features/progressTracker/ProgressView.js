@@ -1,9 +1,10 @@
 import { Events } from '../../app/eventBus.js';
-import { getProfileRecords, todayKey } from '../../core/storage/profileData.js';
+import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const formatDate = (value) => new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 const formatUnitsWeight = (value, units) => units === 'imperial' ? `${(value * 2.20462).toFixed(1)} lb` : `${value.toFixed(1)} kg`;
 const formatUnitsHeight = (value, units) => units === 'imperial' ? `${(value / 2.54).toFixed(1)} in` : `${value} cm`;
+const todayKey = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const bodyFatCategory = (gender, value) => {
   if (!value && value !== 0) return '—';
@@ -19,6 +20,8 @@ export class ProgressView {
     this.modal = document.getElementById('modal-overlay');
     this.modalContent = document.getElementById('modal-content');
     this.modalCleanup = null;
+    this.lastFocusedElement = null;
+    this.modalDismissHandler = null;
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_COMPLETED, () => this.render());
@@ -26,24 +29,24 @@ export class ProgressView {
     this.ctx.bus.on(Events.WEIGHT_UPDATED, () => this.render());
     this.ctx.bus.on(Events.MEASUREMENTS_UPDATED, () => this.render());
     this.ctx.bus.on(Events.HABIT_SAVED, () => this.render());
+    this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
+      if (page === 'progress') this.render();
+    });
   }
 
   async render() {
-    const user = this.ctx.getUser();
-    const units = this.ctx.prefs.get('units', 'metric');
-    const [stats, streak, bestStreak, consistency, history, heatmap, measurements] = await Promise.all([
-      this.ctx.getProgress.getLifetimeStats(),
-      this.ctx.getProgress.getStreak(),
-      this.ctx.getProgress.getBestStreak(),
-      this.ctx.getProgress.getWeeklyConsistency(),
-      this.ctx.getProgress.getHistory(20),
-      this.ctx.getProgress.getHeatmapData(new Date().getFullYear(), new Date().getMonth()),
-      getProfileRecords(this.ctx.db, 'measurements', this.ctx.getActiveProfileId())
-    ]);
+    const { user, units } = this.ctx.updateProfile.getSettings();
+    const progress = await this.ctx.getProgress.execute({ historyLimit: 20 });
+    const stats = progress.stats;
+    const streak = progress.streak;
+    const bestStreak = progress.bestStreak;
+    const consistency = progress.consistency;
+    const history = progress.history;
+    const heatmap = progress.heatmap;
+    const measurements = progress.measurements;
 
     const bmi = user.bmi;
-    const weightRows = (measurements || []).sort((a, b) => b.date.localeCompare(a.date));
-    const latestMeasurement = weightRows[0] || {};
+    const latestMeasurement = measurements[0] || {};
     const monthTitle = new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
     const bodyFatValue = latestMeasurement.bodyFat ?? this.calculateBodyFat({
       gender: user.gender,
@@ -72,7 +75,7 @@ export class ProgressView {
             <h2>Lifetime Count Bank</h2>
             <p class="text-sm text-muted">Auto-updated after workouts and habit logs.</p>
           </div>
-          <button class="btn btn-secondary btn-sm" data-action="open-achievements">Achievements</button>
+          ${this.ctx.features?.achievements !== false ? '<button class="btn btn-secondary btn-sm" data-action="open-achievements">Achievements</button>' : ''}
         </div>
         <div class="grid-2">
           <div class="stat-card"><div class="stat-value">${Number(stats.totalHoursExercised || ((stats.totalMinutes || 0) / 60)).toFixed(1)}</div><div class="stat-label">Hours exercised</div></div>
@@ -121,9 +124,9 @@ export class ProgressView {
       <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Calendar Heatmap</h2><p class="text-sm text-muted">${monthTitle}</p></div></div><div class="grid-7">${this.renderHeatmap(heatmap)}</div></section>
 
       <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Workout History</h2><p class="text-sm text-muted">Last 20 sessions</p></div></div>${history.length ? history.map((entry) => `
-          <div class="history-item"><div class="history-date"><div class="day">${new Date(entry.completedAt).getDate()}</div><div class="month">${new Date(entry.completedAt).toLocaleDateString(undefined, { month: 'short' })}</div></div><div class="history-info"><h4>${entry.workout}</h4><p>${entry.duration} min • ${entry.calories} kcal • ${entry.exercises} exercises</p></div></div>`).join('') : '<p class="text-sm text-muted">No completed workouts yet.</p>'}</section>
+          <div class="history-item"><div class="history-date"><div class="day">${new Date(entry.completedAt).getDate()}</div><div class="month">${new Date(entry.completedAt).toLocaleDateString(undefined, { month: 'short' })}</div></div><div class="history-info"><h4>${entry.workout}</h4><p>${entry.duration} min • ${entry.calories} kcal • ${entry.exercises} exercises</p>${entry.note ? `<div class="history-note">📝 ${entry.note}</div>` : ''}</div></div>`).join('') : '<p class="text-sm text-muted">No completed workouts yet.</p>'}</section>
 
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Measurement Log</h2><p class="text-sm text-muted">Current profile: ${formatUnitsWeight(user.weight, units)} • Height: ${formatUnitsHeight(user.height, units)}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">Add</button></div>${weightRows.length ? weightRows.slice(0, 20).map((entry) => `
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Measurement Log</h2><p class="text-sm text-muted">Current profile: ${formatUnitsWeight(user.weight, units)} • Height: ${formatUnitsHeight(user.height, units)}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">Add</button></div>${measurements.length ? measurements.slice(0, 20).map((entry) => `
           <div class="history-item"><div class="history-info"><h4>${formatDate(entry.date)}</h4><p>${formatUnitsWeight(Number(entry.weight || 0), units)}${entry.waist ? ` • Waist ${entry.waist} cm` : ''}${entry.bodyFat ? ` • ${entry.bodyFat.toFixed(1)}% BF` : ''}${entry.note ? ` • ${entry.note}` : ''}</p></div></div>`).join('') : '<p class="text-sm text-muted">No measurement entries yet.</p>'}</section>`;
   }
 
@@ -138,7 +141,8 @@ export class ProgressView {
     const cells = [];
     for (let i = 0; i < leadingBlanks; i += 1) cells.push('<div></div>');
     for (let day = 1; day <= totalDays; day += 1) {
-      const date = new Date(year, month, day).toISOString().split('T')[0];
+      const d = new Date(year, month, day);
+      const date = todayKey(d);
       const log = dateMap.get(date);
       const level = !log ? 0 : log.workoutCompleted ? 3 : log.minutes ? 2 : 1;
       const classes = ['calendar-cell', date === today ? 'today' : '', log?.workoutCompleted ? 'completed' : ''].filter(Boolean).join(' ');
@@ -157,7 +161,7 @@ export class ProgressView {
   }
 
   calculateBMI() {
-    const units = this.ctx.prefs.get('units', 'metric');
+    const { units } = this.ctx.updateProfile.getSettings();
     const heightInput = Number(this.el.querySelector('#bmi-height')?.value || 0);
     const weightInput = Number(this.el.querySelector('#bmi-weight')?.value || 0);
     const heightCm = units === 'metric' ? heightInput : heightInput * 2.54;
@@ -184,7 +188,7 @@ export class ProgressView {
   }
 
   updateBodyFatOutput() {
-    const user = this.ctx.getUser();
+    const { user } = this.ctx.updateProfile.getSettings();
     const value = this.calculateBodyFat({
       gender: user.gender,
       height: user.height,
@@ -197,23 +201,17 @@ export class ProgressView {
   }
 
   openWeightModal() {
-    const user = this.ctx.getUser();
+    const { user } = this.ctx.updateProfile.getSettings();
     this.closeModal();
-    this.modalContent.innerHTML = `
-      <h2 class="mb-16">Add measurement entry</h2>
+    openAccessibleModal(this, `
+      <h2 class="mb-16" id="modal-title">Add measurement entry</h2>
       <form id="weight-form">
         <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" name="date" value="${todayKey()}" required></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" step="0.1" name="weight" value="${user.weight}" required></div><div class="form-group"><label class="form-label">Waist (cm)</label><input class="form-input" type="number" step="0.1" name="waist"></div></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Neck (cm)</label><input class="form-input" type="number" step="0.1" name="neck"></div>${user.gender === 'female' ? '<div class="form-group"><label class="form-label">Hip (cm)</label><input class="form-input" type="number" step="0.1" name="hip"></div>' : '<div></div>'}</div>
         <div class="form-group"><label class="form-label">Note</label><input class="form-input" type="text" name="note" placeholder="Optional"></div>
         <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close="true">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
-      </form>`;
-    this.modal.classList.add('active');
-    this.modalCleanup = async (event) => {
-      if (event.type === 'click' && event.target === this.modal) {
-        this.closeModal();
-        return;
-      }
+      </form>`, async (event) => {
       if (event.target.closest('[data-close]')) {
         this.closeModal();
         return;
@@ -223,8 +221,6 @@ export class ProgressView {
       event.preventDefault();
       const data = new FormData(form);
       const entry = {
-        id: `${this.ctx.getActiveProfileId()}:${data.get('date')}`,
-        profileId: this.ctx.getActiveProfileId(),
         date: data.get('date'),
         weight: Number(data.get('weight')),
         waist: Number(data.get('waist') || 0),
@@ -233,27 +229,12 @@ export class ProgressView {
         note: data.get('note') || ''
       };
       entry.bodyFat = this.calculateBodyFat({ gender: user.gender, height: user.height, waist: entry.waist, neck: entry.neck, hip: entry.hip });
-      await this.ctx.db.put('measurements', entry);
-      if (entry.date === todayKey()) {
-        const nextUser = { ...user, weight: entry.weight };
-        await this.ctx.profileManager.saveProfile(nextUser, { setActive: true });
-        this.ctx.bus.emit(Events.PROFILE_UPDATED, nextUser);
-      }
-      await this.ctx.achievementEngine.syncMeasurementProgress(this.ctx.getActiveProfileId());
-      this.ctx.bus.emit(Events.MEASUREMENTS_UPDATED, entry);
+      await this.ctx.updateProfile.addMeasurement(entry);
       this.closeModal();
-    };
-    this.modal.addEventListener('click', this.modalCleanup);
-    this.modal.addEventListener('submit', this.modalCleanup);
+    });
   }
 
-  closeModal() {
-    if (this.modalCleanup) {
-      this.modal.removeEventListener('click', this.modalCleanup);
-      this.modal.removeEventListener('submit', this.modalCleanup);
-      this.modalCleanup = null;
-    }
-    this.modal.classList.remove('active');
-    this.modalContent.innerHTML = '';
+  closeModal(options = {}) {
+    closeAccessibleModal(this, options);
   }
 }

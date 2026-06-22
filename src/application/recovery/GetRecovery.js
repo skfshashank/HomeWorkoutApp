@@ -1,29 +1,35 @@
-import { RecoveryEngine } from '../../domain/services/RecoveryEngine.js';
-import { getLocalDateStr } from '../../core/utils/dateUtils.js';
-
 export class GetRecovery {
   #db;
-  #prefs;
-  #bus;
   #engine;
+  #getActiveProfileId;
+  #getLocalDateStr;
+  #getScopedDailyRecord;
 
-  constructor(db, prefs, bus) {
+  constructor({
+    db,
+    recoveryEngine,
+    getActiveProfileId,
+    getLocalDateStr,
+    getScopedDailyRecord
+  }) {
     this.#db = db;
-    this.#prefs = prefs;
-    this.#bus = bus;
-    this.#engine = new RecoveryEngine(db, getLocalDateStr);
+    this.#engine = recoveryEngine;
+    this.#getActiveProfileId = getActiveProfileId;
+    this.#getLocalDateStr = getLocalDateStr;
+    this.#getScopedDailyRecord = getScopedDailyRecord;
   }
 
-  async execute(date = getLocalDateStr()) {
+  async execute(date = this.#getLocalDateStr()) {
+    const profileId = this.#getActiveProfileId();
     const [habit, dailyLog] = await Promise.all([
-      this.#db.get('habits', date),
-      this.#db.get('dailyLogs', date)
+      this.#getScopedDailyRecord(this.#db, 'habits', profileId, date, { soreness: [] }),
+      this.#getScopedDailyRecord(this.#db, 'dailyLogs', profileId, date, { waterGlasses: [] })
     ]);
 
     const snapshot = {
-      sleep: habit?.sleep ?? 7,
-      energy: habit?.energy ?? 'medium',
-      mood: habit?.mood ?? 'okay',
+      sleep: habit?.sleep ?? habit?.sleepHours ?? 7,
+      energy: habit?.energy ?? (Number(habit?.energyLevel || 0) >= 4 ? 'high' : Number(habit?.energyLevel || 0) <= 2 ? 'low' : 'medium'),
+      mood: habit?.mood === '😊' ? 'great' : habit?.mood === '😟' || habit?.mood === '😠' ? 'bad' : (habit?.mood ?? 'okay'),
       soreness: habit?.soreness ?? [],
       steps: habit?.steps ?? dailyLog?.steps ?? 0
     };

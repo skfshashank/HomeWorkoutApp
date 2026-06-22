@@ -1,12 +1,12 @@
-import { Events } from '../../app/eventBus.js';
 import { User } from '../../domain/entities/User.js';
 
 export class OnboardingView {
-  #prefs; #bus; #step = 1; #data = {};
+  #updateProfile;
+  #step = 1;
+  #data = {};
 
-  constructor(prefs, bus) {
-    this.#prefs = prefs;
-    this.#bus = bus;
+  constructor(updateProfile) {
+    this.#updateProfile = updateProfile;
   }
 
   render() {
@@ -32,7 +32,7 @@ export class OnboardingView {
       <button class="btn btn-primary btn-block" id="onb-next">${this.#step === 4 ? 'Start Training! 🚀' : 'Continue →'}</button>`;
 
     content.querySelectorAll('.goal-option').forEach((opt) => {
-      opt.addEventListener('click', () => {
+      const selectOption = () => {
         const { key, value } = opt.dataset;
         content.querySelectorAll(`.goal-option[data-key="${key}"]`).forEach((o) => {
           o.classList.remove('selected');
@@ -41,6 +41,13 @@ export class OnboardingView {
         opt.classList.add('selected');
         opt.setAttribute('aria-pressed', 'true');
         this.#data[key] = value;
+      };
+
+      opt.addEventListener('click', selectOption);
+      opt.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        selectOption();
       });
     });
 
@@ -52,7 +59,7 @@ export class OnboardingView {
     return `<button type="button" class="goal-option ${selected ? 'selected' : ''}" data-key="${key}" data-value="${value}" aria-pressed="${selected ? 'true' : 'false'}"><span class="goal-emoji">${emoji}</span><span class="goal-text">${label}</span></button>`;
   }
 
-  #next() {
+  async #next() {
     if (this.#step < 4) {
       this.#step += 1;
       this.#renderStep();
@@ -65,8 +72,7 @@ export class OnboardingView {
       dailyMinutes: parseInt(this.#data.time, 10) || 30,
       level: this.#data.level || 'beginner'
     });
-    this.#prefs.set('user', user);
-    this.#bus.emit(Events.PROFILE_UPDATED, user);
+    await this.#updateProfile.saveProfile(user, { setActive: true });
   }
 
   #stepGoal() {

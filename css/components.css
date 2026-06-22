@@ -38,6 +38,15 @@
 .card:active { transform: scale(0.98); }
 .card-compact { padding: 14px; border-radius: var(--radius-sm); }
 .card--elevated { box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.card--hero {
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1));
+  border: 1px solid rgba(99,102,241,0.3);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.15);
+}
+.card--secondary {
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
 /* Hero Card (gradient) */
 .hero-card {
@@ -186,7 +195,7 @@
 .form-input {
   width: 100%;
   padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
@@ -330,9 +339,14 @@
 .streak-label { font-size: 0.8rem; color: var(--text-muted); }
 
 /* ===== EXERCISE DEMO AREA ===== */
+.exercise-demo-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 .exercise-demo {
   width: 180px;
-  height: 180px;
+  min-height: 180px;
   margin: 20px auto;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(34, 197, 94, 0.08), transparent 70%);
@@ -354,6 +368,82 @@
   text-align: center;
 }
 .exercise-emoji { font-size: 4rem; display: block; }
+.exercise-guide {
+  margin-bottom: 0;
+}
+.exercise-guide .chip {
+  min-height: auto;
+  padding: 6px 10px;
+  font-size: 0.72rem;
+}
+.exercise-guide__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.exercise-steps ol {
+  margin: 0;
+  padding-left: 22px;
+  list-style: decimal;
+  color: var(--text-muted);
+}
+.exercise-steps li + li {
+  margin-top: 8px;
+}
+.exercise-guide__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.exercise-guide__panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  padding: 12px 14px;
+}
+.exercise-guide__panel strong {
+  display: block;
+  margin-bottom: 6px;
+}
+.exercise-guide__panel p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.swap-options {
+  display: grid;
+  gap: 10px;
+}
+.swap-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text);
+  text-align: left;
+}
+.swap-option__emoji {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.12), transparent 75%);
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.swap-option__content p {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
 
 /* ===== MODAL ===== */
 .modal-overlay {
@@ -369,15 +459,37 @@
 }
 .modal-overlay.active { display: flex; }
 .modal {
+  position: relative;
   background: var(--bg-soft);
   border: 1px solid var(--border);
   border-radius: var(--radius) var(--radius) 0 0;
-  padding: 24px;
+  padding: 56px 24px 24px;
   width: 100%;
   max-width: 480px;
   max-height: 80vh;
   overflow-y: auto;
   animation: slideUp 0.3s ease;
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { background: var(--glass); }
+.modal-close:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
 }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
@@ -431,6 +543,11 @@
 .goal-option:hover { border-color: rgba(255,255,255,0.2); }
 .goal-option.selected,
 .goal-option[aria-pressed="true"] { border-color: var(--green); background: var(--green-soft); }
+.goal-option:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-color: var(--blue);
+}
 .goal-option .goal-emoji { font-size: 1.5rem; }
 .goal-option .goal-text { font-weight: 500; }
 
@@ -516,6 +633,15 @@
 .history-info { flex: 1; }
 .history-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
 .history-info p { font-size: 0.75rem; color: var(--text-muted); }
+.history-note {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-xs);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.8rem;
+}
 
 /* ===== SETTINGS ===== */
 .setting-row {
@@ -528,6 +654,17 @@
 .setting-row:last-child { border-bottom: none; }
 .setting-label { font-size: 0.9rem; }
 .setting-value { color: var(--text-muted); font-size: 0.85rem; }
+.setting-hint {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
 
 /* ===== DESK TIMER ===== */
 .desk-timer-card {
@@ -591,6 +728,31 @@
 
 /* ===== COMPLETION SCREEN ===== */
 .completion-trophy { font-size: 5rem; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)); }
+.note-input {
+  resize: vertical;
+  min-height: 120px;
+}
+.workout-complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.complete-icon {
+  font-size: 5rem;
+  filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.35));
+}
+.complete-stats {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.coach-tip {
+  max-width: 280px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
 
 /* ===== ACCESSIBILITY + CULTURAL FIT ===== */
 .nav-btn { min-height: 44px; min-width: 44px; }
@@ -613,17 +775,17 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-  background: rgba(34, 197, 94, 0.12);
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.15);
   color: var(--green);
-  font: var(--text-label);
+  font-size: 11px;
+  font-weight: 500;
   white-space: nowrap;
 }
 .offline-badge svg {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   flex-shrink: 0;
 }
 .exercise-name-stack {

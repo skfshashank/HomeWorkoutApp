@@ -49,6 +49,21 @@ export class ExerciseRepository {
   getTags() { return [...this.#byTag.keys()].sort(); }
   getEquipmentTypes() { return [...new Set(this.#exercises.map((exercise) => exercise.equipment))].sort(); }
 
+  getSimilarExercises(exercise, limit = 5) {
+    if (!exercise) return [];
+
+    const sharedMuscles = (candidate) => candidate.muscles.filter((muscle) => exercise.muscles.includes(muscle)).length;
+    const ranked = this.#exercises
+      .filter((candidate) => candidate.id !== exercise.id && sharedMuscles(candidate) > 0 && candidate.type === exercise.type)
+      .sort((left, right) => {
+        const difficultyScore = Number(right.difficulty === exercise.difficulty) - Number(left.difficulty === exercise.difficulty);
+        if (difficultyScore !== 0) return difficultyScore;
+        return sharedMuscles(right) - sharedMuscles(left);
+      });
+
+    return ranked.slice(0, limit);
+  }
+
   search(query) {
     const q = String(query || '').trim().toLowerCase();
     if (!q) return this.getAll();

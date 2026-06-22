@@ -1,5 +1,6 @@
 import { Events } from '../../app/eventBus.js';
 import { User } from '../../domain/entities/User.js';
+import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const userStores = ['users', 'profiles', 'sessions', 'measurements', 'habits', 'achievements', 'customWorkouts', 'dailyLogs', 'exerciseMeta', 'lifetimeStats', 'sorenessLogs', 'monthlyChallenges'];
 const formatWeight = (user, units) => units === 'imperial' ? `${(user.weight * 2.20462).toFixed(1)} lb` : `${user.weight} kg`;
@@ -12,6 +13,8 @@ export class SettingsView {
     this.modal = document.getElementById('modal-overlay');
     this.modalContent = document.getElementById('modal-content');
     this.modalCleanup = null;
+    this.lastFocusedElement = null;
+    this.modalDismissHandler = null;
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('change', (event) => this.handleChange(event));
@@ -19,11 +22,16 @@ export class SettingsView {
   }
 
   async render() {
-    const user = this.ctx.getUser();
-    const profiles = await this.ctx.profileManager.getProfiles();
-    const units = this.ctx.prefs.get('units', 'metric');
-    const soundEnabled = this.ctx.prefs.get('soundEnabled', true);
-    const voiceEnabled = this.ctx.prefs.get('voiceEnabled', true);
+    const user = this.ctx.updateProfile.getUser();
+    const profiles = await this.ctx.updateProfile.getProfiles();
+    const {
+      units,
+      soundEnabled,
+      voiceEnabled,
+      theme,
+      reminderConfig
+    } = this.ctx.updateProfile.getSettings();
+    const reminderTime = `${String(reminderConfig.hour).padStart(2, '0')}:${String(reminderConfig.minute).padStart(2, '0')}`;
 
     this.el.innerHTML = `
       <div class="page-title">Settings</div>
@@ -68,7 +76,29 @@ export class SettingsView {
       <section class="card">
         <div class="setting-row"><div><div class="setting-label">Sound</div><div class="setting-value">Workout beeps and completion tones</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
         <div class="setting-row"><div><div class="setting-label">Voice Coach</div><div class="setting-value">Exercise prompts and rest guidance</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">Dark mode</div><div class="setting-value">${theme === 'dark' ? 'High-contrast dark theme' : 'Bright light theme'}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-theme" ${theme === 'dark' ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
         <div class="setting-row"><div><div class="setting-label">Units</div><div class="setting-value">Choose how height and weight are displayed</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button></div></div>
+      </section>
+
+      <section class="card">
+        <div class="flex flex-between gap-12 mb-16">
+          <div>
+            <h2>Workout Reminder</h2>
+            <p class="text-sm text-muted">Shows when you open the app after your reminder time and have not finished today's workout.</p>
+          </div>
+          <label class="toggle"><input type="checkbox" data-action="toggle-reminder" ${reminderConfig.enabled ? 'checked' : ''} ${!this.ctx.notifications?.isAvailable ? 'disabled' : ''}><span class="toggle-slider"></span></label>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Reminder time</label>
+            <input class="form-input" type="time" data-action="reminder-time" value="${reminderTime}" ${reminderConfig.enabled && this.ctx.notifications?.isAvailable ? '' : 'disabled'}>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message preview</label>
+            <div class="setting-hint">Time for your workout! 💪 Your ${user.goal.replaceAll('_', ' ')} routine is waiting.</div>
+          </div>
+        </div>
+        <p class="text-sm text-muted">${this.ctx.notifications?.isAvailable ? 'Browser notification permission is requested when you enable reminders.' : 'This browser does not support local notifications.'}</p>
       </section>
 
       <section class="card"><button class="btn btn-secondary w-full mb-16" data-action="export-backup">Export backup</button><button class="btn btn-secondary w-full mb-16" data-action="import-backup">Import backup</button><input type="file" id="backup-file-input" accept="application/json" class="hidden"><button class="btn btn-danger w-full" data-action="reset-data">Reset all local data</button></section>
@@ -80,10 +110,10 @@ export class SettingsView {
     if (!button) return;
     if (button.dataset.action === 'edit-profile') this.openProfileEditor(button.dataset.profileId);
     if (button.dataset.action === 'add-profile') this.openProfileEditor();
-    if (button.dataset.action === 'switch-profile') await this.ctx.profileManager.switchProfile(button.dataset.profileId);
+    if (button.dataset.action === 'switch-profile') await this.ctx.updateProfile.switchProfile(button.dataset.profileId);
     if (button.dataset.action === 'delete-profile') await this.deleteProfile(button.dataset.profileId);
     if (button.dataset.action === 'units') {
-      this.ctx.prefs.set('units', button.dataset.value);
+      this.ctx.updateProfile.setUnits(button.dataset.value);
       this.render();
     }
     if (button.dataset.action === 'export-backup') this.ctx.backup.exportToJSON();
@@ -94,24 +124,48 @@ export class SettingsView {
   handleChange(event) {
     const action = event.target.dataset.action;
     if (action === 'toggle-sound') {
-      this.ctx.prefs.set('soundEnabled', event.target.checked);
+      this.ctx.updateProfile.setPreference('soundEnabled', event.target.checked);
       this.ctx.audio.setEnabled(event.target.checked);
       this.render();
     }
     if (action === 'toggle-voice') {
-      this.ctx.prefs.set('voiceEnabled', event.target.checked);
+      this.ctx.updateProfile.setPreference('voiceEnabled', event.target.checked);
       this.ctx.speech.setEnabled(event.target.checked);
+      this.render();
+    }
+    if (action === 'toggle-theme') {
+      const theme = event.target.checked ? 'dark' : 'light';
+      this.ctx.updateProfile.setTheme(theme);
+      this.ctx.applyTheme?.(theme);
+      this.render();
+    }
+    if (action === 'toggle-reminder') {
+      const current = this.ctx.updateProfile.getReminderConfig();
+      this.ctx.updateProfile.setReminderConfig({ ...current, enabled: event.target.checked });
+      if (event.target.checked) {
+        this.ctx.notifications?.requestPermission().catch(() => false);
+      }
+      this.render();
+    }
+    if (action === 'reminder-time') {
+      const [hour = '7', minute = '0'] = String(event.target.value || '07:00').split(':');
+      const current = this.ctx.updateProfile.getReminderConfig();
+      this.ctx.updateProfile.setReminderConfig({
+        ...current,
+        hour: Number(hour),
+        minute: Number(minute)
+      });
       this.render();
     }
     if (event.target.id === 'backup-file-input') this.importBackup(event.target.files?.[0]);
   }
 
   async openProfileEditor(profileId = '') {
-    const profiles = await this.ctx.profileManager.getProfiles();
+    const profiles = await this.ctx.updateProfile.getProfiles();
     const existing = profiles.find((profile) => profile.id === profileId) || new User({ avatar: '🙂' });
     this.closeModal();
-    this.modalContent.innerHTML = `
-      <h2 class="mb-16">${profileId ? 'Edit profile' : 'Add profile'}</h2>
+    openAccessibleModal(this, `
+      <h2 class="mb-16" id="modal-title">${profileId ? 'Edit profile' : 'Add profile'}</h2>
       <form id="profile-form">
         <div class="grid-2"><div class="form-group"><label class="form-label">Avatar emoji</label><input class="form-input" name="avatar" value="${existing.avatar || '🙂'}"></div><div class="form-group"><label class="form-label">Name</label><input class="form-input" name="name" value="${existing.name || ''}"></div></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Age</label><input class="form-input" name="age" type="number" value="${existing.age || 25}"></div><div class="form-group"><label class="form-label">Gender</label><select class="form-input form-select" name="gender"><option value="" ${!existing.gender ? 'selected' : ''}>Prefer not to say</option><option value="male" ${existing.gender === 'male' ? 'selected' : ''}>Male</option><option value="female" ${existing.gender === 'female' ? 'selected' : ''}>Female</option></select></div></div>
@@ -119,13 +173,12 @@ export class SettingsView {
         <div class="grid-2"><div class="form-group"><label class="form-label">Goal</label><select class="form-input form-select" name="goal"><option value="fat_loss" ${existing.goal === 'fat_loss' ? 'selected' : ''}>Fat loss</option><option value="strength" ${existing.goal === 'strength' ? 'selected' : ''}>Strength</option><option value="flexibility" ${existing.goal === 'flexibility' ? 'selected' : ''}>Flexibility</option><option value="stress_relief" ${existing.goal === 'stress_relief' ? 'selected' : ''}>Stress relief</option></select></div><div class="form-group"><label class="form-label">Focus</label><select class="form-input form-select" name="focusArea"><option value="core" ${existing.focusArea === 'core' ? 'selected' : ''}>Core</option><option value="full_body" ${existing.focusArea === 'full_body' ? 'selected' : ''}>Full body</option><option value="upper" ${existing.focusArea === 'upper' ? 'selected' : ''}>Upper body</option><option value="lower" ${existing.focusArea === 'lower' ? 'selected' : ''}>Lower body</option></select></div></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Level</label><select class="form-input form-select" name="level"><option value="beginner" ${existing.level === 'beginner' ? 'selected' : ''}>Beginner</option><option value="intermediate" ${existing.level === 'intermediate' ? 'selected' : ''}>Intermediate</option><option value="advanced" ${existing.level === 'advanced' ? 'selected' : ''}>Advanced</option></select></div><div class="form-group"><label class="form-label">Daily Minutes</label><input class="form-input" name="dailyMinutes" type="number" value="${existing.dailyMinutes || 30}"></div></div>
         <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close-profile="true">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
-      </form>`;
-    this.modal.classList.add('active');
-    this.modalCleanup = async (event) => {
-      if (event.type === 'click' && (event.target === this.modal || event.target.closest('[data-close-profile]'))) {
+      </form>`, async (event) => {
+      if (event.type === 'click' && event.target.closest('[data-close-profile]')) {
         this.closeModal();
         return;
       }
+
       const form = event.target.closest('#profile-form');
       if (!form) return;
       event.preventDefault();
@@ -144,18 +197,15 @@ export class SettingsView {
         level: data.get('level') || existing.level,
         dailyMinutes: Number(data.get('dailyMinutes')) || existing.dailyMinutes
       });
-      const saved = await this.ctx.profileManager.saveProfile(next, { setActive: true });
-      this.ctx.bus.emit(Events.PROFILE_UPDATED, saved);
+      await this.ctx.updateProfile.saveProfile(next, { setActive: true });
       this.closeModal();
-    };
-    this.modal.addEventListener('click', this.modalCleanup);
-    this.modal.addEventListener('submit', this.modalCleanup);
+    });
   }
 
   async deleteProfile(profileId) {
     if (!confirm('Delete this profile from the active switcher?')) return;
     try {
-      await this.ctx.profileManager.deleteProfile(profileId);
+      await this.ctx.updateProfile.deleteProfile(profileId);
       this.render();
     } catch (error) {
       alert(error.message);
@@ -166,9 +216,7 @@ export class SettingsView {
     if (!file) return;
     try {
       await this.ctx.backup.importFromJSON(file);
-      await this.ctx.profileManager.init();
-      const restoredUser = this.ctx.prefs.get('user');
-      if (restoredUser) this.ctx.bus.emit(Events.PROFILE_UPDATED, restoredUser);
+      await this.ctx.updateProfile.initProfiles();
       this.render();
       alert('Backup imported successfully.');
     } catch (error) {
@@ -178,23 +226,11 @@ export class SettingsView {
 
   async resetData() {
     if (!confirm('Reset all OpenFit Local data on this device?')) return;
-    await Promise.all(userStores.map((store) => this.ctx.db.clear(store)));
-    const keys = [];
-    for (let i = 0; i < localStorage.length; i += 1) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('openfit_')) keys.push(key);
-    }
-    keys.forEach((key) => localStorage.removeItem(key));
+    await this.ctx.updateProfile.resetAllData(userStores);
     location.reload();
   }
 
-  closeModal() {
-    if (this.modalCleanup) {
-      this.modal.removeEventListener('click', this.modalCleanup);
-      this.modal.removeEventListener('submit', this.modalCleanup);
-      this.modalCleanup = null;
-    }
-    this.modal.classList.remove('active');
-    this.modalContent.innerHTML = '';
+  closeModal(options = {}) {
+    closeAccessibleModal(this, options);
   }
 }

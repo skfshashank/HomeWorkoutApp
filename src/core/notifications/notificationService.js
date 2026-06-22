@@ -34,9 +34,9 @@ export class NotificationService {
     });
   }
   
-  workoutReminder() {
-    return this.notify('💪 Workout Time!', {
-      body: "Your daily workout is waiting. Let's crush it!",
+  workoutReminder(goal = 'daily') {
+    return this.notify('OpenFit Local', {
+      body: `Time for your workout! 💪 Your ${goal} routine is waiting.`,
       tag: 'workout-reminder'
     });
   }

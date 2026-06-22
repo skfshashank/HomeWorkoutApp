@@ -1,5 +1,6 @@
 import { Events } from '../../app/eventBus.js';
 import { formatDuration } from '../../core/utils/dateUtils.js';
+import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -12,6 +13,7 @@ export class TrainerView {
     this.timerId = null;
     this.modalCleanup = null;
     this.lastFocusedElement = null;
+    this.modalDismissHandler = null;
     this.session = null;
     this.queue = [];
     this.currentIndex = 0;
@@ -21,6 +23,8 @@ export class TrainerView {
     this.paused = false;
     this.completedSets = 0;
     this.completionResult = null;
+    this.completionStreakDays = 0;
+    this.noteFeedback = '';
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_STARTED, (session) => this.start(session));
@@ -32,6 +36,44 @@ export class TrainerView {
 
   renderProgressLiveText(percent) {
     return `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
+  }
+
+  renderTimerAttributes(seconds, shouldAnnounce = true) {
+    if (!shouldAnnounce) return 'aria-atomic="true"';
+    return `aria-atomic="true"${seconds === 30 || seconds === 10 || seconds <= 3 ? ' aria-live="assertive"' : ''}`;
+  }
+
+  renderExerciseGuide(exercise) {
+    const steps = (exercise.steps || []).length
+      ? exercise.steps.map((step) => `<li>${step}</li>`).join('')
+      : '<li>Move with steady control and stop when your form slips.</li>';
+    const tips = Array.isArray(exercise.tips) ? exercise.tips.filter(Boolean).join(' • ') : exercise.tips;
+
+    return `
+      <div class="exercise-guide card w-full mb-16">
+        <div class="exercise-guide__header">
+          <div>
+            <strong>Movement guide</strong>
+            <div class="text-sm text-muted">${exercise.description || 'Smooth, controlled reps beat rushed reps.'}</div>
+          </div>
+          <div class="exercise-chip-row">
+            ${(exercise.muscles || []).slice(0, 3).map((muscle) => `<span class="chip">${muscle.replaceAll('_', ' ')}</span>`).join('')}
+          </div>
+        </div>
+        <div class="exercise-steps">
+          <ol>${steps}</ol>
+        </div>
+        <div class="exercise-guide__meta">
+          <div class="exercise-guide__panel">
+            <strong>💡 Tips</strong>
+            <p>${tips || 'Keep your posture tall, stay in control, and stop before your form fades.'}</p>
+          </div>
+          <div class="exercise-guide__panel">
+            <strong>🫁 Breathing</strong>
+            <p>${exercise.breathing || 'Use a steady inhale through the easy phase and exhale through the effort.'}</p>
+          </div>
+        </div>
+      </div>`;
   }
 
   render() {
@@ -84,19 +126,21 @@ export class TrainerView {
       <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
-        <div class="exercise-demo w-full mb-16">
+      <div class="exercise-demo-shell w-full mb-16">
+        <div class="exercise-demo">
           <div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div>
           <div class="exercise-demo__caption">
             <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
             <div class="text-sm text-muted">${item.phaseLabel}</div>
           </div>
         </div>
+        ${this.renderExerciseGuide(exercise)}
+      </div>
 
-        <div class="text-center mb-16">
-          <div class="text-sm text-muted">${exercise.description}</div>
-          <div class="timer-display" aria-live="assertive" aria-atomic="true">${displayValue}</div>
-          <div class="timer-label">${displayLabel}</div>
-        </div>
+      <div class="text-center mb-16">
+        <div class="timer-display" ${this.renderTimerAttributes(this.remaining, this.mode === 'prepare' || exercise.isTimeBased)}>${displayValue}</div>
+        <div class="timer-label">${displayLabel}</div>
+      </div>
 
         <div class="set-dots">
           ${Array.from({ length: item.sets }, (_, index) => `<span class="set-dot ${index + 1 < this.currentSet ? 'completed' : ''} ${index + 1 === this.currentSet ? 'current' : ''}"></span>`).join('')}
@@ -105,12 +149,13 @@ export class TrainerView {
 
         <div class="card w-full mb-16">
           <div class="flex flex-between gap-12 mb-8">
-            <strong>How to do it</strong>
-            <button class="btn btn-secondary btn-sm" data-action="adjust-target">Adjust target</button>
+            <strong>Session controls</strong>
+            <div class="flex gap-8 flex-wrap">
+              <button class="btn btn-secondary btn-sm" data-action="swap-exercise">Swap</button>
+              <button class="btn btn-secondary btn-sm" data-action="adjust-target">Adjust target</button>
+            </div>
           </div>
-          <ul class="text-sm text-muted" style="padding-left:18px;list-style:disc;">
-            ${(exercise.steps || []).slice(0, 3).map((step) => `<li>${step}</li>`).join('') || '<li>Focus on smooth, controlled movement.</li>'}
-          </ul>
+          <p class="text-sm text-muted">Need a variation? Swap keeps your place in the workout while replacing just this movement.</p>
         </div>
 
         ${isRepBased && this.mode === 'exercise' ? '<button class="btn btn-primary btn-lg w-full mb-16" data-action="complete-set">Complete set</button>' : ''}
@@ -145,7 +190,7 @@ export class TrainerView {
             <div class="text-sm text-muted">Breathe, reset, and get ready.</div>
           </div>
         </div>
-        <div class="timer-display" aria-live="assertive" aria-atomic="true">${formatDuration(this.remaining)}</div>
+        <div class="timer-display" ${this.renderTimerAttributes(this.remaining)}>${formatDuration(this.remaining)}</div>
         <div class="timer-label">seconds until restart</div>
         <div class="grid-3 w-full mt-24">
           <button class="btn btn-secondary" data-action="previous">Previous</button>
@@ -158,19 +203,35 @@ export class TrainerView {
   renderCompletion() {
     const record = this.completionResult?.record;
     const progressCheck = this.completionResult?.progressCheck;
+    const duration = record?.duration || 0;
+    const calories = record?.calories || this.session?.totalCalories || 0;
+    const exercises = record?.exercises || this.session?.totalExercises || 0;
+    const streakDays = this.completionStreakDays || 0;
+    const note = record?.note || '';
 
     this.el.classList.add('active');
     this.el.innerHTML = `
       <div class="fs-content" style="justify-content:center;">
-        <div class="completion-trophy">🏆</div>
-        <h2 class="text-center">Workout complete!</h2>
-        <p class="text-sm text-muted text-center mb-24">Great work — your progress has been saved locally.</p>
+        <div class="workout-complete mb-24">
+          <div class="complete-icon">🎉</div>
+          <h2 class="text-center">Amazing Work!</h2>
+          <p class="complete-stats">${duration} min · ${calories} cal · ${exercises} exercises</p>
+          <p class="coach-tip">You're ${streakDays} days strong! Keep this momentum going.</p>
+        </div>
         <div class="grid-3 w-full mb-24">
-          <div class="stat-card"><div class="stat-value">${record?.calories || this.session.totalCalories}</div><div class="stat-label">Calories</div></div>
-          <div class="stat-card"><div class="stat-value">${record?.duration || 0}</div><div class="stat-label">Minutes</div></div>
+          <div class="stat-card"><div class="stat-value">${calories}</div><div class="stat-label">Calories</div></div>
+          <div class="stat-card"><div class="stat-value">${duration}</div><div class="stat-label">Minutes</div></div>
           <div class="stat-card"><div class="stat-value">${this.completedSets}</div><div class="stat-label">Sets</div></div>
         </div>
         ${progressCheck?.message ? `<div class="card mb-24"><p class="text-sm">${progressCheck.message}</p></div>` : ''}
+        <div class="card w-full mb-24">
+          <div class="flex flex-between gap-12 mb-8">
+            <strong>Add notes about this session (optional)</strong>
+            <button class="btn btn-secondary btn-sm" data-action="save-note">Save</button>
+          </div>
+          <textarea id="session-note" class="form-input note-input" rows="4" placeholder="How did it feel? Any wins, pain points, or adjustments for next time?">${note}</textarea>
+          <div class="text-sm text-muted mt-8">${this.noteFeedback || 'Saved with this workout in your local history.'}</div>
+        </div>
         <button class="btn btn-primary btn-lg w-full" data-action="close-complete">Back to dashboard</button>
       </div>`;
   }
@@ -187,6 +248,8 @@ export class TrainerView {
     this.paused = false;
     this.completedSets = 0;
     this.completionResult = null;
+    this.completionStreakDays = 0;
+    this.noteFeedback = '';
     this.session.totalCalories = 0;
     this.session.totalExercises = 0;
     document.body.style.overflow = 'hidden';
@@ -194,11 +257,16 @@ export class TrainerView {
   }
 
   buildQueue(session) {
-    const mapPhase = (items, phaseLabel) => items.map((item) => ({ ...item, phaseLabel }));
+    const mapPhase = (items, phaseLabel, phaseKey) => items.map((item, phaseIndex) => ({
+      ...item,
+      phaseLabel,
+      phaseKey,
+      phaseIndex
+    }));
     return [
-      ...mapPhase(session.warmUp, 'Warm-up'),
-      ...mapPhase(session.main, 'Main set'),
-      ...mapPhase(session.coolDown, 'Cool-down')
+      ...mapPhase(session.warmUp, 'Warm-up', 'warmUp'),
+      ...mapPhase(session.main, 'Main set', 'main'),
+      ...mapPhase(session.coolDown, 'Cool-down', 'coolDown')
     ];
   }
 
@@ -248,6 +316,7 @@ export class TrainerView {
   startTimedSet() {
     const item = this.currentItem();
     if (!item) return;
+    this.cleanupTimer();
     this.mode = 'exercise';
     this.remaining = item.currentTarget || item.target;
     this.render();
@@ -324,6 +393,8 @@ export class TrainerView {
     this.ctx.audio.complete();
     const rating = await this.promptRPE();
     this.completionResult = await this.ctx.completeWorkout.execute(this.session, rating);
+    const progress = await this.ctx.getProgress.execute();
+    this.completionStreakDays = progress.streak || 0;
     this.mode = 'complete';
     this.launchConfetti();
     this.render();
@@ -344,9 +415,9 @@ export class TrainerView {
         const option = event.target.closest('[data-rpe]');
         if (!option) return;
         const value = option.dataset.rpe;
-        this.closeModal();
+        this.closeModal({ notify: false, reason: 'selected' });
         resolve(value);
-      }, false);
+      }, { closeOnBackdrop: false, onDismiss: () => resolve(null) });
     });
   }
 
@@ -377,6 +448,7 @@ export class TrainerView {
       event.preventDefault();
       const nextTarget = clamp(Number(new FormData(form).get('target')) || item.target, 1, 9999);
       item.currentTarget = nextTarget;
+      this.syncSessionItem(item);
       this.closeModal();
       if (this.mode === 'exercise' && item.exercise.isTimeBased) {
         this.startTimedSet();
@@ -386,41 +458,83 @@ export class TrainerView {
     });
   }
 
-  openModal(html, handler, closeOnBackdrop = true) {
-    this.closeModal();
-    this.lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    this.modalContent.innerHTML = html;
-    this.modal.classList.add('active');
-    this.modal.setAttribute('aria-hidden', 'false');
-    this.modalCleanup = (event) => {
-      if (closeOnBackdrop && event.target === this.modal) {
+  openSwapModal() {
+    const item = this.currentItem();
+    if (!item) return;
+    const suggestions = this.ctx.getExercises.getSimilarExercises(item.exercise);
+
+    if (!suggestions.length) {
+      this.openModal(`
+        <h2 class="mb-16" id="modal-title">No swaps yet</h2>
+        <p class="text-sm text-muted mb-16">We couldn't find a close match for this exercise right now.</p>
+        <button type="button" class="btn btn-primary w-full" data-close-modal="true">Got it</button>`, (event) => {
+        if (event.target.closest('[data-close-modal]')) this.closeModal();
+      });
+      return;
+    }
+
+    this.openModal(`
+      <h2 class="mb-16" id="modal-title">Swap exercise</h2>
+      <p class="text-sm text-muted mb-16">Choose a similar move for the same training block.</p>
+      <div class="swap-options">
+        ${suggestions.map((exercise) => `
+          <button class="swap-option" data-exercise-id="${exercise.id}">
+            <div class="swap-option__emoji ${exercise.animation || ''}">${exercise.emoji}</div>
+            <div class="swap-option__content">
+              <strong>${exercise.name}</strong>
+              <p>${exercise.muscles.slice(0, 2).map((muscle) => muscle.replaceAll('_', ' ')).join(' • ')} • ${exercise.difficulty}</p>
+            </div>
+          </button>`).join('')}
+      </div>
+      <div class="mt-16">
+        <button type="button" class="btn btn-secondary w-full" data-close-modal="true">Cancel</button>
+      </div>`, (event) => {
+      if (event.target.closest('[data-close-modal]')) {
         this.closeModal();
         return;
       }
-      handler(event);
-    };
-    this.modal.addEventListener('click', this.modalCleanup);
-    this.modal.addEventListener('submit', this.modalCleanup);
-    window.requestAnimationFrame(() => {
-      const focusTarget = this.modal.querySelector('[autofocus], button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])');
-      focusTarget?.focus();
+
+      const option = event.target.closest('[data-exercise-id]');
+      if (!option) return;
+      this.swapCurrentExercise(option.dataset.exerciseId);
+      this.closeModal();
+      this.render();
     });
   }
 
-  closeModal() {
-    if (this.modalCleanup) {
-      this.modal.removeEventListener('click', this.modalCleanup);
-      this.modal.removeEventListener('submit', this.modalCleanup);
-      this.modalCleanup = null;
+  swapCurrentExercise(exerciseId) {
+    const item = this.currentItem();
+    const nextExercise = this.ctx.getExercises.getById(exerciseId);
+    if (!item || !nextExercise) return;
+
+    item.exercise = nextExercise;
+    item.exerciseId = nextExercise.id;
+    this.syncSessionItem(item);
+
+    if (this.mode === 'exercise' && nextExercise.isTimeBased) {
+      this.startTimedSet();
+      return;
     }
-    this.modal.classList.remove('active');
-    this.modal.setAttribute('aria-hidden', 'true');
-    this.modalContent.innerHTML = '';
-    const focusTarget = this.lastFocusedElement;
-    this.lastFocusedElement = null;
-    if (focusTarget?.focus) {
-      window.requestAnimationFrame(() => focusTarget.focus());
-    }
+    this.render();
+  }
+
+  syncSessionItem(item) {
+    const phaseItems = this.session?.[item.phaseKey];
+    const phaseItem = phaseItems?.[item.phaseIndex];
+    if (!phaseItem) return;
+
+    phaseItem.exercise = item.exercise;
+    phaseItem.exerciseId = item.exerciseId;
+    phaseItem.target = item.target;
+    phaseItem.currentTarget = item.currentTarget;
+  }
+
+  openModal(html, handler, options = {}) {
+    openAccessibleModal(this, html, handler, options);
+  }
+
+  closeModal(options = {}) {
+    closeAccessibleModal(this, options);
   }
 
   cleanupTimer() {
@@ -442,7 +556,20 @@ export class TrainerView {
     });
   }
 
-  dismiss() {
+  async saveCompletionNote(note = null) {
+    const record = this.completionResult?.record;
+    if (!record?.id || !this.ctx.workoutNotes) return;
+
+    const input = this.el.querySelector('#session-note');
+    const nextNote = String(note ?? input?.value ?? '').trim();
+    if (nextNote === String(record.note || '')) return;
+
+    record.note = await this.ctx.workoutNotes.save(record.id, nextNote);
+    this.noteFeedback = record.note ? 'Notes saved to workout history.' : 'Notes cleared from this session.';
+  }
+
+  async dismiss() {
+    await this.saveCompletionNote();
     this.cleanupTimer();
     this.closeModal();
     this.ctx.speech.cancel();
@@ -455,12 +582,13 @@ export class TrainerView {
     this.ctx.router.navigate('dashboard');
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     const action = event.target.closest('[data-action]')?.dataset.action;
     if (!action || !this.session) return;
 
     if (action === 'complete-set' && !this.paused) this.completeSet(false);
     if (action === 'adjust-target') this.openAdjustTargetModal();
+    if (action === 'swap-exercise') this.openSwapModal();
     if (action === 'pause') {
       this.paused = !this.paused;
       this.render();
@@ -481,6 +609,10 @@ export class TrainerView {
       }
       this.startCurrentSequence(false);
     }
-    if (action === 'close-complete') this.dismiss();
+    if (action === 'save-note') {
+      await this.saveCompletionNote();
+      this.render();
+    }
+    if (action === 'close-complete') await this.dismiss();
   }
 }

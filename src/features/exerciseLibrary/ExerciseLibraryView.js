@@ -1,3 +1,5 @@
+import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
+
 export class ExerciseLibraryView {
   constructor() {
     this.ctx = null;
@@ -6,6 +8,8 @@ export class ExerciseLibraryView {
     this.modal = null;
     this.modalContent = null;
     this.modalCleanup = null;
+    this.lastFocusedElement = null;
+    this.modalDismissHandler = null;
   }
 
   init(container, deps) {
@@ -21,14 +25,14 @@ export class ExerciseLibraryView {
 
   async render() {
     const [favorites, recent] = await Promise.all([
-      this.ctx.exerciseRepo.getFavorites(),
-      this.ctx.exerciseRepo.getRecentlyUsed(6)
+      this.ctx.getExercises.getFavorites(),
+      this.ctx.getExercises.getRecentlyUsed(6)
     ]);
-    const exercises = this.ctx.exerciseRepo.filter(this.filters);
-    const muscles = ['all', ...this.ctx.exerciseRepo.getMuscleGroups()];
-    const equipment = ['all', ...this.ctx.exerciseRepo.getEquipmentTypes()];
-    const categories = ['all', ...this.ctx.exerciseRepo.getCategories()];
-    const tags = ['all', ...this.ctx.exerciseRepo.getTags()];
+    const exercises = this.ctx.getExercises.execute(this.filters);
+    const muscles = ['all', ...this.ctx.getExercises.getMuscleGroups()];
+    const equipment = ['all', ...this.ctx.getExercises.getEquipmentTypes()];
+    const categories = ['all', ...this.ctx.getExercises.getCategories()];
+    const tags = ['all', ...this.ctx.getExercises.getTags()];
     const favoriteIds = new Set(favorites.map((exercise) => exercise.id));
 
     this.el.innerHTML = `
@@ -88,7 +92,7 @@ export class ExerciseLibraryView {
     if (!button) return;
     const exerciseId = button.dataset.exerciseId;
     if (button.dataset.action === 'toggle-favorite') {
-      await this.ctx.exerciseRepo.toggleFavorite(exerciseId);
+      await this.ctx.getExercises.toggleFavorite(exerciseId);
       this.render();
     }
     if (button.dataset.action === 'set-tag') {
@@ -97,46 +101,36 @@ export class ExerciseLibraryView {
     }
     if (button.dataset.action === 'open-detail') this.openDetail(exerciseId);
     if (button.dataset.action === 'add-to-custom') {
-      this.ctx.customWorkoutView.addExerciseById(exerciseId);
+      this.ctx.openCustomWorkoutEditor();
+      this.ctx.addExerciseToCustomWorkout(exerciseId);
       this.ctx.router.navigate('custom-workouts');
     }
   }
 
   openDetail(exerciseId) {
-    const exercise = this.ctx.exerciseRepo.getById(exerciseId);
+    const exercise = this.ctx.getExercises.getById(exerciseId);
     if (!exercise) return;
     this.closeModal();
-    this.modalContent.innerHTML = `
+    openAccessibleModal(this, `
       <div class="exercise-detail">
-        <div class="exercise-demo w-full mb-16"><div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div><div class="exercise-demo__caption"><strong>${exercise.name}</strong><div class="text-sm text-muted">${exercise.nameHindi || 'Animated demo description'} • ${exercise.category.replaceAll('_', ' ')}</div></div></div>
+        <div class="exercise-demo w-full mb-16"><div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div><div class="exercise-demo__caption"><h2 id="modal-title">${exercise.name}</h2><div class="text-sm text-muted">${exercise.nameHindi || 'Animated demo description'} • ${exercise.category.replaceAll('_', ' ')}</div></div></div>
         <p class="text-sm mb-16">${exercise.description}</p>
         <div class="card card-compact mb-16"><strong>How to do it</strong><ul style="padding-left:18px;list-style:disc;">${(exercise.steps || []).map((step) => `<li>${step}</li>`).join('')}</ul></div>
         <div class="card card-compact mb-16"><strong>Breathing tips</strong><p class="text-sm text-muted">${exercise.breathing || 'Keep a smooth inhale/exhale rhythm.'}</p></div>
         <div class="card card-compact mb-16"><strong>Coach tips</strong><p class="text-sm text-muted">${(exercise.tips || []).join(' • ') || 'Move slow, stay controlled, and stop if form breaks.'}</p></div>
         <div class="grid-2"><button class="btn btn-secondary" data-close-modal="true">Close</button><button class="btn btn-primary" data-add-custom="${exercise.id}">Add to custom workout</button></div>
-      </div>`;
-    this.modal.classList.add('active');
-    this.modalCleanup = (event) => {
-      if (event.target === this.modal || event.target.closest('[data-close-modal]')) {
-        this.closeModal();
-        return;
-      }
+      </div>`, (event) => {
       const addButton = event.target.closest('[data-add-custom]');
       if (addButton) {
-        this.ctx.customWorkoutView.addExerciseById(addButton.dataset.addCustom);
+        this.ctx.openCustomWorkoutEditor();
+        this.ctx.addExerciseToCustomWorkout(addButton.dataset.addCustom);
         this.closeModal();
         this.ctx.router.navigate('custom-workouts');
       }
-    };
-    this.modal.addEventListener('click', this.modalCleanup);
+    });
   }
 
-  closeModal() {
-    if (this.modalCleanup) {
-      this.modal.removeEventListener('click', this.modalCleanup);
-      this.modalCleanup = null;
-    }
-    this.modal.classList.remove('active');
-    this.modalContent.innerHTML = '';
+  closeModal(options = {}) {
+    closeAccessibleModal(this, options);
   }
 }

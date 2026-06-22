@@ -1,5 +1,3 @@
-import { getProfileRecords, getScopedDailyRecord, todayKey } from '../../core/storage/profileData.js';
-
 const moodOptions = ['😊', '😐', '😟', '😠', '😴'];
 
 export class HabitTrackerView {
@@ -18,11 +16,7 @@ export class HabitTrackerView {
   }
 
   async render() {
-    const habit = await this.getHabit();
-    const records = await getProfileRecords(this.ctx.db, 'habits', this.ctx.getActiveProfileId());
-    const weekly = this.calculateConsistency(records, 7);
-    const monthly = this.calculateConsistency(records, 30);
-    const sleepAvg = this.calculateSleepAverage(records, 7);
+    const { habit, weekly, monthly, sleepAvg } = await this.ctx.trackHabit.getTrackerViewModel();
 
     this.el.innerHTML = `
       <div class="page-title">Habit Tracker</div>
@@ -69,82 +63,31 @@ export class HabitTrackerView {
       </section>`;
   }
 
-  async getHabit() {
-    return getScopedDailyRecord(this.ctx.db, 'habits', this.ctx.getActiveProfileId(), todayKey(), { water: 0, customHabits: [] });
-  }
-
-  calculateConsistency(records, days) {
-    const recent = records.filter((record) => new Date(record.date) >= new Date(Date.now() - ((days - 1) * 86400000)));
-    const scored = recent.filter((record) => (record.water || 0) >= 8 || (record.sleepHours || 0) >= 7 || (record.steps || 0) > 0 || (record.customHabits || []).some((item) => item.completed));
-    return Math.round((scored.length / Math.max(days, 1)) * 100);
-  }
-
-  calculateSleepAverage(records, days) {
-    const recent = records.filter((record) => new Date(record.date) >= new Date(Date.now() - ((days - 1) * 86400000)) && Number(record.sleepHours || 0) > 0);
-    if (!recent.length) return 0;
-    return recent.reduce((sum, record) => sum + Number(record.sleepHours || 0), 0) / recent.length;
-  }
-
-  calculateSleepHours(bedtime, wakeTime) {
-    if (!bedtime || !wakeTime) return 0;
-    const [bedHour, bedMinute] = bedtime.split(':').map(Number);
-    const [wakeHour, wakeMinute] = wakeTime.split(':').map(Number);
-    let bed = bedHour * 60 + bedMinute;
-    let wake = wakeHour * 60 + wakeMinute;
-    if (wake <= bed) wake += 24 * 60;
-    return Number(((wake - bed) / 60).toFixed(1));
-  }
-
-  async saveHabit(mutator) {
-    const habit = await this.getHabit();
-    const previous = JSON.parse(JSON.stringify(habit));
-    mutator(habit);
-    if ((!habit.sleepHours || Number(habit.sleepHours) === 0) && habit.bedtime && habit.wakeTime) {
-      habit.sleepHours = this.calculateSleepHours(habit.bedtime, habit.wakeTime);
-    }
-    const dailyLog = await getScopedDailyRecord(this.ctx.db, 'dailyLogs', this.ctx.getActiveProfileId(), todayKey(), { waterGlasses: [] });
-    dailyLog.waterGlasses = Array.from({ length: Math.max(0, Number(habit.water || 0)) }, (_, index) => index);
-    await this.ctx.db.put('dailyLogs', dailyLog);
-    await this.ctx.achievementEngine.applyHabitProgress(this.ctx.getActiveProfileId(), habit, previous);
-    this.render();
-  }
-
   handleInput(event) {
     const field = event.target.dataset.field;
     if (!field) return;
     const value = event.target.type === 'number' ? Number(event.target.value || 0) : event.target.value;
-    this.saveHabit((habit) => {
-      habit[field] = value;
-    });
+    this.ctx.trackHabit.updateFields({ [field]: value }).then(() => this.render());
   }
 
   handleClick(event) {
     const button = event.target.closest('[data-action]');
     if (!button) return;
     if (button.dataset.action === 'toggle-water') {
-      const target = Number(button.dataset.index) + 1;
-      this.saveHabit((habit) => {
-        habit.water = habit.water === target ? target - 1 : target;
-      });
+      this.ctx.trackHabit.toggleWater(Number(button.dataset.index)).then(() => this.render());
     }
-    if (button.dataset.action === 'set-mood') this.saveHabit((habit) => { habit.mood = button.dataset.value; });
-    if (button.dataset.action === 'set-energy') this.saveHabit((habit) => { habit.energyLevel = Number(button.dataset.value); });
-    if (button.dataset.action === 'set-stress') this.saveHabit((habit) => { habit.stressLevel = Number(button.dataset.value); });
+    if (button.dataset.action === 'set-mood') this.ctx.trackHabit.updateFields({ mood: button.dataset.value }).then(() => this.render());
+    if (button.dataset.action === 'set-energy') this.ctx.trackHabit.updateFields({ energyLevel: Number(button.dataset.value) }).then(() => this.render());
+    if (button.dataset.action === 'set-stress') this.ctx.trackHabit.updateFields({ stressLevel: Number(button.dataset.value) }).then(() => this.render());
     if (button.dataset.action === 'add-custom-habit') {
       const input = this.el.querySelector('#custom-habit-input');
       const label = input?.value?.trim();
       if (!label) return;
-      this.saveHabit((habit) => {
-        habit.customHabits = habit.customHabits || [];
-        habit.customHabits.push({ id: `${Date.now().toString(36)}`, label, completed: false });
-      });
+      this.ctx.trackHabit.addCustomHabit(label).then(() => this.render());
       input.value = '';
     }
     if (button.dataset.action === 'toggle-custom-habit') {
-      this.saveHabit((habit) => {
-        const item = (habit.customHabits || []).find((entry) => entry.id === button.dataset.habitId);
-        if (item) item.completed = !item.completed;
-      });
+      this.ctx.trackHabit.toggleCustomHabit(button.dataset.habitId).then(() => this.render());
     }
     if (button.dataset.action === 'open-soreness') this.ctx.router.navigate('recovery');
   }

@@ -1,17 +1,17 @@
 /**
  * Use Case: Start a workout session.
  */
-import { Events } from '../../app/eventBus.js';
-
 export class StartWorkout {
   #exerciseRepo;
   #progression;
   #bus;
+  #events;
 
-  constructor(exerciseRepo, progressionEngine, bus) {
+  constructor({ exerciseRepo, progressionEngine, bus, events }) {
     this.#exerciseRepo = exerciseRepo;
     this.#progression = progressionEngine;
     this.#bus = bus;
+    this.#events = events;
   }
 
   execute(workoutPlan, userLevel) {
@@ -77,7 +77,7 @@ export class StartWorkout {
       isPaused: false
     };
 
-    this.#bus.emit(Events.WORKOUT_STARTED, session);
+    this.#bus.emit(this.#events.WORKOUT_STARTED, session);
     return session;
   }
 }

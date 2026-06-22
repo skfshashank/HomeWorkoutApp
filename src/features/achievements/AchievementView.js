@@ -23,8 +23,8 @@ export class AchievementView {
 
   async render() {
     const [stats, achievements] = await Promise.all([
-      this.ctx.achievementEngine.getAchievementStats(this.ctx.getActiveProfileId()),
-      this.ctx.achievementEngine.getAchievementsViewModel(this.ctx.getActiveProfileId())
+      this.ctx.getAchievements.getAchievementStats(),
+      this.ctx.getAchievements.getAchievementsViewModel()
     ]);
 
     this.el.innerHTML = `

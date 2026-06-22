@@ -1,5 +1,3 @@
-import { Events } from '../../app/eventBus.js';
-
 export class CustomWorkoutView {
   constructor() {
     this.ctx = null;
@@ -15,14 +13,14 @@ export class CustomWorkoutView {
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
-    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.resetDraft());
+    this.ctx.bus.on('profile:updated', () => this.resetDraft());
   }
 
   async render() {
     await this.ensureDraft();
-    const exercises = this.ctx.exerciseRepo.filter(this.libraryFilters).slice(0, 24);
-    const muscles = ['all', ...this.ctx.exerciseRepo.getMuscleGroups()];
-    const tags = ['all', ...this.ctx.exerciseRepo.getTags()];
+    const exercises = this.ctx.getExercises.execute(this.libraryFilters).slice(0, 24);
+    const muscles = ['all', ...this.ctx.getExercises.getMuscleGroups()];
+    const tags = ['all', ...this.ctx.getExercises.getTags()];
 
     this.el.innerHTML = `
       <div class="page-title">Custom Workout Creator</div>
@@ -37,6 +35,7 @@ export class CustomWorkoutView {
         </div>
         <div class="flex gap-8 flex-wrap">
           <button class="btn btn-primary" data-action="save-workout">Save workout</button>
+          ${this.editingId ? '<button class="btn btn-secondary" data-action="duplicate-workout">Duplicate</button>' : ''}
           ${this.editingId ? '<button class="btn btn-danger" data-action="delete-workout">Delete</button>' : ''}
           <button class="btn btn-secondary" data-action="back-workouts">Back to workouts</button>
         </div>
@@ -60,7 +59,7 @@ export class CustomWorkoutView {
   }
 
   renderDraftItem(item, index) {
-    const exercise = this.ctx.exerciseRepo.getById(item.exerciseId);
+    const exercise = this.ctx.getExercises.getById(item.exerciseId);
     return `
       <div class="custom-workout-item">
         <div class="flex flex-between gap-12 mb-8"><strong>${exercise?.emoji || '💪'} ${exercise?.name || item.exerciseId}</strong><div class="flex gap-8"><button class="btn btn-secondary btn-sm" data-action="move-up" data-index="${index}">↑</button><button class="btn btn-secondary btn-sm" data-action="move-down" data-index="${index}">↓</button><button class="btn btn-danger btn-sm" data-action="remove-exercise" data-index="${index}">Remove</button></div></div>
@@ -82,13 +81,13 @@ export class CustomWorkoutView {
   async ensureDraft() {
     if (this.draft) return;
     if (this.editingId) {
-      const workout = await this.ctx.db.get('customWorkouts', this.editingId);
+      const workout = await this.ctx.manageWorkouts.getCustomWorkout(this.editingId);
       if (workout) {
         this.draft = JSON.parse(JSON.stringify(workout));
         return;
       }
     }
-    this.draft = { name: '', duration: 20, restBetweenSets: 20, restBetweenExercises: 30, main: [] };
+    this.draft = this.ctx.manageWorkouts.createDraft();
   }
 
   openEditor(workoutId = '') {
@@ -98,10 +97,10 @@ export class CustomWorkoutView {
   }
 
   addExerciseById(exerciseId) {
-    const exercise = this.ctx.exerciseRepo.getById(exerciseId);
+    const exercise = this.ctx.getExercises.getById(exerciseId);
     if (!exercise) return;
-    if (!this.draft) this.draft = { name: '', duration: 20, restBetweenSets: 20, restBetweenExercises: 30, main: [] };
-    this.draft.main.push({ exerciseId, sets: exercise.setsDefault || 2, targetOverride: exercise.getTarget(this.ctx.getUser().level), restSec: 20 });
+    if (!this.draft) this.draft = this.ctx.manageWorkouts.createDraft();
+    this.draft.main.push({ exerciseId, sets: exercise.setsDefault || 2, targetOverride: exercise.getTarget(this.ctx.updateProfile.getUser().level), restSec: 20 });
     this.render();
   }
 
@@ -141,9 +140,14 @@ export class CustomWorkoutView {
       this.render();
     }
     if (button.dataset.action === 'save-workout') await this.saveWorkout();
+    if (button.dataset.action === 'duplicate-workout' && this.editingId) {
+      const workout = await this.ctx.manageWorkouts.duplicateCustomWorkout(this.editingId);
+      if (workout?.id) {
+        this.openEditor(workout.id);
+      }
+    }
     if (button.dataset.action === 'delete-workout' && this.editingId) {
-      await this.ctx.db.delete('customWorkouts', this.editingId);
-      this.ctx.bus.emit(Events.CUSTOM_WORKOUTS_CHANGED, {});
+      await this.ctx.manageWorkouts.deleteCustomWorkout(this.editingId);
       this.openEditor();
       this.ctx.router.navigate('workouts');
     }
@@ -155,27 +159,12 @@ export class CustomWorkoutView {
       alert('Add a workout name and at least one exercise.');
       return;
     }
-    const workout = {
-      id: this.editingId || `custom-${Date.now().toString(36)}`,
-      profileId: this.ctx.getActiveProfileId(),
-      name: this.draft.name.trim(),
-      category: 'custom',
-      difficulty: this.ctx.getUser().level,
-      duration: Number(this.draft.duration || 0),
-      icon: '🛠️',
-      description: 'Custom workout built in OpenFit Local.',
-      warmUp: [],
-      main: this.draft.main,
-      coolDown: [],
-      restBetweenSets: Number(this.draft.restBetweenSets || 20),
-      restBetweenExercises: Number(this.draft.restBetweenExercises || 30),
-      updatedAt: new Date().toISOString(),
-      createdAt: this.draft.createdAt || new Date().toISOString()
-    };
-    await this.ctx.db.put('customWorkouts', workout);
+    const workout = await this.ctx.manageWorkouts.saveCustomWorkout({
+      ...this.draft,
+      id: this.editingId || this.draft.id
+    }, this.ctx.updateProfile.getUser().level);
     this.editingId = workout.id;
     this.draft = JSON.parse(JSON.stringify(workout));
-    this.ctx.bus.emit(Events.CUSTOM_WORKOUTS_CHANGED, workout);
     this.ctx.router.navigate('workouts');
   }
 }

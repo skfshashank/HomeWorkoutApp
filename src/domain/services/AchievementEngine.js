@@ -1,6 +1,3 @@
-import { Events } from '../../app/eventBus.js';
-import { getProfileRecords, sortByDateDesc, todayKey } from '../../core/storage/profileData.js';
-
 export const ACHIEVEMENTS = [
   { id: 'first_workout', title: 'First Step', desc: 'Complete your first workout', icon: '🏃', check: (stats) => stats.totalWorkouts >= 1 },
   { id: 'week_streak', title: 'Week Warrior', desc: '7-day streak', icon: '🔥', check: (stats) => stats.currentStreak >= 7 },
@@ -41,17 +38,38 @@ const defaultStats = (profileId) => ({
 });
 
 const toLevel = (xp) => Math.floor((xp || 0) / 100) + 1;
+const defaultGetProfileRecords = async (db, storeName) => db.getAll(storeName);
+const defaultSortByDateDesc = (records = [], field = 'date') => [...records].sort((a, b) => String(b?.[field] || '').localeCompare(String(a?.[field] || '')));
+const defaultTodayKey = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 export class AchievementEngine {
-  constructor(db, bus, getActiveProfileId, exerciseRepo) {
+  constructor({
+    db,
+    bus,
+    events,
+    getActiveProfileId,
+    exerciseRepo,
+    getProfileRecords = defaultGetProfileRecords,
+    sortByDateDesc = defaultSortByDateDesc,
+    todayKey = defaultTodayKey
+  }) {
     this.db = db;
     this.bus = bus;
+    this.events = events;
     this.getActiveProfileId = getActiveProfileId;
     this.exerciseRepo = exerciseRepo;
+    this.getProfileRecords = getProfileRecords;
+    this.sortByDateDesc = sortByDateDesc;
+    this.todayKey = todayKey;
   }
 
   init() {
-    this.bus.on(Events.WORKOUT_COMPLETED, (payload) => this.handleWorkoutCompleted(payload));
+    this.bus.on(this.events.WORKOUT_COMPLETED, (payload) => this.handleWorkoutCompleted(payload));
   }
 
   async getStats(profileId = this.getActiveProfileId()) {
@@ -97,7 +115,7 @@ export class AchievementEngine {
 
     await this.db.put('achievements', record);
     await this.grantXp(profileId, record.rewardXp, record.type);
-    this.bus.emit(Events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
+    this.bus.emit(this.events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
     return record;
   }
 
@@ -140,9 +158,9 @@ export class AchievementEngine {
     const streak = await this.computeCurrentStreak(profileId);
     stats.currentStreak = streak;
     stats.bestStreakEver = Math.max(stats.bestStreakEver || 0, streak);
-
     stats.xp = (stats.xp || 0) + 10;
     stats.lastXpSource = 'workout';
+
     await this.saveStats(stats);
     await this.syncMeasurementProgress(profileId);
     await this.evaluateAchievements(profileId);
@@ -182,7 +200,7 @@ export class AchievementEngine {
 
     if (earnedXp) {
       await this.grantXp(profileId, earnedXp, 'habit');
-      this.bus.emit(Events.HABIT_SAVED, { profileId, habit, earnedXp });
+      this.bus.emit(this.events.HABIT_SAVED, { profileId, habit, earnedXp });
       await this.evaluateAchievements(profileId);
     }
 
@@ -190,7 +208,7 @@ export class AchievementEngine {
   }
 
   async syncMeasurementProgress(profileId) {
-    const measurements = sortByDateDesc(await getProfileRecords(this.db, 'measurements', profileId));
+    const measurements = this.sortByDateDesc(await this.getProfileRecords(this.db, 'measurements', profileId));
     const stats = await this.getStats(profileId);
     const chronological = [...measurements].sort((a, b) => a.date.localeCompare(b.date));
     const first = chronological[0];
@@ -209,7 +227,7 @@ export class AchievementEngine {
   }
 
   async computeCurrentStreak(profileId) {
-    const logs = await getProfileRecords(this.db, 'dailyLogs', profileId);
+    const logs = await this.getProfileRecords(this.db, 'dailyLogs', profileId);
     const completedDates = new Set(logs.filter((log) => log.workoutCompleted).map((log) => log.date));
     let streak = 0;
     const now = new Date();
@@ -217,7 +235,7 @@ export class AchievementEngine {
     for (let i = 0; i < 365; i += 1) {
       const date = new Date(now);
       date.setDate(now.getDate() - i);
-      const dateStr = todayKey(date);
+      const dateStr = this.todayKey(date);
       if (completedDates.has(dateStr)) {
         streak += 1;
       } else if (i > 0) {
@@ -266,7 +284,7 @@ export class AchievementEngine {
 
   async evaluateAchievements(profileId = this.getActiveProfileId()) {
     const stats = await this.getAchievementStats(profileId);
-    const unlockedRecords = await getProfileRecords(this.db, 'achievements', profileId);
+    const unlockedRecords = await this.getProfileRecords(this.db, 'achievements', profileId);
     const unlockedIds = new Set(unlockedRecords.map((record) => record.achievementId));
 
     for (const achievement of ACHIEVEMENTS) {
@@ -284,14 +302,14 @@ export class AchievementEngine {
         };
         await this.db.put('achievements', record);
         await this.grantXp(profileId, 50, 'achievement');
-        this.bus.emit(Events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
+        this.bus.emit(this.events.ACHIEVEMENT_UNLOCKED, { achievement: record, profileId });
       }
     }
   }
 
   async getAchievementsViewModel(profileId = this.getActiveProfileId()) {
     const stats = await this.getAchievementStats(profileId);
-    const unlockedRecords = await getProfileRecords(this.db, 'achievements', profileId);
+    const unlockedRecords = await this.getProfileRecords(this.db, 'achievements', profileId);
     const unlockedMap = new Map(unlockedRecords.map((record) => [record.achievementId, record]));
 
     return ACHIEVEMENTS.map((achievement) => {
