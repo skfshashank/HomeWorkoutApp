@@ -71,12 +71,12 @@ export class TrainerView {
         </div>
         <div class="exercise-guide__meta">
           <div class="exercise-guide__panel">
-            <strong>💡 Tips</strong>
-            <p>${tips || 'Keep your posture tall, stay in control, and stop before your form fades.'}</p>
+            <strong>💡 ${this.t('tips', 'Tips')}</strong>
+            <p>${tips || this.t('default_tips', 'Keep your posture tall, stay in control, and stop before your form fades.')}</p>
           </div>
           <div class="exercise-guide__panel">
-            <strong>🫁 Breathing</strong>
-            <p>${exercise.breathing || 'Use a steady inhale through the easy phase and exhale through the effort.'}</p>
+            <strong>🫁 ${this.t('breathing', 'Breathing')}</strong>
+            <p>${exercise.breathing || this.t('default_breathing', 'Use a steady inhale through the easy phase and exhale through the effort.')}</p>
           </div>
         </div>
       </div>`;

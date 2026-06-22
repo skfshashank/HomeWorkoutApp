@@ -17,26 +17,28 @@ export class SorenessMapView {
     this.ctx.bus.on(Events.HABIT_SAVED, () => this.render());
   }
 
+  t(key, fallback) { return this.ctx.i18n?.t(key) || fallback; }
+
   async render() {
     const viewModel = await this.ctx.trackSoreness.getViewModel();
     const soreness = viewModel.soreness;
 
     this.el.innerHTML = `
-      <div class="page-title">Muscle Soreness Map</div>
-      <p class="page-subtitle">Tap each area to cycle soreness from none → mild → moderate → severe.</p>
+      <div class="page-title">${this.t('soreness_map', 'Muscle Soreness Map')}</div>
+      <p class="page-subtitle">${this.t('soreness_tap_hint', 'Tap each area to cycle soreness from none → mild → moderate → severe.')}</p>
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>Recovery score</h2><p class="text-sm text-muted">Sleep + soreness + energy feed recovery guidance.</p></div><span class="chip" style="background:${viewModel.recommendation.color}22;color:${viewModel.recommendation.color};">${viewModel.recommendation.label}</span></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('recovery_score', 'Recovery score')}</h2><p class="text-sm text-muted">${this.t('recovery_desc', 'Sleep + soreness + energy feed recovery guidance.')}</p></div><span class="chip" style="background:${viewModel.recommendation.color}22;color:${viewModel.recommendation.color};">${viewModel.recommendation.label}</span></div>
         <div class="stat-value">${viewModel.score}</div>
       </section>
       <section class="card soreness-map-card">
         <svg viewBox="0 0 240 360" class="soreness-svg">
-          <text x="55" y="24" fill="#94a3b8">Front</text><text x="170" y="24" fill="#94a3b8">Back</text>
+          <text x="55" y="24" fill="#94a3b8">${this.t('front', 'Front')}</text><text x="170" y="24" fill="#94a3b8">${this.t('back_body', 'Back')}</text>
           ${this.renderBody(50, soreness.ratings || {})}
           ${this.renderBody(150, soreness.ratings || {}, true)}
         </svg>
-        <p class="text-sm text-muted mt-16">Active avoid-list: ${viewModel.avoid.length ? viewModel.avoid.join(', ') : 'None'}</p>
+        <p class="text-sm text-muted mt-16">${this.t('active_avoid_list', 'Active avoid-list')}: ${viewModel.avoid.length ? viewModel.avoid.join(', ') : this.t('none', 'None')}</p>
       </section>
-      <section class="card"><h2>Recovery-friendly suggestions</h2><div class="exercise-chip-row">${viewModel.suggestions.map((exercise) => `<span class="chip">${exercise.emoji} ${exercise.name}</span>`).join('')}</div></section>`;
+      <section class="card"><h2>${this.t('recovery_suggestions', 'Recovery-friendly suggestions')}</h2><div class="exercise-chip-row">${viewModel.suggestions.map((exercise) => `<span class="chip">${exercise.emoji} ${exercise.name}</span>`).join('')}</div></section>`;
   }
 
   renderBody(offsetX, ratings, isBack = false) {
