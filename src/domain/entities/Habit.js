@@ -5,7 +5,7 @@ export class Habit {
   constructor(data = {}) {
     this.date = data.date; // YYYY-MM-DD
     this.water = data.water || 0; // glasses (out of 8)
-    this.sleep = data.sleep || 0; // hours
+    this.sleepHours = Number(data.sleepHours ?? data.sleep ?? 0); // hours
     this.steps = data.steps || 0;
     this.mood = data.mood || ''; // great|good|okay|bad
     this.energy = data.energy || ''; // high|medium|low

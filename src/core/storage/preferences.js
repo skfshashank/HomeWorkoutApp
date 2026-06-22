@@ -7,12 +7,24 @@ const DEFAULT_FEATURE_FLAGS = Object.freeze({
   settings: true,
   achievements: true,
   soreness: true,
+  habits: true,
   habitSignals: true,
   recoveryInsights: true,
   exerciseLibrary: true,
   customWorkouts: true,
   timers: true
 });
+
+const normalizeFeatureFlags = (flags = {}) => {
+  const normalized = {
+    ...DEFAULT_FEATURE_FLAGS,
+    ...(flags || {})
+  };
+  const habitsEnabled = (flags?.habits ?? flags?.habitSignals ?? DEFAULT_FEATURE_FLAGS.habits) !== false;
+  normalized.habits = habitsEnabled;
+  normalized.habitSignals = habitsEnabled;
+  return normalized;
+};
 
 export class Preferences {
   #prefix;
@@ -48,10 +60,7 @@ export class Preferences {
   }
 
   getFeatureFlags() {
-    return {
-      ...DEFAULT_FEATURE_FLAGS,
-      ...(this.get('featureFlags', {}) || {})
-    };
+    return normalizeFeatureFlags(this.get('featureFlags', {}));
   }
 
   isFeatureEnabled(feature) {
@@ -61,6 +70,10 @@ export class Preferences {
   setFeatureFlag(feature, enabled) {
     const flags = this.getFeatureFlags();
     flags[feature] = enabled;
+    if (feature === 'habits' || feature === 'habitSignals') {
+      flags.habits = enabled;
+      flags.habitSignals = enabled;
+    }
     this.set('featureFlags', flags);
   }
 

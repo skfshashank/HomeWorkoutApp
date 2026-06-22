@@ -27,33 +27,32 @@ export class SettingsView {
   async render() {
     const user = this.ctx.updateProfile.getUser();
     const profiles = await this.ctx.updateProfile.getProfiles();
-    const {
-      language,
-      units,
-      soundEnabled,
-      voiceEnabled,
-      theme,
-      reminderConfig
-    } = this.ctx.updateProfile.getSettings();
+    const settings = this.ctx.updateProfile.getSettings();
+    const reminderConfig = settings.reminderConfig;
     const reminderTime = `${String(reminderConfig.hour).padStart(2, '0')}:${String(reminderConfig.minute).padStart(2, '0')}`;
-    const t = (key, fallback = key) => this.t(key, fallback);
 
     this.el.innerHTML = `
-      <div class="page-title">${t('settings', 'Settings')}</div>
+      <div class="page-title">${this.t('settings', 'Settings')}</div>
       <p class="page-subtitle">Manage profiles, audio options, local backups, and storage.</p>
+      ${this.renderProfileSection(user, profiles, settings.units)}
+      ${this.renderPreferencesSection(settings, reminderTime, user)}
+      ${this.renderDataSection()}`;
+  }
 
+  renderProfileSection(user, profiles, units) {
+    return `
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
             <h2>${user.avatar} ${user.name || 'OpenFit Athlete'}</h2>
             <p class="text-sm text-muted">${user.goal.replaceAll('_', ' ')} • ${user.focusArea.replaceAll('_', ' ')} focus • ${user.level}</p>
           </div>
-          <button class="btn btn-primary btn-sm" data-action="edit-profile" data-profile-id="${user.id}">${t('edit', 'Edit')}</button>
+          <button class="btn btn-primary btn-sm" data-action="edit-profile" data-profile-id="${user.id}">${this.t('edit', 'Edit')}</button>
         </div>
         <div class="setting-row"><span class="setting-label">Age</span><span class="setting-value">${user.age}</span></div>
         <div class="setting-row"><span class="setting-label">Height</span><span class="setting-value">${formatHeight(user, units)}</span></div>
         <div class="setting-row"><span class="setting-label">Weight</span><span class="setting-value">${formatWeight(user, units)}</span></div>
-        <div class="setting-row"><span class="setting-label">${t('daily_target', 'Daily target')}</span><span class="setting-value">${user.dailyMinutes} min</span></div>
+        <div class="setting-row"><span class="setting-label">${this.t('daily_target', 'Daily target')}</span><span class="setting-value">${user.dailyMinutes} min</span></div>
       </section>
 
       <section class="card">
@@ -62,7 +61,7 @@ export class SettingsView {
             <h2>Profiles</h2>
             <p class="text-sm text-muted">Switching profiles swaps workout history, habits, measurements, and achievements.</p>
           </div>
-          <button class="btn btn-primary btn-sm" data-action="add-profile">${t('add_profile', 'Add Profile')}</button>
+          <button class="btn btn-primary btn-sm" data-action="add-profile">${this.t('add_profile', 'Add Profile')}</button>
         </div>
         ${profiles.map((profile) => `
           <div class="profile-switcher ${profile.id === user.id ? 'active' : ''}">
@@ -71,44 +70,59 @@ export class SettingsView {
               <p class="text-sm text-muted">${profile.goal.replaceAll('_', ' ')} • ${profile.level}</p>
             </div>
             <div class="flex gap-8 flex-wrap">
-              ${profile.id !== user.id ? `<button class="btn btn-secondary btn-sm" data-action="switch-profile" data-profile-id="${profile.id}">${t('switch', 'Switch')}</button>` : `<span class="chip">${t('active', 'Active')}</span>`}
-              <button class="btn btn-secondary btn-sm" data-action="edit-profile" data-profile-id="${profile.id}">${t('edit', 'Edit')}</button>
-              ${profiles.length > 1 ? `<button class="btn btn-danger btn-sm" data-action="delete-profile" data-profile-id="${profile.id}">${t('delete', 'Delete')}</button>` : ''}
+              ${profile.id !== user.id ? `<button class="btn btn-secondary btn-sm" data-action="switch-profile" data-profile-id="${profile.id}">${this.t('switch', 'Switch')}</button>` : `<span class="chip">${this.t('active', 'Active')}</span>`}
+              <button class="btn btn-secondary btn-sm" data-action="edit-profile" data-profile-id="${profile.id}">${this.t('edit', 'Edit')}</button>
+              ${profiles.length > 1 ? `<button class="btn btn-danger btn-sm" data-action="delete-profile" data-profile-id="${profile.id}">${this.t('delete', 'Delete')}</button>` : ''}
             </div>
           </div>`).join('')}
-      </section>
+      </section>`;
+  }
 
+  renderPreferencesSection(settings, reminderTime, user) {
+    const {
+      language,
+      units,
+      soundEnabled,
+      voiceEnabled,
+      theme,
+      reminderConfig
+    } = settings;
+
+    return `
       <section class="card">
-        <div class="setting-row"><div><div class="setting-label">${t('language', 'Language')}</div><div class="setting-value">${language === 'hi' ? t('hindi', 'हिंदी') : t('english', 'English')}</div></div><div class="flex gap-8"><button class="chip ${language === 'en' ? 'active' : ''}" data-action="language" data-value="en">${t('english', 'English')}</button><button class="chip ${language === 'hi' ? 'active' : ''}" data-action="language" data-value="hi">${t('hindi', 'हिंदी')}</button></div></div>
-        <div class="setting-row"><div><div class="setting-label">${t('sound', 'Sound')}</div><div class="setting-value">Workout beeps and completion tones</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${t('voice_coach', 'Voice Coach')}</div><div class="setting-value">Exercise prompts and rest guidance</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${t('dark_mode', 'Dark mode')}</div><div class="setting-value">${theme === 'dark' ? 'High-contrast dark theme' : 'Bright light theme'}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-theme" ${theme === 'dark' ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
-        <div class="setting-row"><div><div class="setting-label">${t('units', 'Units')}</div><div class="setting-value">Choose how height and weight are displayed</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button></div></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('language', 'Language')}</div><div class="setting-value">${language === 'hi' ? this.t('hindi', 'हिंदी') : this.t('english', 'English')}</div></div><div class="flex gap-8"><button class="chip ${language === 'en' ? 'active' : ''}" data-action="language" data-value="en">${this.t('english', 'English')}</button><button class="chip ${language === 'hi' ? 'active' : ''}" data-action="language" data-value="hi">${this.t('hindi', 'हिंदी')}</button></div></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('sound', 'Sound')}</div><div class="setting-value">Workout beeps and completion tones</div></div><label class="toggle"><input type="checkbox" data-action="toggle-sound" ${soundEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('voice_coach', 'Voice Coach')}</div><div class="setting-value">Exercise prompts and rest guidance</div></div><label class="toggle"><input type="checkbox" data-action="toggle-voice" ${voiceEnabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('dark_mode', 'Dark mode')}</div><div class="setting-value">${theme === 'dark' ? 'High-contrast dark theme' : 'Bright light theme'}</div></div><label class="toggle"><input type="checkbox" data-action="toggle-theme" ${theme === 'dark' ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+        <div class="setting-row"><div><div class="setting-label">${this.t('units', 'Units')}</div><div class="setting-value">Choose how height and weight are displayed</div></div><div class="flex gap-8"><button class="chip ${units === 'metric' ? 'active' : ''}" data-action="units" data-value="metric">Metric</button><button class="chip ${units === 'imperial' ? 'active' : ''}" data-action="units" data-value="imperial">Imperial</button></div></div>
       </section>
 
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
-            <h2>${t('workout_reminder', 'Workout Reminder')}</h2>
+            <h2>${this.t('workout_reminder', 'Workout Reminder')}</h2>
             <p class="text-sm text-muted">Shows when you open the app after your reminder time and have not finished today's workout.</p>
           </div>
           <label class="toggle"><input type="checkbox" data-action="toggle-reminder" ${reminderConfig.enabled ? 'checked' : ''} ${!this.ctx.notifications?.isAvailable ? 'disabled' : ''}><span class="toggle-slider"></span></label>
         </div>
         <div class="grid-2">
           <div class="form-group">
-            <label class="form-label">${t('reminder_time', 'Reminder time')}</label>
+            <label class="form-label">${this.t('reminder_time', 'Reminder time')}</label>
             <input class="form-input" type="time" data-action="reminder-time" value="${reminderTime}" ${reminderConfig.enabled && this.ctx.notifications?.isAvailable ? '' : 'disabled'}>
           </div>
           <div class="form-group">
-            <label class="form-label">${t('message_preview', 'Message preview')}</label>
+            <label class="form-label">${this.t('message_preview', 'Message preview')}</label>
             <div class="setting-hint">Time for your workout! 💪 Your ${user.goal.replaceAll('_', ' ')} routine is waiting.</div>
           </div>
         </div>
         <p class="text-sm text-muted">${this.ctx.notifications?.isAvailable ? 'Browser notification permission is requested when you enable reminders.' : 'This browser does not support local notifications.'}</p>
-      </section>
+      </section>`;
+  }
 
-      <section class="card"><button class="btn btn-secondary w-full mb-16" data-action="export-backup">${t('export_backup', 'Export backup')}</button><button class="btn btn-secondary w-full mb-16" data-action="import-backup">${t('import_backup', 'Import backup')}</button><input type="file" id="backup-file-input" accept="application/json" class="hidden"><button class="btn btn-danger w-full" data-action="reset-data">${t('reset_all_data', 'Reset all local data')}</button></section>
-      <section class="card"><div class="setting-row"><span class="setting-label">${t('app_version', 'App version')}</span><span class="setting-value">OpenFit Local v2</span></div><div class="setting-row"><span class="setting-label">${t('storage', 'Storage')}</span><span class="setting-value">Offline-first browser storage</span></div></section>`;
+  renderDataSection() {
+    return `
+      <section class="card"><button class="btn btn-secondary w-full mb-16" data-action="export-backup">${this.t('export_backup', 'Export backup')}</button><button class="btn btn-secondary w-full mb-16" data-action="import-backup">${this.t('import_backup', 'Import backup')}</button><input type="file" id="backup-file-input" accept="application/json" class="hidden"><button class="btn btn-danger w-full" data-action="reset-data">${this.t('reset_all_data', 'Reset all local data')}</button></section>
+      <section class="card"><div class="setting-row"><span class="setting-label">${this.t('app_version', 'App version')}</span><span class="setting-value">OpenFit Local v2</span></div><div class="setting-row"><span class="setting-label">${this.t('storage', 'Storage')}</span><span class="setting-value">Offline-first browser storage</span></div></section>`;
   }
 
   async handleClick(event) {

@@ -6,11 +6,11 @@ const formatDate = (value) => parseDateSafe(value).toLocaleDateString(undefined,
 const formatUnitsWeight = (value, units) => units === 'imperial' ? `${(value * 2.20462).toFixed(1)} lb` : `${value.toFixed(1)} kg`;
 const formatUnitsHeight = (value, units) => units === 'imperial' ? `${(value / 2.54).toFixed(1)} in` : `${value} cm`;
 
-const bodyFatCategory = (gender, value) => {
-  if (!value && value !== 0) return '—';
-  const male = [['Essential', 5], ['Athletes', 13], ['Fitness', 17], ['Average', 24], ['Obese', Infinity]];
-  const female = [['Essential', 13], ['Athletes', 20], ['Fitness', 24], ['Average', 31], ['Obese', Infinity]];
-  return (gender === 'female' ? female : male).find((entry) => value <= entry[1])?.[0] || 'Average';
+const bodyFatCategoryKey = (gender, value) => {
+  if (!value && value !== 0) return null;
+  const male = [['bodyfat_essential', 5], ['bodyfat_athletes', 13], ['bodyfat_fitness', 17], ['bodyfat_average', 24], ['bodyfat_obese', Infinity]];
+  const female = [['bodyfat_essential', 13], ['bodyfat_athletes', 20], ['bodyfat_fitness', 24], ['bodyfat_average', 31], ['bodyfat_obese', Infinity]];
+  return (gender === 'female' ? female : male).find((entry) => value <= entry[1])?.[0] || 'bodyfat_average';
 };
 
 export class ProgressView {
@@ -34,6 +34,10 @@ export class ProgressView {
     });
   }
 
+  t(key, fallback = key) {
+    return this.ctx.i18n?.t(key) || fallback;
+  }
+
   async render() {
     const { user, units } = this.ctx.updateProfile.getSettings();
     const progress = await this.ctx.getProgress.execute({ historyLimit: 20 });
@@ -46,6 +50,7 @@ export class ProgressView {
     const measurements = progress.measurements;
 
     const bmi = user.bmi;
+    const bmiCategoryKey = this.getBmiCategoryKey(bmi);
     const latestMeasurement = measurements[0] || {};
     const monthTitle = parseDateSafe(`${getLocalMonthStr()}-01`).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
     const bodyFatValue = latestMeasurement.bodyFat ?? this.calculateBodyFat({
@@ -55,79 +60,80 @@ export class ProgressView {
       neck: latestMeasurement.neck,
       hip: latestMeasurement.hip
     });
+    const bodyFatLabel = bodyFatValue ? this.t(bodyFatCategoryKey(user.gender, bodyFatValue), 'Average') : this.t('add_measurements', 'Add measurements');
 
     this.el.innerHTML = `
-      <div class="page-title">Progress</div>
-      <p class="page-subtitle">Everything you have earned — streaks, stats, adherence, body composition, and lifetime counts.</p>
+      <div class="page-title">${this.t('progress_title', 'Progress')}</div>
+      <p class="page-subtitle">${this.t('progress_subtitle', 'Everything you have earned — streaks, stats, adherence, body composition, and lifetime counts.')}</p>
 
       <section class="card">
         <div class="grid-2">
-          <div class="stat-card"><div class="stat-value">${stats.totalWorkouts || 0}</div><div class="stat-label">Workouts</div></div>
-          <div class="stat-card"><div class="stat-value">${stats.totalCaloriesBurned || stats.totalCalories || 0}</div><div class="stat-label">Calories</div></div>
-          <div class="stat-card"><div class="stat-value">${stats.totalMinutes || 0}</div><div class="stat-label">Minutes</div></div>
-          <div class="stat-card"><div class="stat-value">${stats.level || 1}</div><div class="stat-label">XP Level</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.totalWorkouts || 0}</div><div class="stat-label">${this.t('workouts', 'Workouts')}</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.totalCaloriesBurned || stats.totalCalories || 0}</div><div class="stat-label">${this.t('calories', 'Calories')}</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.totalMinutes || 0}</div><div class="stat-label">${this.t('minutes', 'Minutes')}</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.level || 1}</div><div class="stat-label">${this.t('xp_level', 'XP Level')}</div></div>
         </div>
       </section>
 
       <section class="card">
         <div class="flex flex-between gap-12 mb-16">
           <div>
-            <h2>Lifetime Count Bank</h2>
-            <p class="text-sm text-muted">Auto-updated after workouts and habit logs.</p>
+            <h2>${this.t('lifetime_count_bank', 'Lifetime Count Bank')}</h2>
+            <p class="text-sm text-muted">${this.t('lifetime_count_bank_subtitle', 'Auto-updated after workouts and habit logs.')}</p>
           </div>
-          ${this.ctx.features?.achievements !== false ? '<button class="btn btn-secondary btn-sm" data-action="open-achievements">Achievements</button>' : ''}
+          ${this.ctx.features?.achievements !== false ? `<button class="btn btn-secondary btn-sm" data-action="open-achievements">${this.t('achievements', 'Achievements')}</button>` : ''}
         </div>
         <div class="grid-2">
-          <div class="stat-card"><div class="stat-value">${Number(stats.totalHoursExercised || ((stats.totalMinutes || 0) / 60)).toFixed(1)}</div><div class="stat-label">Hours exercised</div></div>
-          <div class="stat-card"><div class="stat-value">${stats.bestStreakEver || bestStreak}</div><div class="stat-label">Best streak</div></div>
-          <div class="stat-card"><div class="stat-value">${Math.round(stats.totalPlankSec || 0)}</div><div class="stat-label">Plank seconds</div></div>
-          <div class="stat-card"><div class="stat-value">${Number(stats.totalYogaMin || 0).toFixed(1)}</div><div class="stat-label">Yoga minutes</div></div>
-          <div class="stat-card"><div class="stat-value">${stats.totalStepsLogged || 0}</div><div class="stat-label">Steps logged</div></div>
-          <div class="stat-card"><div class="stat-value">${Object.values(stats.totalReps || {}).reduce((sum, value) => sum + value, 0)}</div><div class="stat-label">Total reps</div></div>
+          <div class="stat-card"><div class="stat-value">${Number(stats.totalHoursExercised || ((stats.totalMinutes || 0) / 60)).toFixed(1)}</div><div class="stat-label">${this.t('hours_exercised', 'Hours exercised')}</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.bestStreakEver || bestStreak}</div><div class="stat-label">${this.t('best_streak', 'Best streak')}</div></div>
+          <div class="stat-card"><div class="stat-value">${Math.round(stats.totalPlankSec || 0)}</div><div class="stat-label">${this.t('plank_seconds', 'Plank seconds')}</div></div>
+          <div class="stat-card"><div class="stat-value">${Number(stats.totalYogaMin || 0).toFixed(1)}</div><div class="stat-label">${this.t('yoga_minutes', 'Yoga minutes')}</div></div>
+          <div class="stat-card"><div class="stat-value">${stats.totalStepsLogged || 0}</div><div class="stat-label">${this.t('steps_logged', 'Steps logged')}</div></div>
+          <div class="stat-card"><div class="stat-value">${Object.values(stats.totalReps || {}).reduce((sum, value) => sum + value, 0)}</div><div class="stat-label">${this.t('total_reps', 'Total reps')}</div></div>
         </div>
         <div class="flex flex-wrap gap-8 mt-16">
-          ${Object.entries(stats.totalReps || {}).slice(0, 6).map(([key, value]) => `<span class="chip">${key.replaceAll('-', ' ')}: ${value}</span>`).join('') || '<span class="text-sm text-muted">Rep totals will appear after your next completed workout.</span>'}
+          ${Object.entries(stats.totalReps || {}).slice(0, 6).map(([key, value]) => `<span class="chip">${key.replaceAll('-', ' ')}: ${value}</span>`).join('') || `<span class="text-sm text-muted">${this.t('rep_totals_empty', 'Rep totals will appear after your next completed workout.')}</span>`}
         </div>
       </section>
 
       <section class="grid-2">
         <article class="card">
-          <div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">current streak</div></div></div>
-          <p class="text-sm text-muted mt-8">Best streak: ${bestStreak} days</p>
+          <div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">${this.t('current_streak', 'current streak')}</div></div></div>
+          <p class="text-sm text-muted mt-8">${this.t('best_streak_days', 'Best streak')}: ${bestStreak} ${this.t('day_streak', 'day streak')}</p>
         </article>
         <article class="card">
-          <h2>Weekly Consistency</h2>
+          <h2>${this.t('weekly_consistency', 'Weekly Consistency')}</h2>
           <div class="stat-value" style="color:${consistency >= 70 ? 'var(--green)' : consistency >= 40 ? 'var(--orange)' : 'var(--red)'};">${consistency}%</div>
-          <p class="text-sm text-muted">A color-coded snapshot of how often you trained this week.</p>
+          <p class="text-sm text-muted">${this.t('weekly_consistency_subtitle', 'A color-coded snapshot of how often you trained this week.')}</p>
         </article>
       </section>
 
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>BMI Calculator</h2><p class="text-sm text-muted">Calculated from your profile.</p></div><span class="chip">${user.bmiCategory}</span></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('bmi_calculator', 'BMI Calculator')}</h2><p class="text-sm text-muted">${this.t('calculated_from_profile', 'Calculated from your profile.')}</p></div><span class="chip">${this.t(bmiCategoryKey, user.bmiCategory)}</span></div>
         <div class="grid-2 mb-16">
-          <div class="form-group"><label class="form-label">Height (${units === 'metric' ? 'cm' : 'in'})</label><input class="form-input" id="bmi-height" type="number" value="${units === 'metric' ? user.height : (user.height / 2.54).toFixed(1)}"></div>
-          <div class="form-group"><label class="form-label">Weight (${units === 'metric' ? 'kg' : 'lb'})</label><input class="form-input" id="bmi-weight" type="number" value="${units === 'metric' ? user.weight : (user.weight * 2.20462).toFixed(1)}"></div>
+          <div class="form-group"><label class="form-label">${this.t('height', 'Height')} (${units === 'metric' ? 'cm' : 'in'})</label><input class="form-input" id="bmi-height" type="number" value="${units === 'metric' ? user.height : (user.height / 2.54).toFixed(1)}"></div>
+          <div class="form-group"><label class="form-label">${this.t('weight', 'Weight')} (${units === 'metric' ? 'kg' : 'lb'})</label><input class="form-input" id="bmi-weight" type="number" value="${units === 'metric' ? user.weight : (user.weight * 2.20462).toFixed(1)}"></div>
         </div>
-        <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bmi">Recalculate</button><div class="text-right"><div class="stat-value" id="bmi-output">${bmi}</div><div class="stat-label" id="bmi-category">${user.bmiCategory}</div></div></div>
+        <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bmi">${this.t('recalculate', 'Recalculate')}</button><div class="text-right"><div class="stat-value" id="bmi-output">${bmi}</div><div class="stat-label" id="bmi-category">${this.t(bmiCategoryKey, user.bmiCategory)}</div></div></div>
       </section>
 
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>Body Fat Estimator</h2><p class="text-sm text-muted">US Navy method.</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">Add measurement</button></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('body_fat_estimator', 'Body Fat Estimator')}</h2><p class="text-sm text-muted">${this.t('us_navy_method', 'US Navy method.')}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">${this.t('add_measurement', 'Add measurement')}</button></div>
         <div class="grid-2 mb-16">
-          <div class="form-group"><label class="form-label">Waist (cm)</label><input class="form-input" id="bf-waist" type="number" value="${latestMeasurement.waist || ''}"></div>
-          <div class="form-group"><label class="form-label">Neck (cm)</label><input class="form-input" id="bf-neck" type="number" value="${latestMeasurement.neck || ''}"></div>
-          ${user.gender === 'female' ? `<div class="form-group"><label class="form-label">Hip (cm)</label><input class="form-input" id="bf-hip" type="number" value="${latestMeasurement.hip || ''}"></div>` : '<div></div>'}
+          <div class="form-group"><label class="form-label">${this.t('waist_cm', 'Waist (cm)')}</label><input class="form-input" id="bf-waist" type="number" value="${latestMeasurement.waist || ''}"></div>
+          <div class="form-group"><label class="form-label">${this.t('neck_cm', 'Neck (cm)')}</label><input class="form-input" id="bf-neck" type="number" value="${latestMeasurement.neck || ''}"></div>
+          ${user.gender === 'female' ? `<div class="form-group"><label class="form-label">${this.t('hip_cm', 'Hip (cm)')}</label><input class="form-input" id="bf-hip" type="number" value="${latestMeasurement.hip || ''}"></div>` : '<div></div>'}
         </div>
-        <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bodyfat">Calculate</button><div class="text-right"><div class="stat-value" id="bodyfat-output">${bodyFatValue ? bodyFatValue.toFixed(1) : '—'}%</div><div class="stat-label" id="bodyfat-category">${bodyFatValue ? bodyFatCategory(user.gender, bodyFatValue) : 'Add measurements'}</div></div></div>
+        <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bodyfat">${this.t('calculate', 'Calculate')}</button><div class="text-right"><div class="stat-value" id="bodyfat-output">${bodyFatValue ? bodyFatValue.toFixed(1) : '—'}%</div><div class="stat-label" id="bodyfat-category">${bodyFatLabel}</div></div></div>
       </section>
 
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Calendar Heatmap</h2><p class="text-sm text-muted">${monthTitle}</p></div></div><div class="grid-7">${this.renderHeatmap(heatmap)}</div></section>
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('calendar_heatmap', 'Calendar Heatmap')}</h2><p class="text-sm text-muted">${monthTitle}</p></div></div><div class="grid-7">${this.renderHeatmap(heatmap)}</div></section>
 
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Workout History</h2><p class="text-sm text-muted">Last 20 sessions</p></div></div>${history.length ? history.map((entry) => `
-          <div class="history-item"><div class="history-date"><div class="day">${new Date(entry.completedAt).getDate()}</div><div class="month">${new Date(entry.completedAt).toLocaleDateString(undefined, { month: 'short' })}</div></div><div class="history-info"><h4>${entry.workout}</h4><p>${entry.duration} min • ${entry.calories} kcal • ${entry.exercises} exercises</p>${entry.note ? `<div class="history-note">📝 ${entry.note}</div>` : ''}</div></div>`).join('') : '<p class="text-sm text-muted">No completed workouts yet.</p>'}</section>
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('workout_history', 'Workout History')}</h2><p class="text-sm text-muted">${this.t('last_20_sessions', 'Last 20 sessions')}</p></div></div>${history.length ? history.map((entry) => `
+          <div class="history-item"><div class="history-date"><div class="day">${new Date(entry.completedAt).getDate()}</div><div class="month">${new Date(entry.completedAt).toLocaleDateString(undefined, { month: 'short' })}</div></div><div class="history-info"><h4>${entry.workout}</h4><p>${entry.duration} min • ${entry.calories} kcal • ${entry.exercises} ${this.t('exercises', 'Exercises').toLowerCase()}</p>${entry.note ? `<div class="history-note">📝 ${entry.note}</div>` : ''}</div></div>`).join('') : `<p class="text-sm text-muted">${this.t('no_completed_workouts', 'No completed workouts yet.')}</p>`}</section>
 
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Measurement Log</h2><p class="text-sm text-muted">Current profile: ${formatUnitsWeight(user.weight, units)} • Height: ${formatUnitsHeight(user.height, units)}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">Add</button></div>${measurements.length ? measurements.slice(0, 20).map((entry) => `
-          <div class="history-item"><div class="history-info"><h4>${formatDate(entry.date)}</h4><p>${formatUnitsWeight(Number(entry.weight || 0), units)}${entry.waist ? ` • Waist ${entry.waist} cm` : ''}${entry.bodyFat ? ` • ${entry.bodyFat.toFixed(1)}% BF` : ''}${entry.note ? ` • ${entry.note}` : ''}</p></div></div>`).join('') : '<p class="text-sm text-muted">No measurement entries yet.</p>'}</section>`;
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('measurement_log', 'Measurement Log')}</h2><p class="text-sm text-muted">${this.t('current_profile', 'Current profile')}: ${formatUnitsWeight(user.weight, units)} • ${this.t('height', 'Height')}: ${formatUnitsHeight(user.height, units)}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">${this.t('add', 'Add')}</button></div>${measurements.length ? measurements.slice(0, 20).map((entry) => `
+          <div class="history-item"><div class="history-info"><h4>${formatDate(entry.date)}</h4><p>${formatUnitsWeight(Number(entry.weight || 0), units)}${entry.waist ? ` • ${this.t('waist_cm', 'Waist (cm)').replace(' (cm)', '')} ${entry.waist} cm` : ''}${entry.bodyFat ? ` • ${entry.bodyFat.toFixed(1)}% BF` : ''}${entry.note ? ` • ${entry.note}` : ''}</p></div></div>`).join('') : `<p class="text-sm text-muted">${this.t('no_measurement_entries', 'No measurement entries yet.')}</p>`}</section>`;
   }
 
   renderHeatmap(logs) {
@@ -160,6 +166,13 @@ export class ProgressView {
     if (action === 'open-achievements') this.ctx.router.navigate('achievements');
   }
 
+  getBmiCategoryKey(bmi) {
+    if (bmi < 18.5) return 'bmi_underweight';
+    if (bmi < 25) return 'bmi_normal';
+    if (bmi < 30) return 'bmi_overweight';
+    return 'bmi_obese';
+  }
+
   calculateBMI() {
     const { units } = this.ctx.updateProfile.getSettings();
     const heightInput = Number(this.el.querySelector('#bmi-height')?.value || 0);
@@ -168,9 +181,9 @@ export class ProgressView {
     const weightKg = units === 'metric' ? weightInput : weightInput / 2.20462;
     const meters = heightCm / 100;
     const bmi = meters > 0 ? (weightKg / (meters * meters)) : 0;
-    const category = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Normal' : bmi < 30 ? 'Overweight' : 'Obese';
+    const categoryKey = this.getBmiCategoryKey(bmi);
     this.el.querySelector('#bmi-output').textContent = bmi ? bmi.toFixed(1) : '0.0';
-    this.el.querySelector('#bmi-category').textContent = category;
+    this.el.querySelector('#bmi-category').textContent = this.t(categoryKey, 'Normal');
   }
 
   calculateBodyFat({ gender, height, waist, neck, hip }) {
@@ -196,21 +209,22 @@ export class ProgressView {
       neck: Number(this.el.querySelector('#bf-neck')?.value || 0),
       hip: Number(this.el.querySelector('#bf-hip')?.value || 0)
     });
+    const categoryKey = bodyFatCategoryKey(user.gender, value);
     this.el.querySelector('#bodyfat-output').textContent = value ? `${value.toFixed(1)}%` : '—';
-    this.el.querySelector('#bodyfat-category').textContent = value ? bodyFatCategory(user.gender, value) : 'Add measurements';
+    this.el.querySelector('#bodyfat-category').textContent = value ? this.t(categoryKey, 'Average') : this.t('add_measurements', 'Add measurements');
   }
 
   openWeightModal() {
     const { user } = this.ctx.updateProfile.getSettings();
     this.closeModal();
     openAccessibleModal(this, `
-      <h2 class="mb-16" id="modal-title">Add measurement entry</h2>
+      <h2 class="mb-16" id="modal-title">${this.t('add_measurement_entry', 'Add measurement entry')}</h2>
       <form id="weight-form">
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" name="date" value="${getLocalDateStr()}" required></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" step="0.1" name="weight" value="${user.weight}" required></div><div class="form-group"><label class="form-label">Waist (cm)</label><input class="form-input" type="number" step="0.1" name="waist"></div></div>
-        <div class="grid-2"><div class="form-group"><label class="form-label">Neck (cm)</label><input class="form-input" type="number" step="0.1" name="neck"></div>${user.gender === 'female' ? '<div class="form-group"><label class="form-label">Hip (cm)</label><input class="form-input" type="number" step="0.1" name="hip"></div>' : '<div></div>'}</div>
-        <div class="form-group"><label class="form-label">Note</label><input class="form-input" type="text" name="note" placeholder="Optional"></div>
-        <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close="true">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+        <div class="form-group"><label class="form-label">${this.t('date', 'Date')}</label><input class="form-input" type="date" name="date" value="${getLocalDateStr()}" required></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('weight', 'Weight')} (kg)</label><input class="form-input" type="number" step="0.1" name="weight" value="${user.weight}" required></div><div class="form-group"><label class="form-label">${this.t('waist_cm', 'Waist (cm)')}</label><input class="form-input" type="number" step="0.1" name="waist"></div></div>
+        <div class="grid-2"><div class="form-group"><label class="form-label">${this.t('neck_cm', 'Neck (cm)')}</label><input class="form-input" type="number" step="0.1" name="neck"></div>${user.gender === 'female' ? `<div class="form-group"><label class="form-label">${this.t('hip_cm', 'Hip (cm)')}</label><input class="form-input" type="number" step="0.1" name="hip"></div>` : '<div></div>'}</div>
+        <div class="form-group"><label class="form-label">${this.t('note', 'Note')}</label><input class="form-input" type="text" name="note" placeholder="${this.t('optional', 'Optional')}"></div>
+        <div class="grid-2 mt-24"><button type="button" class="btn btn-secondary" data-close="true">${this.t('cancel', 'Cancel')}</button><button type="submit" class="btn btn-primary">${this.t('save', 'Save')}</button></div>
       </form>`, async (event) => {
       if (event.target.closest('[data-close]')) {
         this.closeModal();

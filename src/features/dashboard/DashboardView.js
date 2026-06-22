@@ -6,6 +6,7 @@ const formatClock = (seconds) => {
   const secs = seconds % 60;
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
+
 const dayLabel = (dateStr) => parseDateSafe(dateStr).toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 1);
 
 export class DashboardView {
@@ -56,7 +57,7 @@ export class DashboardView {
       <div class="dashboard-header mb-16">
         <div>
           <div class="page-title">${user.avatar} ${getGreeting()}, ${user.name || 'Athlete'} ✨</div>
-          <p class="page-subtitle">Your local-first coach for workouts, habits, recovery, and milestones.</p>
+          <p class="page-subtitle">${this.t('dashboard_subtitle', 'Your local-first coach for workouts, habits, recovery, and milestones.')}</p>
         </div>
         <div class="offline-badge" role="status" aria-label="App works offline">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -66,32 +67,52 @@ export class DashboardView {
         </div>
       </div>
       <section class="card hero-card card--hero">
-        <div class="flex flex-between gap-12"><div><div class="text-sm text-muted">Daily completion</div><h2>${todayProgress}% done</h2><p class="text-sm text-muted">Target: ${user.dailyMinutes} min • Goal: ${user.goal.replaceAll('_', ' ')}</p></div>${this.renderProgressRing(todayProgress)}</div>
-        <div class="grid-3 mt-16"><div class="stat-card"><div class="stat-value">${dailyLog.calories || 0}</div><div class="stat-label">Calories</div></div><div class="stat-card"><div class="stat-value">${dailyLog.minutes || 0}</div><div class="stat-label">Minutes</div></div><div class="stat-card"><div class="stat-value">${achievementSnapshot.stats.level}</div><div class="stat-label">XP Level</div></div></div>
+        <div class="flex flex-between gap-12"><div><div class="text-sm text-muted">${this.t('daily_completion', 'Daily completion')}</div><h2>${todayProgress}% ${this.t('done_label', 'done')}</h2><p class="text-sm text-muted">${this.t('target', 'Target')}: ${user.dailyMinutes} min • ${this.t('goal', 'Goal')}: ${user.goal.replaceAll('_', ' ')}</p></div>${this.renderProgressRing(todayProgress)}</div>
+        <div class="grid-3 mt-16"><div class="stat-card"><div class="stat-value">${dailyLog.calories || 0}</div><div class="stat-label">${this.t('calories', 'Calories')}</div></div><div class="stat-card"><div class="stat-value">${dailyLog.minutes || 0}</div><div class="stat-label">${this.t('minutes', 'Minutes')}</div></div><div class="stat-card"><div class="stat-value">${achievementSnapshot.stats.level}</div><div class="stat-label">${this.t('xp_level', 'XP Level')}</div></div></div>
       </section>
       <section class="grid-2">
-        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('streak', 'Streak')}</h2><p class="text-sm text-muted">Consistency compounds faster than intensity.</p></div><div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">day streak</div></div></div></div><div class="grid-7">${weekDates.map((dateStr) => `<div class="calendar-cell ${completedDates.has(dateStr) ? 'completed' : ''} ${dateStr === progress.dailyLog.date ? 'today' : ''}"><strong>${dayLabel(dateStr)}</strong><span class="day-label">${parseDateSafe(dateStr).getDate()}</span></div>`).join('')}</div></article>
-        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Achievement XP</h2><p class="text-sm text-muted">${achievementSnapshot.unlockedCount} unlocked • ${achievementSnapshot.stats.xp} XP total</p></div><span class="chip">Lvl ${achievementSnapshot.stats.level}</span></div><div class="progress-meter mb-8"><span style="width:${achievementSnapshot.stats.xp % 100}%"></span></div><p class="text-sm text-muted">${nextAchievement ? `Next: ${nextAchievement.title} (${nextAchievement.progress.percent}%)` : 'Everything unlocked. Legendary.'}</p>${this.ctx.features.achievements !== false ? `<button class="btn btn-secondary mt-16 w-full" data-action="open-achievements">${this.t('achievements', 'Achievements')}</button>` : ''}</article>
+        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('streak', 'Streak')}</h2><p class="text-sm text-muted">${this.t('streak_hint', 'Consistency compounds faster than intensity.')}</p></div><div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">${this.t('day_streak', 'day streak')}</div></div></div></div><div class="grid-7">${weekDates.map((dateStr) => `<div class="calendar-cell ${completedDates.has(dateStr) ? 'completed' : ''} ${dateStr === progress.dailyLog.date ? 'today' : ''}"><strong>${dayLabel(dateStr)}</strong><span class="day-label">${parseDateSafe(dateStr).getDate()}</span></div>`).join('')}</div></article>
+        ${this.renderAchievementCard(achievementSnapshot, nextAchievement)}
       </section>
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('today_workout', "Today's Workout")}</h2><p class="text-sm text-muted">Generated from your goal, level, streak, and plan library.</p></div><span class="badge badge-${user.level}">${user.level}</span></div><div class="workout-card"><div class="flex flex-between gap-12"><div><strong>${this.todaysPlan.name}</strong><p class="text-sm text-muted">${this.todaysPlan.description}</p></div><div class="flex flex-col gap-8"><span class="chip">${this.todaysPlan.estimatedMinutes} min</span><span class="chip">${this.todaysPlan.estimatedCalories} kcal</span></div></div><div class="flex flex-wrap gap-8">${this.todaysPlan.preview.map((item) => `<span class="chip">${item}</span>`).join('')}</div><div class="flex gap-12 mt-16"><button class="btn btn-primary" data-action="start-today">${this.todaysPlan.isRestDay ? this.t('start_recovery_flow', 'Start recovery flow') : this.t('start_workout', 'Start workout')}</button><button class="btn btn-secondary" data-action="browse-workouts">${this.t('browse_plans', 'Browse plans')}</button></div></div></section>
-      <section class="grid-2"><article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Water Tracker</h2><p class="text-sm text-muted">Tap each glass as you finish it.</p></div><span class="chip">${water.length}/8</span></div><div class="water-row">${Array.from({ length: 8 }, (_, index) => `<button class="water-glass ${water.includes(index) ? 'filled' : ''}" data-action="toggle-water" data-index="${index}" aria-label="Glass ${index + 1} of 8" aria-pressed="${water.includes(index) ? 'true' : 'false'}"></button>`).join('')}</div></article><article class="card card--secondary desk-timer-card"><div class="flex flex-between gap-12 mb-16"><div><h2>Desk Mode</h2><p class="text-sm text-muted">50-minute movement reminders with office exercises.</p></div><label class="toggle"><input type="checkbox" data-action="toggle-desk" ${this.isDeskModeEnabled() ? 'checked' : ''}><span class="toggle-slider"></span></label></div><div class="desk-timer-display" id="desk-countdown">${this.getDeskCountdownLabel()}</div><p class="text-sm text-muted mt-8">${this.lastDeskPrompt || (this.isDeskModeEnabled() ? 'Desk mode is armed.' : 'Enable to get notified before posture gets grumpy.')}</p></article></section>
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Quick tools</h2><p class="text-sm text-muted">Open your library, habits, recovery, timers, and custom builder.</p></div></div><div class="quick-links-grid">${this.renderQuickLinks()}</div></section>
-      <section class="card card--secondary"><h2>Recently Used</h2><div class="flex flex-wrap gap-8">${recentExercises.length ? recentExercises.map((exercise) => `<span class="chip">${exercise.emoji} ${exercise.name}</span>`).join('') : '<span class="text-sm text-muted">Complete a workout to populate your recent exercise bank.</span>'}</div></section>
-      <section class="card card--secondary"><h2>Quote of the Day</h2><p class="text-sm" style="font-size:1rem;line-height:1.7;">“${quote}”</p></section>`;
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('today_workout', "Today's Workout")}</h2><p class="text-sm text-muted">${this.t('today_workout_subtitle', 'Generated from your goal, level, streak, and plan library.')}</p></div><span class="badge badge-${user.level}">${user.level}</span></div><div class="workout-card"><div class="flex flex-between gap-12"><div><strong>${this.translatePlanName(this.todaysPlan)}</strong><p class="text-sm text-muted">${this.todaysPlan.description}</p></div><div class="flex flex-col gap-8"><span class="chip">${this.todaysPlan.estimatedMinutes} min</span><span class="chip">${this.todaysPlan.estimatedCalories} kcal</span></div></div><div class="flex flex-wrap gap-8">${this.todaysPlan.preview.map((item) => `<span class="chip">${item}</span>`).join('')}</div><div class="flex gap-12 mt-16"><button class="btn btn-primary" data-action="start-today">${this.todaysPlan.isRestDay ? this.t('start_recovery_flow', 'Start recovery flow') : this.t('start_workout', 'Start workout')}</button><button class="btn btn-secondary" data-action="browse-workouts">${this.t('browse_plans', 'Browse plans')}</button></div></div></section>
+      <section class="grid-2">${this.renderWaterTracker(water)}${this.renderDeskTimer()}</section>
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('quick_tools', 'Quick tools')}</h2><p class="text-sm text-muted">${this.t('quick_tools_subtitle', 'Open your library, habits, recovery, timers, and custom builder.')}</p></div></div><div class="quick-links-grid">${this.renderQuickLinks()}</div></section>
+      <section class="card card--secondary"><h2>${this.t('recently_used', 'Recently Used')}</h2><div class="flex flex-wrap gap-8">${recentExercises.length ? recentExercises.map((exercise) => `<span class="chip">${exercise.emoji} ${exercise.name}</span>`).join('') : `<span class="text-sm text-muted">${this.t('recently_used_empty', 'Complete a workout to populate your recent exercise bank.')}</span>`}</div></section>
+      ${this.renderQuote(quote)}`;
     this.syncDeskTimer();
+  }
+
+  renderAchievementCard(achievementSnapshot, nextAchievement) {
+    if (this.ctx.features?.achievements === false) return '';
+    const nextLabel = nextAchievement
+      ? `${this.t('next', 'Next')}: ${this.translateAchievementText(nextAchievement, 'title')} (${nextAchievement.progress.percent}%)`
+      : this.t('legendary_all_unlocked', 'Everything unlocked. Legendary.');
+    return `<article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('achievement_xp', 'Achievement XP')}</h2><p class="text-sm text-muted">${achievementSnapshot.unlockedCount} ${this.t('unlocked', 'unlocked')} • ${achievementSnapshot.stats.xp} ${this.t('xp_total', 'XP total')}</p></div><span class="chip">${this.t('level_short', 'Lvl')} ${achievementSnapshot.stats.level}</span></div><div class="progress-meter mb-8"><span style="width:${achievementSnapshot.stats.xp % 100}%"></span></div><p class="text-sm text-muted">${nextLabel}</p><button class="btn btn-secondary mt-16 w-full" data-action="open-achievements">${this.t('achievements', 'Achievements')}</button></article>`;
+  }
+
+  renderWaterTracker(water) {
+    return `<article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('water_tracker', 'Water Tracker')}</h2><p class="text-sm text-muted">${this.t('tap_each_glass', 'Tap each glass as you finish it.')}</p></div><span class="chip">${water.length}/8</span></div><div class="water-row">${Array.from({ length: 8 }, (_, index) => `<button class="water-glass ${water.includes(index) ? 'filled' : ''}" data-action="toggle-water" data-index="${index}" aria-label="${this.t('glass', 'Glass')} ${index + 1} ${this.t('of', 'of')} 8" aria-pressed="${water.includes(index) ? 'true' : 'false'}"></button>`).join('')}</div></article>`;
+  }
+
+  renderDeskTimer() {
+    return `<article class="card card--secondary desk-timer-card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('desk_mode', 'Desk Mode')}</h2><p class="text-sm text-muted">${this.t('desk_mode_subtitle', '50-minute movement reminders with office exercises.')}</p></div><label class="toggle"><input type="checkbox" data-action="toggle-desk" ${this.isDeskModeEnabled() ? 'checked' : ''}><span class="toggle-slider"></span></label></div><div class="desk-timer-display" id="desk-countdown">${this.getDeskCountdownLabel()}</div><p class="text-sm text-muted mt-8">${this.lastDeskPrompt || (this.isDeskModeEnabled() ? this.t('desk_mode_armed', 'Desk mode is armed.') : this.t('desk_mode_prompt', 'Enable to get notified before posture gets grumpy.'))}</p></article>`;
+  }
+
+  renderQuote(quote) {
+    return `<section class="card card--secondary"><h2>${this.t('quote_of_day', 'Quote of the Day')}</h2><p class="text-sm" style="font-size:1rem;line-height:1.7;">“${quote}”</p></section>`;
   }
 
   renderQuickLinks() {
     const quickLinks = [
-      ['exerciseLibrary', 'exercises', '📚 Exercise Library'],
-      ['customWorkouts', 'custom-workouts', '🛠️ Custom Workout'],
-      ['habitSignals', 'habits', '💧 Habit Tracker'],
-      ['soreness', 'recovery', '🩹 Soreness Map'],
-      ['timers', 'timers', '⏱️ Interval Timers'],
-      ['progress', 'progress', '📈 Progress Tools']
+      ['exerciseLibrary', 'exercises', `📚 ${this.t('exercise_library_title', 'Exercise Library')}`],
+      ['customWorkouts', 'custom-workouts', `🛠️ ${this.t('build_custom_workout', 'Build Custom Workout')}`],
+      ['habits', 'habits', `💧 ${this.t('habit_tracker', 'Habit Tracker')}`],
+      ['soreness', 'recovery', `🩹 ${this.t('soreness_map', 'Soreness Map')}`],
+      ['timers', 'timers', `⏱️ ${this.t('interval_timers', 'Interval Timers')}`],
+      ['progress', 'progress', `📈 ${this.t('progress_tools', 'Progress Tools')}`]
     ];
     return quickLinks
-      .filter(([feature]) => this.ctx.features[feature] !== false)
+      .filter(([feature]) => this.ctx.features?.[feature] !== false)
       .map(([, page, label]) => `<button class="quick-link" data-action="open-page" data-page="${page}">${label}</button>`)
       .join('');
   }
@@ -105,11 +126,44 @@ export class DashboardView {
 
   getDailyQuote() {
     const quotes = this.ctx.quotesData?.quotes || [];
-    if (!quotes.length) return 'You showed up. That already matters.';
+    if (!quotes.length) return this.t('quote_fallback', 'You showed up. That already matters.');
     const start = new Date(new Date().getFullYear(), 0, 0);
     const diff = new Date() - start;
     const dayOfYear = Math.floor(diff / 86400000);
     return quotes[dayOfYear % quotes.length];
+  }
+
+  translateAchievementText(achievement, field = 'title') {
+    const achievementId = achievement?.achievementId || achievement?.id;
+    if (!achievementId) return achievement?.[field] || '';
+    const key = `achievement_${achievementId}_${field === 'title' ? 'title' : 'desc'}`;
+    return this.t(key, achievement?.[field] || '');
+  }
+
+  translatePlanName(plan) {
+    if (!plan?.name) return '';
+    const keyById = {
+      'belly-fat-burner-beginner': 'plan_belly_fat_burner',
+      'belly-fat-burner-intermediate': 'plan_belly_fat_burner',
+      'belly-fat-burner-advanced': 'plan_belly_fat_burner',
+      'morning-yoga-flow': 'plan_morning_yoga_flow',
+      'hiit-fat-blast': 'plan_hiit_fat_blast',
+      'office-break-stretch': 'plan_office_break_stretch',
+      'core-crusher-beginner': 'plan_core_crusher',
+      'core-crusher-intermediate': 'plan_core_crusher',
+      'night-relaxation-yoga': 'plan_night_relaxation_yoga',
+      'quick-burn-15': 'plan_quick_burn_15',
+      'no-jump-cardio': 'plan_no_jump_cardio',
+      'full-body-toning-beginner': 'plan_full_body_toning',
+      'full-body-toning-intermediate': 'plan_full_body_toning',
+      'pranayama-meditation': 'plan_pranayama_meditation',
+      'lower-body-blast': 'plan_lower_body_blast',
+      'upper-body-strength': 'plan_upper_body_strength',
+      'desk-worker-relief': 'plan_desk_worker_relief',
+      'weekend-warrior': 'plan_weekend_warrior'
+    };
+    const key = keyById[plan.id];
+    return key ? this.t(key, plan.name) : plan.name;
   }
 
   handleClick(event) {
@@ -137,7 +191,7 @@ export class DashboardView {
   }
 
   setDeskMode(enabled) {
-    this.lastDeskPrompt = enabled ? 'Desk mode activated.' : 'Desk mode paused.';
+    this.lastDeskPrompt = enabled ? this.t('desk_mode_activated', 'Desk mode activated.') : this.t('desk_mode_paused', 'Desk mode paused.');
     if (enabled) {
       this.ctx.notifications.requestPermission().catch(() => false);
       this.ctx.trackHabit.setDeskMode(true);
@@ -152,7 +206,7 @@ export class DashboardView {
   }
 
   getDeskCountdownLabel() {
-    if (!this.isDeskModeEnabled()) return 'Off';
+    if (!this.isDeskModeEnabled()) return this.t('off', 'Off');
     const endsAt = this.ctx.trackHabit.getDeskModeEndsAt(Date.now() + (50 * 60 * 1000));
     return formatClock(Math.max(0, Math.round((endsAt - Date.now()) / 1000)));
   }

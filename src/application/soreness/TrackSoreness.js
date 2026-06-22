@@ -36,7 +36,7 @@ export class TrackSoreness {
     ]);
     const activeGroups = Object.entries(soreness.ratings || {}).filter(([, value]) => Number(value) > 0).map(([group]) => group);
     const score = await this.#recoveryEngine.calculateScore({
-      sleep: Number(habit.sleepHours || habit.sleep || 0),
+      sleepHours: Number(habit.sleepHours || habit.sleep || 0),
       energy: Number(habit.energyLevel || 0) >= 4 ? 'high' : Number(habit.energyLevel || 0) <= 2 ? 'low' : (habit.energy || 'medium'),
       mood: habit.mood === '😊' ? 'great' : habit.mood === '😟' || habit.mood === '😠' ? 'bad' : (habit.mood || 'okay'),
       soreness: activeGroups

@@ -27,7 +27,7 @@ export class GetRecovery {
     ]);
 
     const snapshot = {
-      sleep: habit?.sleep ?? habit?.sleepHours ?? 7,
+      sleepHours: Number(habit?.sleepHours ?? habit?.sleep ?? 7),
       energy: habit?.energy ?? (Number(habit?.energyLevel || 0) >= 4 ? 'high' : Number(habit?.energyLevel || 0) <= 2 ? 'low' : 'medium'),
       mood: habit?.mood === '😊' ? 'great' : habit?.mood === '😟' || habit?.mood === '😠' ? 'bad' : (habit?.mood ?? 'okay'),
       soreness: habit?.soreness ?? [],

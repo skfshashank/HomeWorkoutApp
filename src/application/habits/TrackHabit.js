@@ -38,7 +38,12 @@ export class TrackHabit {
   }
 
   async getHabit(date = this.#getLocalDateStr()) {
-    return this.#getScopedDailyRecord(this.#db, 'habits', this.#getActiveProfileId(), date, { water: 0, customHabits: [] });
+    const habit = await this.#getScopedDailyRecord(this.#db, 'habits', this.#getActiveProfileId(), date, {
+      water: 0,
+      sleepHours: 0,
+      customHabits: []
+    });
+    return this.#normalizeHabit(habit);
   }
 
   async getHabitSummary(date = this.#getLocalDateStr()) {
@@ -49,7 +54,7 @@ export class TrackHabit {
     return {
       date,
       waterCount: (dailyLog.waterGlasses || []).length,
-      sleep: habit?.sleep ?? null,
+      sleepHours: this.#getSleepHoursValue(habit) || null,
       steps: habit?.steps ?? null,
       energy: habit?.energy ?? 'medium',
       mood: habit?.mood ?? 'okay',
@@ -75,7 +80,12 @@ export class TrackHabit {
     cutoff.setHours(0, 0, 0, 0);
     cutoff.setDate(cutoff.getDate() - (days - 1));
     const recent = records.filter((record) => parseDateSafe(record.date) >= cutoff);
-    const scored = recent.filter((record) => (record.water || 0) >= 8 || (record.sleepHours || 0) >= 7 || (record.steps || 0) > 0 || (record.customHabits || []).some((item) => item.completed));
+    const scored = recent.filter((record) => (
+      (record.water || 0) >= 8
+      || this.#getSleepHoursValue(record) >= 7
+      || (record.steps || 0) > 0
+      || (record.customHabits || []).some((item) => item.completed)
+    ));
     return Math.round((scored.length / Math.max(days, 1)) * 100);
   }
 
@@ -83,9 +93,9 @@ export class TrackHabit {
     const cutoff = new Date();
     cutoff.setHours(0, 0, 0, 0);
     cutoff.setDate(cutoff.getDate() - (days - 1));
-    const recent = records.filter((record) => parseDateSafe(record.date) >= cutoff && Number(record.sleepHours || 0) > 0);
+    const recent = records.filter((record) => parseDateSafe(record.date) >= cutoff && this.#getSleepHoursValue(record) > 0);
     if (!recent.length) return 0;
-    return recent.reduce((sum, record) => sum + Number(record.sleepHours || 0), 0) / recent.length;
+    return recent.reduce((sum, record) => sum + this.#getSleepHoursValue(record), 0) / recent.length;
   }
 
   calculateSleepHours(bedtime, wakeTime) {
@@ -131,11 +141,12 @@ export class TrackHabit {
 
   async saveDailySignals(payload, date = this.#getLocalDateStr()) {
     return this.#saveHabit(date, async (habit) => {
-      habit.sleep = Number(payload.sleep) || 0;
+      habit.sleepHours = Number(payload.sleepHours ?? payload.sleep) || 0;
       habit.steps = Number(payload.steps) || 0;
       habit.energy = payload.energy || 'medium';
       habit.mood = payload.mood || 'okay';
       habit.soreness = Array.isArray(payload.soreness) ? payload.soreness : [];
+      delete habit.sleep;
       this.#bus.emit(this.#events.HABIT_COMPLETED, { type: 'recovery', date, value: habit });
     });
   }
@@ -173,7 +184,10 @@ export class TrackHabit {
 
     if ((!habit.sleepHours || Number(habit.sleepHours) === 0) && habit.bedtime && habit.wakeTime) {
       habit.sleepHours = this.calculateSleepHours(habit.bedtime, habit.wakeTime);
+    } else {
+      habit.sleepHours = this.#getSleepHoursValue(habit);
     }
+    delete habit.sleep;
 
     dailyLog.waterGlasses = Array.from({ length: Math.max(0, Number(habit.water || 0)) }, (_, index) => index);
     await this.#db.put('dailyLogs', dailyLog);
@@ -196,5 +210,21 @@ export class TrackHabit {
     }
 
     return { habit: result?.habit || habit, dailyLog };
+  }
+
+  #getSleepHoursValue(record = {}) {
+    return Number(record?.sleepHours ?? record?.sleep ?? 0);
+  }
+
+  #normalizeHabit(habit = {}) {
+    const normalized = {
+      water: 0,
+      sleepHours: 0,
+      customHabits: [],
+      ...habit
+    };
+    normalized.sleepHours = this.#getSleepHoursValue(habit);
+    delete normalized.sleep;
+    return normalized;
   }
 }

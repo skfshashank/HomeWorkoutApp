@@ -242,7 +242,7 @@ class App {
 
   initViews(challengeData, quotesData) {
     const features = this.prefs.getFeatureFlags();
-    const sharedCtx = { bus: this.bus, router: this.router, i18n: this.i18n };
+    const sharedCtx = { bus: this.bus, router: this.router, i18n: this.i18n, features };
     const openCustomWorkoutEditor = (workoutId = '') => this.views.customWorkout?.openEditor(workoutId);
     const addExerciseToCustomWorkout = (exerciseId) => this.views.customWorkout?.addExerciseById(exerciseId);
 
@@ -287,8 +287,7 @@ class App {
     this.registerView('progress', new ProgressView({
       ...sharedCtx,
       getProgress: this.getProgress,
-      updateProfile: this.updateProfile,
-      features
+      updateProfile: this.updateProfile
     }), { page: 'progress', feature: 'progress' });
 
     this.registerView('settings', new SettingsView({
@@ -328,7 +327,7 @@ class App {
     const habitsView = new HabitTrackerView();
     this.registerView('habits', habitsView, {
       page: 'habits',
-      feature: 'habitSignals',
+      feature: 'habits',
       init: (view, pageEl) => view.init(pageEl, {
         ...sharedCtx,
         trackHabit: this.trackHabit

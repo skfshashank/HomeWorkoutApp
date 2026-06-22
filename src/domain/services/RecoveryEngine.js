@@ -20,9 +20,10 @@ export class RecoveryEngine {
 
   async calculateScore(habit) {
     let score = 50;
-    if (habit.sleep >= 7) score += 20;
-    else if (habit.sleep >= 6) score += 10;
-    else if (habit.sleep < 5) score -= 15;
+    const sleepHours = Number(habit.sleepHours || 0);
+    if (sleepHours >= 7) score += 20;
+    else if (sleepHours >= 6) score += 10;
+    else if (sleepHours < 5) score -= 15;
 
     if (habit.energy === 'high') score += 15;
     else if (habit.energy === 'low') score -= 15;
