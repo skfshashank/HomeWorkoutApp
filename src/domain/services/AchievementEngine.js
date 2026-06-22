@@ -1,3 +1,5 @@
+import { getLocalDateStr } from '../../core/utils/dateUtils.js';
+
 export const ACHIEVEMENTS = [
   { id: 'first_workout', title: 'First Step', desc: 'Complete your first workout', icon: '🏃', check: (stats) => stats.totalWorkouts >= 1 },
   { id: 'week_streak', title: 'Week Warrior', desc: '7-day streak', icon: '🔥', check: (stats) => stats.currentStreak >= 7 },
@@ -40,12 +42,6 @@ const defaultStats = (profileId) => ({
 const toLevel = (xp) => Math.floor((xp || 0) / 100) + 1;
 const defaultGetProfileRecords = async () => [];
 const defaultSortByDateDesc = (records = [], field = 'date') => [...records].sort((a, b) => String(b?.[field] || '').localeCompare(String(a?.[field] || '')));
-const defaultTodayKey = (date = new Date()) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
 
 export class AchievementEngine {
   constructor({
@@ -56,7 +52,7 @@ export class AchievementEngine {
     exerciseRepo,
     getProfileRecords = defaultGetProfileRecords,
     sortByDateDesc = defaultSortByDateDesc,
-    todayKey = defaultTodayKey
+    todayKey = getLocalDateStr
   }) {
     this.storage = storage;
     this.bus = bus;

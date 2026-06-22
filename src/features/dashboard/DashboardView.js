@@ -1,12 +1,12 @@
 import { Events } from '../../app/eventBus.js';
-import { getGreeting, getWeekDates } from '../../core/utils/dateUtils.js';
+import { getGreeting, getWeekDates, parseDateSafe } from '../../core/utils/dateUtils.js';
 
 const formatClock = (seconds) => {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
-const dayLabel = (dateStr) => new Date(dateStr).toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 1);
+const dayLabel = (dateStr) => parseDateSafe(dateStr).toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 1);
 
 export class DashboardView {
   constructor(ctx) {
@@ -28,6 +28,10 @@ export class DashboardView {
       this.lastDeskPrompt = `Desk break: ${exercise.emoji || '🧍'} ${exercise.name}`;
       this.render();
     });
+  }
+
+  t(key, fallback = key) {
+    return this.ctx.i18n?.t(key) || fallback;
   }
 
   async render() {
@@ -58,7 +62,7 @@ export class DashboardView {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><circle cx="12" cy="20" r="1"></circle>
           </svg>
-          <span>Offline Ready</span>
+          <span>${this.t('offline_ready', 'Offline Ready')}</span>
         </div>
       </div>
       <section class="card hero-card card--hero">
@@ -66,10 +70,10 @@ export class DashboardView {
         <div class="grid-3 mt-16"><div class="stat-card"><div class="stat-value">${dailyLog.calories || 0}</div><div class="stat-label">Calories</div></div><div class="stat-card"><div class="stat-value">${dailyLog.minutes || 0}</div><div class="stat-label">Minutes</div></div><div class="stat-card"><div class="stat-value">${achievementSnapshot.stats.level}</div><div class="stat-label">XP Level</div></div></div>
       </section>
       <section class="grid-2">
-        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Streak</h2><p class="text-sm text-muted">Consistency compounds faster than intensity.</p></div><div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">day streak</div></div></div></div><div class="grid-7">${weekDates.map((dateStr) => `<div class="calendar-cell ${completedDates.has(dateStr) ? 'completed' : ''} ${dateStr === progress.dailyLog.date ? 'today' : ''}"><strong>${dayLabel(dateStr)}</strong><span class="day-label">${new Date(dateStr).getDate()}</span></div>`).join('')}</div></article>
-        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Achievement XP</h2><p class="text-sm text-muted">${achievementSnapshot.unlockedCount} unlocked • ${achievementSnapshot.stats.xp} XP total</p></div><span class="chip">Lvl ${achievementSnapshot.stats.level}</span></div><div class="progress-meter mb-8"><span style="width:${achievementSnapshot.stats.xp % 100}%"></span></div><p class="text-sm text-muted">${nextAchievement ? `Next: ${nextAchievement.title} (${nextAchievement.progress.percent}%)` : 'Everything unlocked. Legendary.'}</p>${this.ctx.features.achievements !== false ? '<button class="btn btn-secondary mt-16 w-full" data-action="open-achievements">Open achievements</button>' : ''}</article>
+        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('streak', 'Streak')}</h2><p class="text-sm text-muted">Consistency compounds faster than intensity.</p></div><div class="streak-display"><div class="streak-fire">🔥</div><div><div class="streak-number">${streak}</div><div class="streak-label">day streak</div></div></div></div><div class="grid-7">${weekDates.map((dateStr) => `<div class="calendar-cell ${completedDates.has(dateStr) ? 'completed' : ''} ${dateStr === progress.dailyLog.date ? 'today' : ''}"><strong>${dayLabel(dateStr)}</strong><span class="day-label">${parseDateSafe(dateStr).getDate()}</span></div>`).join('')}</div></article>
+        <article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Achievement XP</h2><p class="text-sm text-muted">${achievementSnapshot.unlockedCount} unlocked • ${achievementSnapshot.stats.xp} XP total</p></div><span class="chip">Lvl ${achievementSnapshot.stats.level}</span></div><div class="progress-meter mb-8"><span style="width:${achievementSnapshot.stats.xp % 100}%"></span></div><p class="text-sm text-muted">${nextAchievement ? `Next: ${nextAchievement.title} (${nextAchievement.progress.percent}%)` : 'Everything unlocked. Legendary.'}</p>${this.ctx.features.achievements !== false ? `<button class="btn btn-secondary mt-16 w-full" data-action="open-achievements">${this.t('achievements', 'Achievements')}</button>` : ''}</article>
       </section>
-      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Today's Workout</h2><p class="text-sm text-muted">Generated from your goal, level, streak, and plan library.</p></div><span class="badge badge-${user.level}">${user.level}</span></div><div class="workout-card"><div class="flex flex-between gap-12"><div><strong>${this.todaysPlan.name}</strong><p class="text-sm text-muted">${this.todaysPlan.description}</p></div><div class="flex flex-col gap-8"><span class="chip">${this.todaysPlan.estimatedMinutes} min</span><span class="chip">${this.todaysPlan.estimatedCalories} kcal</span></div></div><div class="flex flex-wrap gap-8">${this.todaysPlan.preview.map((item) => `<span class="chip">${item}</span>`).join('')}</div><div class="flex gap-12 mt-16"><button class="btn btn-primary" data-action="start-today">${this.todaysPlan.isRestDay ? 'Start recovery flow' : 'Start workout'}</button><button class="btn btn-secondary" data-action="browse-workouts">Browse plans</button></div></div></section>
+      <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('today_workout', "Today's Workout")}</h2><p class="text-sm text-muted">Generated from your goal, level, streak, and plan library.</p></div><span class="badge badge-${user.level}">${user.level}</span></div><div class="workout-card"><div class="flex flex-between gap-12"><div><strong>${this.todaysPlan.name}</strong><p class="text-sm text-muted">${this.todaysPlan.description}</p></div><div class="flex flex-col gap-8"><span class="chip">${this.todaysPlan.estimatedMinutes} min</span><span class="chip">${this.todaysPlan.estimatedCalories} kcal</span></div></div><div class="flex flex-wrap gap-8">${this.todaysPlan.preview.map((item) => `<span class="chip">${item}</span>`).join('')}</div><div class="flex gap-12 mt-16"><button class="btn btn-primary" data-action="start-today">${this.todaysPlan.isRestDay ? this.t('start_recovery_flow', 'Start recovery flow') : this.t('start_workout', 'Start workout')}</button><button class="btn btn-secondary" data-action="browse-workouts">${this.t('browse_plans', 'Browse plans')}</button></div></div></section>
       <section class="grid-2"><article class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Water Tracker</h2><p class="text-sm text-muted">Tap each glass as you finish it.</p></div><span class="chip">${water.length}/8</span></div><div class="water-row">${Array.from({ length: 8 }, (_, index) => `<button class="water-glass ${water.includes(index) ? 'filled' : ''}" data-action="toggle-water" data-index="${index}" aria-label="Glass ${index + 1} of 8" aria-pressed="${water.includes(index) ? 'true' : 'false'}"></button>`).join('')}</div></article><article class="card card--secondary desk-timer-card"><div class="flex flex-between gap-12 mb-16"><div><h2>Desk Mode</h2><p class="text-sm text-muted">50-minute movement reminders with office exercises.</p></div><label class="toggle"><input type="checkbox" data-action="toggle-desk" ${this.isDeskModeEnabled() ? 'checked' : ''}><span class="toggle-slider"></span></label></div><div class="desk-timer-display" id="desk-countdown">${this.getDeskCountdownLabel()}</div><p class="text-sm text-muted mt-8">${this.lastDeskPrompt || (this.isDeskModeEnabled() ? 'Desk mode is armed.' : 'Enable to get notified before posture gets grumpy.')}</p></article></section>
       <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>Quick tools</h2><p class="text-sm text-muted">Open your library, habits, recovery, timers, and custom builder.</p></div></div><div class="quick-links-grid">${this.renderQuickLinks()}</div></section>
       <section class="card card--secondary"><h2>Recently Used</h2><div class="flex flex-wrap gap-8">${recentExercises.length ? recentExercises.map((exercise) => `<span class="chip">${exercise.emoji} ${exercise.name}</span>`).join('') : '<span class="text-sm text-muted">Complete a workout to populate your recent exercise bank.</span>'}</div></section>

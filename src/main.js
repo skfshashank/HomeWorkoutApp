@@ -9,6 +9,7 @@ import { BackupService } from './core/backup/backupService.js';
 import { AudioEngine } from './core/utils/audioEngine.js';
 import { Logger } from './core/logger/logger.js';
 import { getLocalDateStr, today, daysBetween } from './core/utils/dateUtils.js';
+import { I18n } from './core/utils/i18n.js';
 import { getProfileRecords, getScopedDailyRecord, sortByDateDesc, todayKey } from './core/storage/profileData.js';
 import { ExerciseRepository } from './domain/repositories/ExerciseRepository.js';
 import { WorkoutRepository } from './domain/repositories/WorkoutRepository.js';
@@ -51,6 +52,7 @@ class App {
     this.bootstrap = new AppBootstrap({ router: this.router, logger: this.logger });
     this.db = new IndexedDbService();
     this.prefs = new Preferences();
+    this.i18n = new I18n(this.prefs.get('language', 'en'));
     this.speech = new SpeechService();
     this.notifications = new NotificationService();
     this.audio = new AudioEngine();
@@ -240,12 +242,12 @@ class App {
 
   initViews(challengeData, quotesData) {
     const features = this.prefs.getFeatureFlags();
+    const sharedCtx = { bus: this.bus, router: this.router, i18n: this.i18n };
     const openCustomWorkoutEditor = (workoutId = '') => this.views.customWorkout?.openEditor(workoutId);
     const addExerciseToCustomWorkout = (exerciseId) => this.views.customWorkout?.addExerciseById(exerciseId);
 
     this.registerView('dashboard', new DashboardView({
-      bus: this.bus,
-      router: this.router,
+      ...sharedCtx,
       getProgress: this.getProgress,
       trackHabit: this.trackHabit,
       getAchievements: this.getAchievements,
@@ -257,19 +259,15 @@ class App {
       quotesData,
       features
     }), { page: 'dashboard' });
-
     this.registerView('workouts', new WorkoutsView({
-      bus: this.bus,
-      router: this.router,
+      ...sharedCtx,
       manageWorkouts: this.manageWorkouts,
       startWorkout: this.startWorkout,
       updateProfile: this.updateProfile,
       openCustomWorkoutEditor
     }), { page: 'workouts' });
-
     this.registerView('trainer', new TrainerView({
-      bus: this.bus,
-      router: this.router,
+      ...sharedCtx,
       speech: this.speech,
       audio: this.audio,
       completeWorkout: this.completeWorkout,
@@ -279,24 +277,22 @@ class App {
     }), { page: 'dashboard' });
 
     this.registerView('challenge', new ChallengeView({
-      bus: this.bus,
+      ...sharedCtx,
       getChallenge: this.getChallenge,
       startWorkout: this.startWorkout,
       getExercises: this.getExercises,
       updateProfile: this.updateProfile,
       challengeData
     }), { page: 'challenge', feature: 'challenge' });
-
     this.registerView('progress', new ProgressView({
-      bus: this.bus,
-      router: this.router,
+      ...sharedCtx,
       getProgress: this.getProgress,
       updateProfile: this.updateProfile,
       features
     }), { page: 'progress', feature: 'progress' });
 
     this.registerView('settings', new SettingsView({
-      bus: this.bus,
+      ...sharedCtx,
       updateProfile: this.updateProfile,
       backup: this.backup,
       audio: this.audio,
@@ -310,8 +306,7 @@ class App {
       page: 'exercises',
       feature: 'exerciseLibrary',
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
-        router: this.router,
+        ...sharedCtx,
         getExercises: this.getExercises,
         openCustomWorkoutEditor,
         addExerciseToCustomWorkout
@@ -323,8 +318,7 @@ class App {
       page: 'custom-workouts',
       feature: 'customWorkouts',
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
-        router: this.router,
+        ...sharedCtx,
         manageWorkouts: this.manageWorkouts,
         getExercises: this.getExercises,
         updateProfile: this.updateProfile
@@ -336,8 +330,7 @@ class App {
       page: 'habits',
       feature: 'habitSignals',
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
-        router: this.router,
+        ...sharedCtx,
         trackHabit: this.trackHabit
       })
     });
@@ -347,7 +340,7 @@ class App {
       page: 'recovery',
       feature: ['soreness', 'recoveryInsights'],
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
+        ...sharedCtx,
         trackSoreness: this.trackSoreness
       })
     });
@@ -357,8 +350,7 @@ class App {
       page: 'achievements',
       feature: 'achievements',
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
-        router: this.router,
+        ...sharedCtx,
         getAchievements: this.getAchievements
       })
     });
@@ -368,7 +360,7 @@ class App {
       page: 'timers',
       feature: 'timers',
       init: (view, pageEl) => view.init(pageEl, {
-        bus: this.bus,
+        ...sharedCtx,
         speech: this.speech
       })
     });

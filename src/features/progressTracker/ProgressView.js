@@ -1,10 +1,10 @@
 import { Events } from '../../app/eventBus.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
+import { getLocalDateStr, getLocalMonthStr, parseDateSafe } from '../../core/utils/dateUtils.js';
 
-const formatDate = (value) => new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+const formatDate = (value) => parseDateSafe(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 const formatUnitsWeight = (value, units) => units === 'imperial' ? `${(value * 2.20462).toFixed(1)} lb` : `${value.toFixed(1)} kg`;
 const formatUnitsHeight = (value, units) => units === 'imperial' ? `${(value / 2.54).toFixed(1)} in` : `${value} cm`;
-const todayKey = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const bodyFatCategory = (gender, value) => {
   if (!value && value !== 0) return '—';
@@ -47,7 +47,7 @@ export class ProgressView {
 
     const bmi = user.bmi;
     const latestMeasurement = measurements[0] || {};
-    const monthTitle = new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    const monthTitle = parseDateSafe(`${getLocalMonthStr()}-01`).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
     const bodyFatValue = latestMeasurement.bodyFat ?? this.calculateBodyFat({
       gender: user.gender,
       height: user.height,
@@ -131,7 +131,7 @@ export class ProgressView {
   }
 
   renderHeatmap(logs) {
-    const today = todayKey();
+    const today = getLocalDateStr();
     const dateMap = new Map((logs || []).map((log) => [log.date, log]));
     const now = new Date();
     const year = now.getFullYear();
@@ -142,7 +142,7 @@ export class ProgressView {
     for (let i = 0; i < leadingBlanks; i += 1) cells.push('<div></div>');
     for (let day = 1; day <= totalDays; day += 1) {
       const d = new Date(year, month, day);
-      const date = todayKey(d);
+      const date = getLocalDateStr(d);
       const log = dateMap.get(date);
       const level = !log ? 0 : log.workoutCompleted ? 3 : log.minutes ? 2 : 1;
       const classes = ['calendar-cell', date === today ? 'today' : '', log?.workoutCompleted ? 'completed' : ''].filter(Boolean).join(' ');
@@ -206,7 +206,7 @@ export class ProgressView {
     openAccessibleModal(this, `
       <h2 class="mb-16" id="modal-title">Add measurement entry</h2>
       <form id="weight-form">
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" name="date" value="${todayKey()}" required></div>
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" name="date" value="${getLocalDateStr()}" required></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" step="0.1" name="weight" value="${user.weight}" required></div><div class="form-group"><label class="form-label">Waist (cm)</label><input class="form-input" type="number" step="0.1" name="waist"></div></div>
         <div class="grid-2"><div class="form-group"><label class="form-label">Neck (cm)</label><input class="form-input" type="number" step="0.1" name="neck"></div>${user.gender === 'female' ? '<div class="form-group"><label class="form-label">Hip (cm)</label><input class="form-input" type="number" step="0.1" name="hip"></div>' : '<div></div>'}</div>
         <div class="form-group"><label class="form-label">Note</label><input class="form-input" type="text" name="note" placeholder="Optional"></div>

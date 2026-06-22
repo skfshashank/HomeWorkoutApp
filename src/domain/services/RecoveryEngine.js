@@ -1,12 +1,7 @@
 /**
  * RecoveryEngine - calculates recovery score and muscle availability.
  */
-const defaultGetDateStr = (date = new Date()) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+import { getLocalDateStr } from '../../core/utils/dateUtils.js';
 
 export class RecoveryEngine {
   #storage;
@@ -16,7 +11,7 @@ export class RecoveryEngine {
   constructor({
     storage,
     getActiveProfileId = () => 'default',
-    getDateStr = defaultGetDateStr
+    getDateStr = getLocalDateStr
   }) {
     this.#storage = storage;
     this.#getActiveProfileId = getActiveProfileId;

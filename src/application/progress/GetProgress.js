@@ -1,13 +1,8 @@
+import { getLocalDateStr, parseDateSafe } from '../../core/utils/dateUtils.js';
+
 /**
  * Use Case: Get progress statistics.
  */
-const defaultTodayKey = (date = new Date()) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
 export class GetProgress {
   #db;
   #getActiveProfileId;
@@ -20,7 +15,7 @@ export class GetProgress {
     getActiveProfileId = () => 'default',
     getProfileRecords,
     getScopedDailyRecord,
-    todayKey = defaultTodayKey
+    todayKey = getLocalDateStr
   }) {
     this.#db = db;
     this.#getActiveProfileId = getActiveProfileId;
@@ -132,7 +127,7 @@ export class GetProgress {
     let best = 1;
     let current = 1;
     for (let i = 1; i < dates.length; i += 1) {
-      const diff = (new Date(dates[i]) - new Date(dates[i - 1])) / 86400000;
+      const diff = (parseDateSafe(dates[i]) - parseDateSafe(dates[i - 1])) / 86400000;
       if (diff === 1) {
         current += 1;
         best = Math.max(best, current);

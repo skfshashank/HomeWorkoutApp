@@ -1,3 +1,5 @@
+import { parseDateSafe } from '../../core/utils/dateUtils.js';
+
 export class TrackHabit {
   #db;
   #prefs;
@@ -69,13 +71,19 @@ export class TrackHabit {
   }
 
   calculateConsistency(records, days) {
-    const recent = records.filter((record) => new Date(record.date) >= new Date(Date.now() - ((days - 1) * 86400000)));
+    const cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setDate(cutoff.getDate() - (days - 1));
+    const recent = records.filter((record) => parseDateSafe(record.date) >= cutoff);
     const scored = recent.filter((record) => (record.water || 0) >= 8 || (record.sleepHours || 0) >= 7 || (record.steps || 0) > 0 || (record.customHabits || []).some((item) => item.completed));
     return Math.round((scored.length / Math.max(days, 1)) * 100);
   }
 
   calculateSleepAverage(records, days) {
-    const recent = records.filter((record) => new Date(record.date) >= new Date(Date.now() - ((days - 1) * 86400000)) && Number(record.sleepHours || 0) > 0);
+    const cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setDate(cutoff.getDate() - (days - 1));
+    const recent = records.filter((record) => parseDateSafe(record.date) >= cutoff && Number(record.sleepHours || 0) > 0);
     if (!recent.length) return 0;
     return recent.reduce((sum, record) => sum + Number(record.sleepHours || 0), 0) / recent.length;
   }

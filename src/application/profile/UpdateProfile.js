@@ -35,6 +35,7 @@ export class UpdateProfile {
     return {
       user: this.getUser(),
       units: this.#prefs.get('units', 'metric'),
+      language: this.getLanguage(),
       soundEnabled: this.#prefs.get('soundEnabled', true),
       voiceEnabled: this.#prefs.get('voiceEnabled', true),
       theme: this.#prefs.get('theme', 'dark'),
@@ -122,6 +123,16 @@ export class UpdateProfile {
   setUnits(units) {
     this.#prefs.set('units', units);
     return units;
+  }
+
+  getLanguage() {
+    return this.#prefs.get('language', 'en') === 'hi' ? 'hi' : 'en';
+  }
+
+  setLanguage(language) {
+    const next = language === 'hi' ? 'hi' : 'en';
+    this.#prefs.set('language', next);
+    return next;
   }
 
   setPreference(key, value) {

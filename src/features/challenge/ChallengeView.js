@@ -1,6 +1,5 @@
 import { Events } from '../../app/eventBus.js';
-
-const currentMonthKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; };
+import { getLocalMonthStr } from '../../core/utils/dateUtils.js';
 
 export class ChallengeView {
   constructor(ctx) {
@@ -42,7 +41,7 @@ export class ChallengeView {
       </section>
 
       <section class="card">
-        <div class="flex flex-between gap-12 mb-16"><div><h2>Monthly Challenges</h2><p class="text-sm text-muted">Rewards: XP + achievement badges.</p></div><span class="chip">${currentMonthKey()}</span></div>
+        <div class="flex flex-between gap-12 mb-16"><div><h2>Monthly Challenges</h2><p class="text-sm text-muted">Rewards: XP + achievement badges.</p></div><span class="chip">${getLocalMonthStr()}</span></div>
         ${viewModel.monthlyChallenges.map((item) => `<article class="monthly-challenge-card ${item.completed ? 'completed' : ''}"><div class="flex flex-between gap-12 mb-8"><div><h3>${item.icon} ${item.title}</h3><p class="text-sm text-muted">${item.desc}</p></div><span class="chip">${item.rewardXp} XP</span></div><div class="progress-meter mb-8"><span style="width:${item.progress}%"></span></div><p class="text-sm text-muted">${item.label}</p></article>`).join('')}
       </section>`;
   }

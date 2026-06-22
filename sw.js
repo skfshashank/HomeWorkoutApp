@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v5';
+const CACHE_NAME = 'openfit-v6';
 const PRECACHE = [
   'index.html',
   'manifest.json',
@@ -30,6 +30,8 @@ const PRECACHE = [
   'src/core/storage/profileData.js',
   'src/core/utils/audioEngine.js',
   'src/core/utils/dateUtils.js',
+  'src/core/utils/exerciseSvg.js',
+  'src/core/utils/i18n.js',
   'src/core/utils/modalAccessibility.js',
   'src/domain/entities/Exercise.js',
   'src/domain/entities/Habit.js',

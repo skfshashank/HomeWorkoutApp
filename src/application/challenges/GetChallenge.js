@@ -1,3 +1,5 @@
+import { getLocalMonthStr } from '../../core/utils/dateUtils.js';
+
 export class GetChallenge {
   #db;
   #prefs;
@@ -115,7 +117,7 @@ export class GetChallenge {
   }
 
   async getMonthlyChallengeModels() {
-    const now = new Date(); const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const month = getLocalMonthStr();
     const profileId = this.#getActiveProfileId();
     const sessions = (await this.#getProfileRecords('sessions', profileId))
       .filter((session) => String(session.date || session.completedAt).startsWith(month));

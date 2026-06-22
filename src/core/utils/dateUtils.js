@@ -8,18 +8,24 @@ export function getLocalDateStr(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
-export function parseDateStr(dateStr) {
-  const [year, month, day] = String(dateStr).split('-').map(Number);
+export function getLocalMonthStr(date = new Date()) {
+  return getLocalDateStr(date).slice(0, 7);
+}
+
+export function parseDateSafe(dateStr) {
+  const [year, month, day] = String(dateStr || '').split('-').map(Number);
   return new Date(year, (month || 1) - 1, day || 1);
 }
+
+export const parseDateStr = parseDateSafe;
 
 export function today() {
   return getLocalDateStr();
 }
 
 export function daysBetween(date1, date2) {
-  const d1 = typeof date1 === 'string' ? parseDateStr(date1) : new Date(date1);
-  const d2 = typeof date2 === 'string' ? parseDateStr(date2) : new Date(date2);
+  const d1 = typeof date1 === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date1) ? parseDateSafe(date1) : new Date(date1);
+  const d2 = typeof date2 === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date2) ? parseDateSafe(date2) : new Date(date2);
   return Math.floor((d2 - d1) / 86400000);
 }
 

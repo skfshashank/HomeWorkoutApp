@@ -1,5 +1,6 @@
 import { Events } from '../../app/eventBus.js';
 import { formatDuration } from '../../core/utils/dateUtils.js';
+import { getExerciseSvg } from '../../core/utils/exerciseSvg.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -38,6 +39,10 @@ export class TrainerView {
     return `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
   }
 
+  t(key, fallback = key) {
+    return this.ctx.i18n?.t(key) || fallback;
+  }
+
   renderTimerAttributes(seconds, shouldAnnounce = true) {
     if (!shouldAnnounce) return 'aria-atomic="true"';
     return `aria-atomic="true"${seconds === 30 || seconds === 10 || seconds <= 3 ? ' aria-live="assertive"' : ''}`;
@@ -53,7 +58,7 @@ export class TrainerView {
       <div class="exercise-guide card w-full mb-16">
         <div class="exercise-guide__header">
           <div>
-            <strong>Movement guide</strong>
+            <strong>${this.t('movement_guide', 'Movement guide')}</strong>
             <div class="text-sm text-muted">${exercise.description || 'Smooth, controlled reps beat rushed reps.'}</div>
           </div>
           <div class="exercise-chip-row">
@@ -100,6 +105,7 @@ export class TrainerView {
     }
 
     const exercise = item.exercise;
+    const exerciseSvg = getExerciseSvg(exercise.id);
     const percent = this.queue.length ? Math.round((this.currentIndex / this.queue.length) * 100) : 0;
     const currentTarget = item.currentTarget || item.target;
     const isRepBased = exercise.isRepBased;
@@ -109,10 +115,10 @@ export class TrainerView {
         ? currentTarget
         : formatDuration(this.remaining);
     const displayLabel = this.mode === 'prepare'
-      ? 'Starting in'
+      ? this.t('starting_in', 'Starting in')
       : isRepBased
-        ? 'reps'
-        : 'time remaining';
+        ? this.t('reps', 'reps')
+        : this.t('time_remaining', 'time remaining');
 
     this.el.classList.add('active');
     this.el.innerHTML = `
@@ -121,14 +127,14 @@ export class TrainerView {
           <div class="text-sm text-muted">${this.session.workoutName}</div>
           <strong>${this.currentIndex + 1} / ${this.queue.length} exercises</strong>
         </div>
-        <button class="btn btn-secondary btn-sm" data-action="skip">Skip</button>
+        <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')}</button>
       </div>
       <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
       <div class="exercise-demo-shell w-full mb-16">
         <div class="exercise-demo">
-          <div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div>
+          <div class="exercise-svg">${exerciseSvg}</div>
           <div class="exercise-demo__caption">
             <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
             <div class="text-sm text-muted">${item.phaseLabel}</div>
@@ -149,21 +155,21 @@ export class TrainerView {
 
         <div class="card w-full mb-16">
           <div class="flex flex-between gap-12 mb-8">
-            <strong>Session controls</strong>
+            <strong>${this.t('session_controls', 'Session controls')}</strong>
             <div class="flex gap-8 flex-wrap">
-              <button class="btn btn-secondary btn-sm" data-action="swap-exercise">Swap</button>
-              <button class="btn btn-secondary btn-sm" data-action="adjust-target">Adjust target</button>
+              <button class="btn btn-secondary btn-sm" data-action="swap-exercise">${this.t('swap', 'Swap')}</button>
+              <button class="btn btn-secondary btn-sm" data-action="adjust-target">${this.t('adjust_target', 'Adjust target')}</button>
             </div>
           </div>
           <p class="text-sm text-muted">Need a variation? Swap keeps your place in the workout while replacing just this movement.</p>
         </div>
 
-        ${isRepBased && this.mode === 'exercise' ? '<button class="btn btn-primary btn-lg w-full mb-16" data-action="complete-set">Complete set</button>' : ''}
+        ${isRepBased && this.mode === 'exercise' ? `<button class="btn btn-primary btn-lg w-full mb-16" data-action="complete-set">${this.t('complete_set', 'Complete set')}</button>` : ''}
 
         <div class="grid-3 w-full">
-          <button class="btn btn-secondary" data-action="previous">Previous</button>
-          <button class="btn btn-accent" data-action="pause">${this.paused ? 'Resume' : 'Pause'}</button>
-          <button class="btn btn-secondary" data-action="skip">Skip</button>
+          <button class="btn btn-secondary" data-action="previous">${this.t('previous', 'Previous')}</button>
+          <button class="btn btn-accent" data-action="pause">${this.paused ? this.t('resume', 'Resume') : this.t('pause', 'Pause')}</button>
+          <button class="btn btn-secondary" data-action="skip">${this.t('skip', 'Skip')}</button>
         </div>
       </div>`;
   }
@@ -175,10 +181,10 @@ export class TrainerView {
     this.el.innerHTML = `
       <div class="fs-header">
         <div>
-          <div class="text-sm text-muted">Recovery</div>
-          ${next ? `<div class="exercise-name-stack">${this.renderExerciseName(next.exercise)}</div>` : '<strong>Almost done</strong>'}
+          <div class="text-sm text-muted">${this.t('recovery', 'Recovery')}</div>
+          ${next ? `<div class="exercise-name-stack">${this.renderExerciseName(next.exercise)}</div>` : `<strong>${this.t('almost_done', 'Almost done')}</strong>`}
         </div>
-        <button class="btn btn-secondary btn-sm" data-action="skip">Skip rest</button>
+        <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')} ${this.t('rest', 'Rest').toLowerCase()}</button>
       </div>
       <div class="progress-bar" role="progressbar" aria-label="Workout progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
@@ -186,16 +192,16 @@ export class TrainerView {
         <div class="exercise-demo w-full mb-16">
           <div class="exercise-demo__avatar anim-breathing">😮‍💨</div>
           <div class="exercise-demo__caption">
-            <strong>Rest</strong>
+            <strong>${this.t('rest', 'Rest')}</strong>
             <div class="text-sm text-muted">Breathe, reset, and get ready.</div>
           </div>
         </div>
         <div class="timer-display" ${this.renderTimerAttributes(this.remaining)}>${formatDuration(this.remaining)}</div>
-        <div class="timer-label">seconds until restart</div>
+        <div class="timer-label">${this.t('seconds_until_restart', 'seconds until restart')}</div>
         <div class="grid-3 w-full mt-24">
-          <button class="btn btn-secondary" data-action="previous">Previous</button>
-          <button class="btn btn-accent" data-action="pause">${this.paused ? 'Resume' : 'Pause'}</button>
-          <button class="btn btn-secondary" data-action="skip">Skip</button>
+          <button class="btn btn-secondary" data-action="previous">${this.t('previous', 'Previous')}</button>
+          <button class="btn btn-accent" data-action="pause">${this.paused ? this.t('resume', 'Resume') : this.t('pause', 'Pause')}</button>
+          <button class="btn btn-secondary" data-action="skip">${this.t('skip', 'Skip')}</button>
         </div>
       </div>`;
   }
@@ -214,9 +220,9 @@ export class TrainerView {
       <div class="fs-content" style="justify-content:center;">
         <div class="workout-complete mb-24">
           <div class="complete-icon">🎉</div>
-          <h2 class="text-center">Amazing Work!</h2>
+          <h2 class="text-center">${this.t('great_work', 'Amazing Work!')}</h2>
           <p class="complete-stats">${duration} min · ${calories} cal · ${exercises} exercises</p>
-          <p class="coach-tip">You're ${streakDays} days strong! Keep this momentum going.</p>
+          <p class="coach-tip">You're ${streakDays} days strong! ${this.t('keep_going', 'Keep this momentum going')}.</p>
         </div>
         <div class="grid-3 w-full mb-24">
           <div class="stat-card"><div class="stat-value">${calories}</div><div class="stat-label">Calories</div></div>
@@ -232,7 +238,7 @@ export class TrainerView {
           <textarea id="session-note" class="form-input note-input" rows="4" placeholder="How did it feel? Any wins, pain points, or adjustments for next time?">${note}</textarea>
           <div class="text-sm text-muted mt-8">${this.noteFeedback || 'Saved with this workout in your local history.'}</div>
         </div>
-        <button class="btn btn-primary btn-lg w-full" data-action="close-complete">Back to dashboard</button>
+        <button class="btn btn-primary btn-lg w-full" data-action="close-complete">${this.t('back_to_dashboard', 'Back to dashboard')}</button>
       </div>`;
   }
 
