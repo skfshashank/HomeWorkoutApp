@@ -171,7 +171,8 @@ class App {
       workoutRepo: this.workoutRepo,
       getActiveProfileId: () => this.profileManager.getActiveProfileId(),
       getExerciseById: (exerciseId) => this.getExercises.getById(exerciseId),
-      scheduler: this.scheduler
+      scheduler: this.scheduler,
+      translate: (key, fallback) => this.i18n.t(key) || fallback
     });
     this.getChallenge = new GetChallenge({
       db: this.db,

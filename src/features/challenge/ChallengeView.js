@@ -7,7 +7,9 @@ export class ChallengeView {
     this.el = document.querySelector('[data-page="challenge"]');
     this.selectedDay = null;
     this.el.addEventListener('click', (event) => this.handleClick(event));
-    this.ctx.bus.on(Events.WORKOUT_COMPLETED, () => this.handleCompletion());
+    this.ctx.bus.on(Events.WORKOUT_COMPLETED, (data) => {
+      if (data?.category === 'challenge') this.handleCompletion();
+    });
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
   }
 

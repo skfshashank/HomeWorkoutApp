@@ -271,9 +271,9 @@ export class TrainerView {
       phaseIndex
     }));
     return [
-      ...mapPhase(session.warmUp, 'Warm-up', 'warmUp'),
-      ...mapPhase(session.main, 'Main set', 'main'),
-      ...mapPhase(session.coolDown, 'Cool-down', 'coolDown')
+      ...mapPhase(session.warmUp, this.t('warm_up', 'Warm-up'), 'warmUp'),
+      ...mapPhase(session.main, this.t('main_set', 'Main set'), 'main'),
+      ...mapPhase(session.coolDown, this.t('cool_down', 'Cool-down'), 'coolDown')
     ];
   }
 

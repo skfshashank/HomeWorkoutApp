@@ -189,7 +189,7 @@ export class TrackHabit {
     }
     delete habit.sleep;
 
-    dailyLog.waterGlasses = Array.from({ length: Math.max(0, Number(habit.water || 0)) }, (_, index) => index);
+    dailyLog.waterGlasses = dailyLog.waterGlasses || Array.from({ length: Math.max(0, Number(habit.water) || 0) }, (_, index) => index);
     await this.#db.put('dailyLogs', dailyLog);
 
     let result;

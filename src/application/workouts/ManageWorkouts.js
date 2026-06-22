@@ -6,6 +6,7 @@ export class ManageWorkouts {
   #getActiveProfileId;
   #getExerciseById;
   #scheduler;
+  #translate;
 
   constructor({
     db,
@@ -14,7 +15,8 @@ export class ManageWorkouts {
     workoutRepo,
     getActiveProfileId,
     getExerciseById,
-    scheduler
+    scheduler,
+    translate
   }) {
     this.#db = db;
     this.#bus = bus;
@@ -23,6 +25,7 @@ export class ManageWorkouts {
     this.#getActiveProfileId = getActiveProfileId;
     this.#getExerciseById = getExerciseById;
     this.#scheduler = scheduler;
+    this.#translate = translate || ((k, f) => f);
   }
 
   getPlans(filters = {}) {
@@ -104,13 +107,14 @@ export class ManageWorkouts {
 
   generateDailyWorkout(user, date = new Date(), options = {}) {
     const plan = this.#scheduler.generateDaily(user, date, options);
+    const t = this.#translate;
     return {
       ...plan,
       id: `daily-${plan.date || `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}`,
-      name: plan.isRestDay ? 'Recovery Reset' : `${plan.category.replaceAll('_', ' ')} focus`,
+      name: plan.isRestDay ? t('recovery_reset', 'Recovery Reset') : `${t(`category_${plan.category}`, plan.category.replaceAll('_', ' '))} ${t('focus', 'focus')}`,
       description: plan.isRestDay
-        ? 'Gentle mobility, breathing, and stretching to keep your streak sustainable.'
-        : `${plan.main.length} adaptive movements for your ${user.goal.replaceAll('_', ' ')} journey.`,
+        ? t('rest_day_desc', 'Gentle mobility, breathing, and stretching to keep your streak sustainable.')
+        : t('daily_workout_desc', `${plan.main.length} adaptive movements for your ${user.goal.replaceAll('_', ' ')} journey.`),
       preview: [...plan.warmUp, ...plan.main, ...plan.coolDown]
         .slice(0, 5)
         .map((item) => this.#getExerciseById(item.exerciseId)?.name || item.exerciseId)
