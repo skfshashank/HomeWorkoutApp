@@ -295,12 +295,12 @@ export class SkeletonEngine {
     ctx.globalAlpha = alpha;
 
     // Upper leg (shorts)
-    drawTaperedLimb(ctx, hip, knee, 17, 14, SHORTS_1, SHORTS_2, 1.08);
-    drawJoint(ctx, knee, 9, SKIN);
+    drawTaperedLimb(ctx, hip, knee, 14, 11, SHORTS_1, SHORTS_2, 1.08);
+    drawJoint(ctx, knee, 7, SKIN);
 
     // Lower leg (calf muscle)
     if (knee && ankle) {
-      drawTaperedLimb(ctx, knee, ankle, 13, 9, SKIN, SKIN_LT, 1.22);
+      drawTaperedLimb(ctx, knee, ankle, 10, 7, SKIN, SKIN_LT, 1.22);
     }
     ctx.restore();
     if (foot) this.drawShoe(ctx, ankle, foot, isFront);
@@ -372,13 +372,13 @@ export class SkeletonEngine {
     // Shoulder deltoids
     ctx.save();
     [ls, rs].forEach((s) => {
-      const g = ctx.createRadialGradient(s[0], s[1] - 2, 0, s[0], s[1], 12);
+      const g = ctx.createRadialGradient(s[0], s[1] - 1, 0, s[0], s[1], 9);
       g.addColorStop(0, SHIRT_1);
       g.addColorStop(0.7, SHIRT_2);
       g.addColorStop(1, SHIRT_3);
       ctx.fillStyle = g;
       ctx.beginPath();
-      ctx.arc(s[0], s[1], 11, 0, Math.PI * 2);
+      ctx.arc(s[0], s[1], 9, 0, Math.PI * 2);
       ctx.fill();
     });
     ctx.restore();
@@ -392,10 +392,10 @@ export class SkeletonEngine {
 
     ctx.save();
     ctx.globalAlpha = alpha;
-    drawTaperedLimb(ctx, shoulder, elbow, 15, 12, skinC, hlC, 1.22);
-    drawJoint(ctx, elbow, 8, skinC);
+    drawTaperedLimb(ctx, shoulder, elbow, 11, 9, skinC, hlC, 1.18);
+    drawJoint(ctx, elbow, 6, skinC);
     if (elbow && wrist) {
-      drawTaperedLimb(ctx, elbow, wrist, 12, 8, skinC, hlC, 1.12);
+      drawTaperedLimb(ctx, elbow, wrist, 9, 6, skinC, hlC, 1.1);
     }
     ctx.restore();
 
@@ -403,23 +403,23 @@ export class SkeletonEngine {
     if (wrist) {
       ctx.save();
       ctx.globalAlpha = alpha;
-      const hGrad = ctx.createRadialGradient(wrist[0] - 2, wrist[1] - 2, 0, wrist[0], wrist[1], 10);
+      const hGrad = ctx.createRadialGradient(wrist[0] - 1, wrist[1] - 1, 0, wrist[0], wrist[1], 7);
       hGrad.addColorStop(0, SKIN_LT);
       hGrad.addColorStop(0.5, skinC);
       hGrad.addColorStop(1, SKIN_DK);
       ctx.fillStyle = hGrad;
       ctx.beginPath();
-      ctx.ellipse(wrist[0], wrist[1], 8, 10, 0, 0, Math.PI * 2);
+      ctx.ellipse(wrist[0], wrist[1], 6, 7, 0, 0, Math.PI * 2);
       ctx.fill();
       // Fingers
       const fa = elbow ? ang(elbow, wrist) : Math.PI / 2;
       ctx.fillStyle = skinC;
       ctx.globalAlpha = alpha * 0.65;
       for (let i = -1.5; i <= 1.5; i += 1) {
-        const fx = wrist[0] + Math.cos(fa) * 9 + Math.cos(fa + Math.PI / 2) * i * 2.5;
-        const fy = wrist[1] + Math.sin(fa) * 9 + Math.sin(fa + Math.PI / 2) * i * 2.5;
+        const fx = wrist[0] + Math.cos(fa) * 7 + Math.cos(fa + Math.PI / 2) * i * 2;
+        const fy = wrist[1] + Math.sin(fa) * 7 + Math.sin(fa + Math.PI / 2) * i * 2;
         ctx.beginPath();
-        ctx.ellipse(fx, fy, 2, 3.5, fa, 0, Math.PI * 2);
+        ctx.ellipse(fx, fy, 1.5, 3, fa, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.restore();
@@ -429,7 +429,7 @@ export class SkeletonEngine {
   drawHead(nose, neck) {
     const ctx = this.ctx;
     if (!nose || !neck) return;
-    const r = Math.max(22, Math.min(30, dist(nose, neck) * 1.6));
+    const r = Math.max(18, Math.min(24, dist(nose, neck) * 1.3));
     const hb = this.hairBounce.value;
 
     // Neck
@@ -465,11 +465,11 @@ export class SkeletonEngine {
     ctx.save();
     ctx.fillStyle = SKIN_DK;
     ctx.beginPath();
-    ctx.ellipse(nose[0] + r * 0.85, nose[1] + r * 0.05, 5, 8, 0.15, 0, Math.PI * 2);
+    ctx.ellipse(nose[0] + r * 0.88, nose[1] + r * 0.05, 3.5, 6, 0.15, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = SKIN;
     ctx.beginPath();
-    ctx.ellipse(nose[0] + r * 0.85, nose[1] + r * 0.05, 3, 5, 0.15, 0, Math.PI * 2);
+    ctx.ellipse(nose[0] + r * 0.88, nose[1] + r * 0.05, 2, 4, 0.15, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
@@ -496,68 +496,57 @@ export class SkeletonEngine {
     ctx.fill();
     ctx.restore();
 
-    // Eyes
-    const eyeY = nose[1] + r * 0.0;
-    const eyeSpread = r * 0.28;
+    // Eyes - small and subtle
+    const eyeY = nose[1] + r * 0.02;
+    const eyeSpread = r * 0.25;
     ctx.save();
-    // Whites
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.ellipse(nose[0] - eyeSpread, eyeY, 4.5, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(nose[0] + eyeSpread, eyeY, 4.5, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-    // Iris + pupil
+    // Simple dot eyes (clean illustration style)
     ctx.fillStyle = EYE;
     ctx.beginPath();
-    ctx.arc(nose[0] - eyeSpread, eyeY + 0.5, 2.8, 0, Math.PI * 2);
-    ctx.arc(nose[0] + eyeSpread, eyeY + 0.5, 2.8, 0, Math.PI * 2);
+    ctx.ellipse(nose[0] - eyeSpread, eyeY, 2.5, 3, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#000';
     ctx.beginPath();
-    ctx.arc(nose[0] - eyeSpread, eyeY + 0.5, 1.4, 0, Math.PI * 2);
-    ctx.arc(nose[0] + eyeSpread, eyeY + 0.5, 1.4, 0, Math.PI * 2);
+    ctx.ellipse(nose[0] + eyeSpread, eyeY, 2.5, 3, 0, 0, Math.PI * 2);
     ctx.fill();
-    // Highlights
+    // Tiny highlight
     ctx.fillStyle = '#fff';
+    ctx.globalAlpha = 0.6;
     ctx.beginPath();
-    ctx.arc(nose[0] - eyeSpread + 1.5, eyeY - 1, 1.1, 0, Math.PI * 2);
-    ctx.arc(nose[0] + eyeSpread + 1.5, eyeY - 1, 1.1, 0, Math.PI * 2);
+    ctx.arc(nose[0] - eyeSpread + 0.8, eyeY - 1, 0.8, 0, Math.PI * 2);
+    ctx.arc(nose[0] + eyeSpread + 0.8, eyeY - 1, 0.8, 0, Math.PI * 2);
     ctx.fill();
     // Eyebrows
+    ctx.globalAlpha = 1;
     ctx.strokeStyle = HAIR_1;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(nose[0] - eyeSpread - 5, eyeY - 7);
-    ctx.quadraticCurveTo(nose[0] - eyeSpread, eyeY - 9, nose[0] - eyeSpread + 5, eyeY - 7);
+    ctx.moveTo(nose[0] - eyeSpread - 4, eyeY - 5);
+    ctx.quadraticCurveTo(nose[0] - eyeSpread, eyeY - 7, nose[0] - eyeSpread + 4, eyeY - 5.5);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(nose[0] + eyeSpread - 5, eyeY - 7);
-    ctx.quadraticCurveTo(nose[0] + eyeSpread, eyeY - 9, nose[0] + eyeSpread + 5, eyeY - 7);
+    ctx.moveTo(nose[0] + eyeSpread - 4, eyeY - 5.5);
+    ctx.quadraticCurveTo(nose[0] + eyeSpread, eyeY - 7, nose[0] + eyeSpread + 4, eyeY - 5);
     ctx.stroke();
     ctx.restore();
 
-    // Nose
+    // Nose (minimal)
+    ctx.save();
+    ctx.fillStyle = SKIN_DK;
+    ctx.globalAlpha = 0.3;
+    ctx.beginPath();
+    ctx.ellipse(nose[0], eyeY + 7, 2, 2.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Subtle smile
     ctx.save();
     ctx.strokeStyle = SKIN_DK;
     ctx.lineWidth = 1.5;
     ctx.lineCap = 'round';
+    ctx.globalAlpha = 0.5;
     ctx.beginPath();
-    ctx.moveTo(nose[0], eyeY + 4);
-    ctx.lineTo(nose[0] - 2, eyeY + 9);
-    ctx.lineTo(nose[0] + 1, eyeY + 9);
-    ctx.stroke();
-    ctx.restore();
-
-    // Smile
-    ctx.save();
-    ctx.strokeStyle = SKIN_DK;
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(nose[0], nose[1] + r * 0.28, r * 0.18, 0.2, Math.PI - 0.2);
+    ctx.arc(nose[0], nose[1] + r * 0.3, r * 0.12, 0.3, Math.PI - 0.3);
     ctx.stroke();
     ctx.restore();
   }
