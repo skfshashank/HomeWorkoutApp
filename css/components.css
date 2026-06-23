@@ -278,25 +278,25 @@ select:not(.form-select) {
 }
 .custom-dropdown.open .custom-dropdown__arrow { transform: rotate(180deg); }
 .custom-dropdown__menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
   background: var(--card, rgba(17, 24, 39, 0.98));
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow);
-  z-index: 100;
   max-height: 240px;
   overflow-y: auto;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+/* Portal menu appended to body */
+.custom-dropdown__menu--portal {
+  position: fixed;
+  z-index: 9999;
   opacity: 0;
   transform: translateY(-8px);
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
-.custom-dropdown.open .custom-dropdown__menu {
+.custom-dropdown__menu--portal.visible {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;

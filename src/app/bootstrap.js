@@ -26,7 +26,7 @@ export class AppBootstrap {
     if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
     
     // Force cleanup: unregister old SWs and clear old caches
-    const targetVersion = 'openfit-v23';
+    const targetVersion = 'openfit-v24';
     caches.keys().then((keys) => {
       keys.filter((k) => k.startsWith('openfit-') && k !== targetVersion)
         .forEach((k) => caches.delete(k));

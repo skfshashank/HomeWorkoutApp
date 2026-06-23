@@ -1111,17 +1111,19 @@ const deadBugRight = updatePose(LYING_BACK_KNEES_UP, {
 const heelTapLeft = updatePose(LYING_BACK_KNEES_UP, {
   3: [0.40, 0.56],
   4: [0.40, 0.78],
-  5: [0.68, 0.44],
+  5: [0.56, 0.48],
   6: [0.50, 0.78],
   0: [0.26, 0.62]
 });
 
 const toeTouch = updatePose(LEGS_UP, {
   0: [0.30, 0.56],
-  3: [0.42, 0.48],
-  4: [0.42, 0.72],
-  5: [0.62, 0.32],
-  6: [0.62, 0.92]
+  1: [0.38, 0.62],
+  2: [0.38, 0.78],
+  3: [0.44, 0.52],
+  4: [0.44, 0.68],
+  5: [0.56, 0.38],
+  6: [0.56, 0.86]
 });
 
 const scissorLeft = updatePose(LYING_BACK, {
@@ -1537,14 +1539,14 @@ const EXERCISE_BUILDERS = {
       12: [0.22, 0.85]
     });
     const plankSag = updatePose(PLANK_SIDE, {
-      0: [0.81, 0.44],
+      0: [0.76, 0.46],
       7: [0.56, 0.60],
       8: [0.54, 0.58],
       9: [0.40, 0.74],
       10: [0.38, 0.72],
       11: [0.26, 0.90],
       12: [0.24, 0.88],
-      13: [0.63, 0.47],
+      13: [0.66, 0.47],
       14: [0.55, 0.59]
     });
     return def('side', PLANK_SIDE, plankBrace, plankForward, plankBrace, PLANK_SIDE, plankSag, PLANK_SIDE);
@@ -1619,7 +1621,7 @@ const EXERCISE_BUILDERS = {
       5: [0.48, 0.50], 6: [0.48, 0.84], 13: [0.32, 0.66]
     });
     const vPeak = updatePose(V_UP, {
-      0: [0.38, 0.54], 13: [0.40, 0.58]
+      0: [0.38, 0.54], 13: [0.36, 0.60]
     });
     return def('front', LYING_BACK, legsLift, armsReach, vPeak, V_UP, armsReach, legsLift, LYING_BACK);
   },
@@ -1662,8 +1664,8 @@ const EXERCISE_BUILDERS = {
     );
   },
   'toe-touches': () => {
-    const reachUp = updatePose(LEGS_UP, { 0: [0.40, 0.60], 3: [0.45, 0.50], 4: [0.50, 0.50], 5: [0.50, 0.40], 6: [0.55, 0.40] });
-    const touchMid = updatePose(LEGS_UP, { 0: [0.35, 0.55], 3: [0.48, 0.45], 4: [0.48, 0.45], 5: [0.55, 0.35], 6: [0.58, 0.35] });
+    const reachUp = updatePose(LEGS_UP, { 0: [0.40, 0.60], 1: [0.38, 0.64], 2: [0.38, 0.76], 3: [0.42, 0.54], 4: [0.42, 0.68], 5: [0.50, 0.44], 6: [0.50, 0.78] });
+    const touchMid = updatePose(LEGS_UP, { 0: [0.35, 0.58], 1: [0.38, 0.62], 2: [0.38, 0.78], 3: [0.44, 0.52], 4: [0.44, 0.66], 5: [0.52, 0.40], 6: [0.52, 0.82] });
     return def('front', LEGS_UP, reachUp, touchMid, toeTouch, touchMid, reachUp, LEGS_UP);
   },
   'scissor-kicks': () => {
@@ -3196,7 +3198,7 @@ const EXERCISE_BUILDERS = {
       15: [0.54, 0.90],
       16: [0.58, 0.90]
     });
-    return def('side', STANDING_SIDE, calfPrep, calfPeak, calfPeak, calfPrep, STANDING_SIDE, calfPrep);
+    return def('side', STANDING_SIDE, calfPrep, calfPeak, shiftPose(calfPeak, 0, -0.005), calfPeak, calfPrep, STANDING_SIDE, calfPrep);
   },
   'donkey-kicks': () => {
     const donkeyPrepRight = updatePose(HANDS_KNEES, {
