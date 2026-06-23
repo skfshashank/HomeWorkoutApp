@@ -21,6 +21,7 @@ export class User {
 
   get bmi() {
     const h = this.height / 100;
+    if (!h || !this.weight) return 0;
     return +(this.weight / (h * h)).toFixed(1);
   }
 
