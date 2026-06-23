@@ -17,7 +17,11 @@ export class SettingsView {
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('change', (event) => this.handleChange(event));
-    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => {
+      // Don't re-render if a modal is open (would destroy it)
+      if (this.modalCleanup) return;
+      this.render();
+    });
   }
 
   t(key, fallback = key) {
@@ -265,5 +269,7 @@ export class SettingsView {
 
   closeModal(options = {}) {
     closeAccessibleModal(this, options);
+    // Re-render after modal closes to reflect any changes
+    this.render();
   }
 }

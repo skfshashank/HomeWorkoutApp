@@ -22,6 +22,7 @@ export class ProgressView {
     this.modalCleanup = null;
     this.lastFocusedElement = null;
     this.modalDismissHandler = null;
+    this._rendering = false;
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_COMPLETED, () => this.render());
@@ -39,6 +40,8 @@ export class ProgressView {
   }
 
   async render() {
+    if (this._rendering) return;
+    this._rendering = true;
     try {
     const { user, units } = this.ctx.updateProfile.getSettings();
     const progress = await this.ctx.getProgress.execute({ historyLimit: 20 });
@@ -140,6 +143,8 @@ export class ProgressView {
       this.el.innerHTML = `
         <div class="page-title">${this.t('progress_title', 'Progress')}</div>
         <section class="card"><p class="text-muted">Unable to load progress data. Complete a workout to get started!</p><p class="text-sm text-muted mt-8">Error: ${err.message}</p></section>`;
+    } finally {
+      this._rendering = false;
     }
   }
 
