@@ -34,10 +34,15 @@ export class OnboardingView {
       this.#stepLevel()
     ];
 
+    const requiredKeys = ['goal', 'focus', 'time', 'level'];
+    const currentKey = requiredKeys[this.#step - 1];
+    const hasSelection = Boolean(this.#data[currentKey]);
+
     content.innerHTML = steps[this.#step - 1];
     footer.innerHTML = `
       <div class="mb-16 text-muted text-sm">${this.#format('onboarding_step_label', { step: this.#step, total: 4 }, `Step ${this.#step} of 4`)}</div>
-      <button class="btn btn-primary btn-block" id="onb-next">${this.#step === 4 ? this.#t('onboarding_start_training', 'Start Training! 🚀') : this.#t('continue', 'Continue →')}</button>`;
+      <button class="btn btn-primary btn-block" id="onb-next" ${hasSelection ? '' : 'disabled'}>${this.#step === 4 ? this.#t('onboarding_start_training', 'Start Training! 🚀') : this.#t('continue', 'Continue →')}</button>
+      ${!hasSelection ? `<p class="text-sm text-muted mt-8" style="text-align:center;">${this.#t('onboarding_select_hint', '👆 Please select an option above')}</p>` : ''}`;
 
     content.querySelectorAll('.goal-option').forEach((opt) => {
       const selectOption = () => {
@@ -49,6 +54,14 @@ export class OnboardingView {
         opt.classList.add('selected');
         opt.setAttribute('aria-pressed', 'true');
         this.#data[key] = value;
+        // Enable the button now that a selection is made
+        const btn = document.getElementById('onb-next');
+        if (btn) {
+          btn.disabled = false;
+          // Remove the hint
+          const hint = footer.querySelector('.text-muted.mt-8');
+          if (hint) hint.remove();
+        }
       };
 
       opt.addEventListener('click', selectOption);

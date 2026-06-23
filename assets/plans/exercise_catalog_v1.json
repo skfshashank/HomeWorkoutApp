@@ -4282,6 +4282,346 @@
       ],
       "equipment": "none",
       "difficulty": "beginner"
+    },
+    {
+      "id": "burpees",
+      "name": "Burpees",
+      "nameHindi": "बर्पीज़",
+      "category": "full_body",
+      "muscles": [
+        "chest",
+        "legs",
+        "core",
+        "shoulders"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 15
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 12,
+      "animation": "anim-burpee",
+      "emoji": "💣",
+      "description": "Ultimate full-body explosive move combining squat, plank, push-up, and jump.",
+      "steps": [
+        "Stand with feet shoulder-width apart.",
+        "Drop into a squat and place hands on floor.",
+        "Jump feet back into plank position.",
+        "Do a push-up, jump feet forward, then explode up with arms overhead."
+      ],
+      "tips": [
+        "Land softly on the jump.",
+        "Keep core tight in plank.",
+        "Beginners can skip the push-up."
+      ]
+    },
+    {
+      "id": "squat-to-press",
+      "name": "Squat to Overhead Press",
+      "nameHindi": "स्क्वाट टू प्रेस",
+      "category": "full_body",
+      "muscles": [
+        "legs",
+        "shoulders",
+        "core",
+        "glutes"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 15,
+        "advanced": 20
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-squat",
+      "emoji": "🏋️",
+      "description": "Compound movement combining a squat with an overhead press for total body engagement.",
+      "steps": [
+        "Stand with feet shoulder-width apart, hands at shoulder height.",
+        "Lower into a squat keeping chest up.",
+        "Drive up through heels and press arms overhead.",
+        "Lower arms and repeat."
+      ],
+      "tips": [
+        "Keep weight in heels.",
+        "Press fully overhead at the top.",
+        "Engage core throughout."
+      ]
+    },
+    {
+      "id": "inchworm",
+      "name": "Inchworm",
+      "nameHindi": "इंचवर्म",
+      "category": "full_body",
+      "muscles": [
+        "core",
+        "shoulders",
+        "hamstrings",
+        "chest"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 8,
+        "advanced": 12
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 7,
+      "animation": "anim-burpee",
+      "emoji": "🐛",
+      "description": "Walk hands out to plank and back, stretching hamstrings and engaging the entire body.",
+      "steps": [
+        "Stand tall with feet together.",
+        "Bend at the waist and place hands on floor.",
+        "Walk hands forward into a plank position.",
+        "Walk hands back to feet and stand up."
+      ],
+      "tips": [
+        "Keep legs as straight as possible.",
+        "Move slowly and controlled.",
+        "Add a push-up in plank for extra challenge."
+      ]
+    },
+    {
+      "id": "bear-crawl",
+      "name": "Bear Crawl",
+      "nameHindi": "बेयर क्रॉल",
+      "category": "full_body",
+      "muscles": [
+        "shoulders",
+        "core",
+        "legs",
+        "arms"
+      ],
+      "type": "duration",
+      "levels": {
+        "beginner": 20,
+        "intermediate": 30,
+        "advanced": 45
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 9,
+      "animation": "anim-mountain-climber",
+      "emoji": "🐻",
+      "description": "Crawl on all fours with knees hovering to build total body stability and endurance.",
+      "steps": [
+        "Start on all fours with knees 1 inch off the ground.",
+        "Move opposite hand and foot forward simultaneously.",
+        "Keep back flat and hips low.",
+        "Continue crawling forward, then reverse."
+      ],
+      "tips": [
+        "Keep knees close to the ground.",
+        "Move slowly for more burn.",
+        "Breathe steadily."
+      ]
+    },
+    {
+      "id": "star-jumps",
+      "name": "Star Jumps",
+      "nameHindi": "स्टार जम्प्स",
+      "category": "full_body",
+      "muscles": [
+        "legs",
+        "core",
+        "shoulders",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 10,
+        "intermediate": 15,
+        "advanced": 25
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 10,
+      "animation": "anim-jumping-jack",
+      "emoji": "⭐",
+      "description": "Explosive jump spreading arms and legs into a star shape for cardio and full body activation.",
+      "steps": [
+        "Stand with feet together, arms at sides.",
+        "Squat slightly, then explode upward.",
+        "Spread arms and legs into an X shape at peak.",
+        "Land softly with feet together."
+      ],
+      "tips": [
+        "Land with soft knees.",
+        "Go for maximum height.",
+        "Control the landing."
+      ]
+    },
+    {
+      "id": "plank-to-pushup",
+      "name": "Plank to Push-up",
+      "nameHindi": "प्लैंक टू पुश-अप",
+      "category": "full_body",
+      "muscles": [
+        "chest",
+        "core",
+        "shoulders",
+        "triceps"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 14
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-push-up",
+      "emoji": "💪",
+      "description": "Transition from forearm plank to high plank position, engaging chest, arms, and core.",
+      "steps": [
+        "Start in forearm plank position.",
+        "Press up with right hand, then left to high plank.",
+        "Lower back to right forearm, then left.",
+        "Alternate the leading arm each rep."
+      ],
+      "tips": [
+        "Keep hips stable - no rocking.",
+        "Engage core throughout.",
+        "Go slow for better control."
+      ]
+    },
+    {
+      "id": "squat-jumps",
+      "name": "Squat Jumps",
+      "nameHindi": "स्क्वाट जम्प्स",
+      "category": "full_body",
+      "muscles": [
+        "legs",
+        "glutes",
+        "core",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 8,
+        "intermediate": 12,
+        "advanced": 18
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 10,
+      "animation": "anim-squat",
+      "emoji": "🦘",
+      "description": "Explosive squat with a jump at the top for power, strength, and cardio combined.",
+      "steps": [
+        "Stand with feet shoulder-width apart.",
+        "Lower into a deep squat.",
+        "Explode upward, jumping as high as possible.",
+        "Land softly and immediately go into next squat."
+      ],
+      "tips": [
+        "Land with bent knees.",
+        "Swing arms for momentum.",
+        "Keep chest up in the squat."
+      ]
+    },
+    {
+      "id": "turkish-getup-lite",
+      "name": "Turkish Get-Up (Bodyweight)",
+      "nameHindi": "टर्किश गेट-अप",
+      "category": "full_body",
+      "muscles": [
+        "core",
+        "shoulders",
+        "legs",
+        "hips"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 3,
+        "intermediate": 5,
+        "advanced": 8
+      },
+      "setsDefault": 2,
+      "caloriesPerSet": 9,
+      "animation": "anim-burpee",
+      "emoji": "🧗",
+      "description": "Complex ground-to-standing movement that builds stability, mobility and full-body strength.",
+      "steps": [
+        "Lie on your back with one arm extended toward the ceiling.",
+        "Roll onto your elbow, then hand.",
+        "Lift hips and sweep leg under to kneeling.",
+        "Stand up while keeping arm overhead, then reverse."
+      ],
+      "tips": [
+        "Keep eyes on the raised hand.",
+        "Go very slowly.",
+        "Master each position before speeding up."
+      ]
+    },
+    {
+      "id": "sprawl",
+      "name": "Sprawl",
+      "nameHindi": "स्प्रॉल",
+      "category": "full_body",
+      "muscles": [
+        "chest",
+        "core",
+        "legs",
+        "cardio"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 6,
+        "intermediate": 10,
+        "advanced": 15
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 11,
+      "animation": "anim-burpee",
+      "emoji": "🏊",
+      "description": "Like a burpee without the jump — drop chest to floor and spring back to standing.",
+      "steps": [
+        "Stand with feet shoulder-width apart.",
+        "Drop hands to floor, kick feet back.",
+        "Lower chest to touch the ground.",
+        "Push up, hop feet forward, and stand."
+      ],
+      "tips": [
+        "Move explosively.",
+        "Keep hips low when chest touches floor.",
+        "Great burpee alternative for low ceilings."
+      ]
+    },
+    {
+      "id": "walk-out-pushup",
+      "name": "Walk-Out Push-Up",
+      "nameHindi": "वॉक-आउट पुश-अप",
+      "category": "full_body",
+      "muscles": [
+        "chest",
+        "core",
+        "shoulders",
+        "hamstrings"
+      ],
+      "type": "reps",
+      "levels": {
+        "beginner": 5,
+        "intermediate": 8,
+        "advanced": 12
+      },
+      "setsDefault": 3,
+      "caloriesPerSet": 8,
+      "animation": "anim-push-up",
+      "emoji": "🚶",
+      "description": "Combines hamstring stretch with push-up for a complete upper and lower body move.",
+      "steps": [
+        "Stand tall, bend at waist, hands to floor.",
+        "Walk hands out to plank position.",
+        "Perform one push-up.",
+        "Walk hands back to feet and stand up."
+      ],
+      "tips": [
+        "Keep legs straight during the walk-out.",
+        "Control the push-up.",
+        "Stretch the hamstrings at the top."
+      ]
     }
   ]
 }

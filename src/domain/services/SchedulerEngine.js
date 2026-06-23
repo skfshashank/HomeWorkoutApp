@@ -74,8 +74,8 @@ export class SchedulerEngine {
   
   #goalToCategories(goal, focus) {
     const map = {
-      'fat_loss': ['belly_fat', 'hiit', 'core', 'belly_fat', 'hiit', 'yoga'],
-      'strength': ['upper', 'lower', 'core', 'upper', 'lower', 'hiit'],
+      'fat_loss': ['belly_fat', 'hiit', 'full_body', 'belly_fat', 'hiit', 'yoga'],
+      'strength': ['upper', 'lower', 'core', 'full_body', 'upper', 'lower'],
       'flexibility': ['yoga', 'stretch', 'yoga', 'pranayama', 'yoga', 'stretch'],
       'stress_relief': ['yoga', 'pranayama', 'stretch', 'yoga', 'pranayama', 'yoga']
     };
@@ -85,7 +85,7 @@ export class SchedulerEngine {
     if (focus === 'core') base.unshift('belly_fat', 'core');
     if (focus === 'upper') base.unshift('upper');
     if (focus === 'lower') base.unshift('lower');
-    if (focus === 'full_body') base.unshift('hiit', 'core');
+    if (focus === 'full_body') base.unshift('full_body', 'hiit');
     
     return base;
   }
