@@ -26,10 +26,11 @@ export class CustomWorkoutView {
   }
 
   safeRender() {
-    this.el.innerHTML = `<div class="page-title">${this.t('custom_workout_creator', 'Custom Workout Creator')}</div><p class="text-sm text-muted">Loading...</p>`;
+    if (!this.el) return;
+    this.el.innerHTML = `<div class="page-title">Custom Workout Creator</div><p class="text-sm text-muted">Loading...</p>`;
     this.render().catch((err) => {
       console.error('CustomWorkoutView render error:', err);
-      this.el.innerHTML = `<div class="page-title">${this.t('custom_workout_creator', 'Custom Workout Creator')}</div><div class="card"><p class="text-sm text-muted">Something went wrong. Please try again.</p></div>`;
+      this.el.innerHTML = `<div class="page-title">Custom Workout Creator</div><div class="card"><p>Error: ${err?.message || 'Unknown error'}</p><button class="btn btn-primary mt-16" onclick="history.back()">Go Back</button></div>`;
     });
   }
 
