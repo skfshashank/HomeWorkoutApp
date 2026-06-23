@@ -23,23 +23,29 @@ export class AppBootstrap {
   }
 
   registerServiceWorker() {
-    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-      navigator.serviceWorker.register('./sw.js').then((reg) => {
-        reg.update();
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          if (newWorker) {
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'activated' && !document.querySelector('.modal-overlay.active')) {
-                // Only reload if no modal is open (don't interrupt user mid-action)
-                window.location.reload();
-              }
-            });
-          }
-        });
-      }).catch((error) => {
-        this.#logger.error('Service worker registration failed', error);
+    if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+    
+    // Force cleanup: unregister old SWs and clear old caches
+    const targetVersion = 'openfit-v16';
+    caches.keys().then((keys) => {
+      keys.filter((k) => k.startsWith('openfit-') && k !== targetVersion)
+        .forEach((k) => caches.delete(k));
+    });
+
+    navigator.serviceWorker.register('./sw.js').then((reg) => {
+      reg.update();
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'activated' && !document.querySelector('.modal-overlay.active')) {
+              window.location.reload();
+            }
+          });
+        }
       });
-    }
+    }).catch((error) => {
+      this.#logger.error('Service worker registration failed', error);
+    });
   }
 }

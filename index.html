@@ -6,11 +6,22 @@
   <meta name="theme-color" content="#050816">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <title>OpenFit Local</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/main.css?v=16">
   <link rel="stylesheet" href="css/components.css?v=16">
   <link rel="stylesheet" href="css/animations.css?v=16">
+  <script>
+    // Force clear stale service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        var needed = 'openfit-v16';
+        regs.forEach(function(reg) { reg.update(); });
+      });
+    }
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to content</a>
