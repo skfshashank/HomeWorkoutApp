@@ -24,7 +24,7 @@ export class WorkoutsView {
     this.el.innerHTML = `
       <div class="page-title">${this.t('workout_plans', 'Workout Plans')}</div>
       <p class="page-subtitle">${this.t('workouts_subtitle', 'Browse prebuilt plans, build your own session, or open advanced timer modes.')}</p>
-      <section class="card"><div class="quick-links-grid"><button class="quick-link" data-action="open-library">📚 ${this.t('exercise_library_title', 'Exercise Library')}</button><button class="quick-link" data-action="open-custom">🛠️ ${this.t('build_custom_workout', 'Build Custom Workout')}</button><button class="quick-link" data-action="open-timers">⏱️ ${this.t('timer_modes', 'Timer Modes')}</button></div></section>
+      <section class="card"><div class="quick-links-grid">${this.ctx.features.exerciseLibrary !== false ? `<button class="quick-link" data-action="open-library">📚 ${this.t('exercise_library_title', 'Exercise Library')}</button>` : ''}${this.ctx.features.customWorkouts !== false ? `<button class="quick-link" data-action="open-custom">🛠️ ${this.t('build_custom_workout', 'Build Custom Workout')}</button>` : ''}${this.ctx.features.timers !== false ? `<button class="quick-link" data-action="open-timers">⏱️ ${this.t('timer_modes', 'Timer Modes')}</button>` : ''}</div></section>
       ${customWorkouts.length ? `<section class="card"><h2 class="mb-12">${this.t('custom_workouts', 'My Custom Workouts')}</h2>${customWorkouts.map((plan) => this.renderCustomPlan(plan, user.level)).join('')}</section>` : ''}
       <section class="card"><div class="mb-16"><div class="text-sm text-muted mb-8">${this.t('categories', 'Categories')}</div><div class="tabs">${categories.map((category) => `<button class="tab ${this.filters.category === category ? 'active' : ''}" data-action="filter-category" data-value="${category}">${this.formatFilterValue(category)}</button>`).join('')}</div></div><div><div class="text-sm text-muted mb-8">${this.t('difficulty', 'Difficulty')}</div><div class="tabs">${difficulties.map((difficulty) => `<button class="tab ${this.filters.difficulty === difficulty ? 'active' : ''}" data-action="filter-difficulty" data-value="${difficulty}">${this.formatFilterValue(difficulty)}</button>`).join('')}</div></div></section>
       <section>${plans.map((plan) => this.renderPlan(plan)).join('') || `<div class="card"><p class="text-sm text-muted">${this.t('no_matching_workouts', 'No workouts match your filters yet.')}</p></div>`}</section>`;
@@ -86,12 +86,12 @@ export class WorkoutsView {
       const plan = this.ctx.manageWorkouts.getPlanById(button.dataset.planId);
       if (plan) this.ctx.startWorkout.execute(plan, this.ctx.updateProfile.getUser().level);
     }
-    if (button.dataset.action === 'open-library') this.ctx.router.navigate('exercises');
-    if (button.dataset.action === 'open-custom') {
+    if (button.dataset.action === 'open-library' && this.ctx.features.exerciseLibrary !== false) this.ctx.router.navigate('exercises');
+    if (button.dataset.action === 'open-custom' && this.ctx.features.customWorkouts !== false) {
       this.ctx.openCustomWorkoutEditor();
       this.ctx.router.navigate('custom-workouts');
     }
-    if (button.dataset.action === 'open-timers') this.ctx.router.navigate('timers');
+    if (button.dataset.action === 'open-timers' && this.ctx.features.timers !== false) this.ctx.router.navigate('timers');
     if (button.dataset.action === 'start-custom') {
       const workout = await this.ctx.manageWorkouts.getCustomWorkout(button.dataset.workoutId);
       if (workout) this.ctx.startWorkout.execute(workout, this.ctx.updateProfile.getUser().level);
