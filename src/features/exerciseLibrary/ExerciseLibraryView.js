@@ -21,14 +21,22 @@ export class ExerciseLibraryView {
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
-    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
+    this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.safeRender());
     this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
-      if (page === 'exercises') this.render();
+      if (page === 'exercises') this.safeRender();
     });
   }
 
   t(key, fallback = key) {
     return this.ctx.i18n?.t(key) || fallback;
+  }
+
+  safeRender() {
+    this.el.innerHTML = `<div class="page-title">${this.t('exercise_library_title', 'Exercise Library')}</div><p class="text-sm text-muted">Loading...</p>`;
+    this.render().catch((err) => {
+      console.error('ExerciseLibraryView render error:', err);
+      this.el.innerHTML = `<div class="page-title">${this.t('exercise_library_title', 'Exercise Library')}</div><div class="card"><p class="text-sm text-muted">Something went wrong loading exercises. Please navigate back and try again.</p></div>`;
+    });
   }
 
   async render() {

@@ -17,12 +17,20 @@ export class CustomWorkoutView {
     this.el.addEventListener('change', (event) => this.handleInput(event));
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.resetDraft());
     this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
-      if (page === 'custom-workouts') this.render();
+      if (page === 'custom-workouts') this.safeRender();
     });
   }
 
   t(key, fallback = key) {
     return this.ctx.i18n?.t(key) || fallback;
+  }
+
+  safeRender() {
+    this.el.innerHTML = `<div class="page-title">${this.t('custom_workout_creator', 'Custom Workout Creator')}</div><p class="text-sm text-muted">Loading...</p>`;
+    this.render().catch((err) => {
+      console.error('CustomWorkoutView render error:', err);
+      this.el.innerHTML = `<div class="page-title">${this.t('custom_workout_creator', 'Custom Workout Creator')}</div><div class="card"><p class="text-sm text-muted">Something went wrong. Please try again.</p></div>`;
+    });
   }
 
   async render() {
