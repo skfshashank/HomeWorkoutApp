@@ -185,6 +185,11 @@
 .progress-ring .ring-value { font-size: 2rem; font-weight: 800; }
 .progress-ring .ring-label { font-size: 0.75rem; color: var(--text-muted); }
 
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 40px 24px; }
+.empty-state__icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state h2 { margin-bottom: 8px; }
+
 /* ===== STAT ITEMS ===== */
 .stat-card {
   background: var(--card);
@@ -193,8 +198,8 @@
   padding: 14px;
   text-align: center;
 }
-.stat-value { font-size: 1.5rem; font-weight: 800; color: var(--green); }
-.stat-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { font-size: 1.5rem; font-weight: 800; color: var(--green); overflow-wrap: break-word; }
+.stat-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; overflow-wrap: break-word; }
 
 /* ===== FORM ELEMENTS ===== */
 .form-group { margin-bottom: 18px; }
@@ -340,10 +345,10 @@
 .calendar-cell .day-label { font-size: 0.6rem; text-transform: uppercase; }
 
 /* ===== STREAK ===== */
-.streak-display { display: flex; align-items: center; gap: 14px; }
-.streak-fire { font-size: 2.5rem; filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.4)); }
-.streak-number { font-size: 2rem; font-weight: 800; }
-.streak-label { font-size: 0.8rem; color: var(--text-muted); }
+.streak-display { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.streak-fire { font-size: 2rem; filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.4)); }
+.streak-number { font-size: 1.75rem; font-weight: 800; line-height: 1; }
+.streak-label { font-size: 0.7rem; color: var(--text-muted); }
 
 /* ===== EXERCISE DEMO AREA ===== */
 .exercise-demo-shell {
@@ -352,31 +357,31 @@
   gap: 14px;
 }
 .exercise-demo {
-  width: 180px;
+  width: 220px;
   min-height: 180px;
-  margin: 20px auto;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.08), transparent 70%);
-  border: 2px solid var(--green);
+  margin: 16px auto;
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   position: relative;
-  padding: 18px;
+  padding: 12px;
 }
 .exercise-demo__avatar { font-size: 4rem; line-height: 1; }
 .exercise-svg {
-  width: 120px;
-  height: 80px;
+  width: 200px;
+  height: 160px;
   margin: 0 auto;
-  opacity: 0.9;
 }
 .exercise-svg svg {
   width: 100%;
   height: 100%;
   display: block;
+  border-radius: 16px;
 }
 .exercise-demo__caption {
   display: flex;

@@ -67,6 +67,29 @@ export class ProgressView {
     });
     const bodyFatLabel = bodyFatValue ? this.t(bodyFatCategoryKey(user.gender, bodyFatValue), 'Average') : this.t('add_measurements', 'Add measurements');
 
+    const hasActivity = (stats.totalWorkouts || 0) > 0 || history.length > 0 || measurements.length > 0;
+
+    if (!hasActivity) {
+      this.el.innerHTML = `
+        <div class="page-title">${this.t('progress_title', 'Progress')}</div>
+        <section class="card empty-state">
+          <div class="empty-state__icon">📊</div>
+          <h2>${this.t('no_progress_yet', 'No progress yet')}</h2>
+          <p class="text-muted mb-16">${this.t('no_progress_hint', 'Complete your first workout and your stats, streaks, calendar heatmap, and body composition will appear here.')}</p>
+          <button class="btn btn-primary" data-action="go-dashboard">${this.t('start_first_workout', '🚀 Start your first workout')}</button>
+        </section>
+        <section class="card">
+          <div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('bmi_calculator', 'BMI Calculator')}</h2><p class="text-sm text-muted">${this.t('calculated_from_profile', 'Calculated from your profile.')}</p></div><span class="chip">${this.t(bmiCategoryKey, user.bmiCategory)}</span></div>
+          <div class="grid-2 mb-16">
+            <div class="form-group"><label class="form-label">${this.t('height', 'Height')} (${units === 'metric' ? 'cm' : 'in'})</label><input class="form-input" id="bmi-height" type="number" value="${units === 'metric' ? user.height : (user.height / 2.54).toFixed(1)}"></div>
+            <div class="form-group"><label class="form-label">${this.t('weight', 'Weight')} (${units === 'metric' ? 'kg' : 'lb'})</label><input class="form-input" id="bmi-weight" type="number" value="${units === 'metric' ? user.weight : (user.weight * 2.20462).toFixed(1)}"></div>
+          </div>
+          <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bmi">${this.t('recalculate', 'Recalculate')}</button><div class="text-right"><div class="stat-value" id="bmi-output">${bmi}</div><div class="stat-label" id="bmi-category">${this.t(bmiCategoryKey, user.bmiCategory)}</div></div></div>
+        </section>`;
+      this._rendering = false;
+      return;
+    }
+
     this.el.innerHTML = `
       <div class="page-title">${this.t('progress_title', 'Progress')}</div>
       <p class="page-subtitle">${this.t('progress_subtitle', 'Everything you have earned — streaks, stats, adherence, body composition, and lifetime counts.')}</p>
@@ -177,6 +200,7 @@ export class ProgressView {
     if (action === 'calc-bmi') this.calculateBMI();
     if (action === 'calc-bodyfat') this.updateBodyFatOutput();
     if (action === 'open-achievements') this.ctx.router.navigate('achievements');
+    if (action === 'go-dashboard') this.ctx.bus.emit(Events.PAGE_CHANGED, { page: 'dashboard' });
   }
 
   getBmiCategoryKey(bmi) {
