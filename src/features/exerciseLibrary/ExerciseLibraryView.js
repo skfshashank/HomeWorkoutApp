@@ -22,6 +22,9 @@ export class ExerciseLibraryView {
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.render());
+    this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
+      if (page === 'exercises') this.render();
+    });
   }
 
   t(key, fallback = key) {

@@ -15,6 +15,9 @@ export class TimerModesView {
     this.ctx = deps;
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.el.addEventListener('input', (event) => this.handleInput(event));
+    this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
+      if (page === 'timers') this.render();
+    });
   }
 
   t(key, fallback = key) {

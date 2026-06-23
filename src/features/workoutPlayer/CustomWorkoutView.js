@@ -16,6 +16,9 @@ export class CustomWorkoutView {
     this.el.addEventListener('input', (event) => this.handleInput(event));
     this.el.addEventListener('change', (event) => this.handleInput(event));
     this.ctx.bus.on(Events.PROFILE_UPDATED, () => this.resetDraft());
+    this.ctx.bus.on(Events.PAGE_CHANGED, ({ page }) => {
+      if (page === 'custom-workouts') this.render();
+    });
   }
 
   t(key, fallback = key) {
