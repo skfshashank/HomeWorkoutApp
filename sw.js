@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v11';
+const CACHE_NAME = 'openfit-v12';
 const PRECACHE = [
   'index.html',
   'manifest.json',

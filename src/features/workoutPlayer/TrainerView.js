@@ -139,10 +139,13 @@ export class TrainerView {
       <div class="exercise-demo-shell w-full mb-16">
         <div class="exercise-demo">
           <div class="exercise-svg">${exerciseSvg}</div>
-          <div class="exercise-demo__caption">
-            <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
-            <div class="text-sm text-muted">${item.phaseLabel}</div>
-          </div>
+        </div>
+        <div class="exercise-demo__caption">
+          <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
+          <div class="text-sm text-muted">${item.phaseLabel}</div>
+        </div>
+        <div class="exercise-steps-visual">
+          ${(exercise.steps || []).map((step, i) => `<div class="step-visual" style="animation-delay:${i * 3}s"><span class="step-number">${i + 1}</span><span class="step-text">${step}</span></div>`).join('')}
         </div>
         ${this.renderExerciseGuide(exercise)}
       </div>

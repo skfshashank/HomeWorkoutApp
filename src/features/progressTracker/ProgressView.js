@@ -22,7 +22,6 @@ export class ProgressView {
     this.modalCleanup = null;
     this.lastFocusedElement = null;
     this.modalDismissHandler = null;
-    this._rendering = false;
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_COMPLETED, () => this.render());
@@ -40,8 +39,6 @@ export class ProgressView {
   }
 
   async render() {
-    if (this._rendering) return;
-    this._rendering = true;
     this.el.innerHTML = `<div class="page-title">${this.t('progress_title', 'Progress')}</div><p class="text-muted">Loading…</p>`;
     try {
     const { user, units } = this.ctx.updateProfile.getSettings();
@@ -86,7 +83,6 @@ export class ProgressView {
           </div>
           <div class="flex flex-between gap-12"><button class="btn btn-secondary" data-action="calc-bmi">${this.t('recalculate', 'Recalculate')}</button><div class="text-right"><div class="stat-value" id="bmi-output">${bmi}</div><div class="stat-label" id="bmi-category">${this.t(bmiCategoryKey, user.bmiCategory)}</div></div></div>
         </section>`;
-      this._rendering = false;
       return;
     }
 
@@ -167,8 +163,6 @@ export class ProgressView {
       this.el.innerHTML = `
         <div class="page-title">${this.t('progress_title', 'Progress')}</div>
         <section class="card"><p class="text-muted">Unable to load progress data. Complete a workout to get started!</p><p class="text-sm text-muted mt-8">Error: ${err.message}</p></section>`;
-    } finally {
-      this._rendering = false;
     }
   }
 
