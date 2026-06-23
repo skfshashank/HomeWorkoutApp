@@ -42,6 +42,7 @@ export class ProgressView {
   async render() {
     if (this._rendering) return;
     this._rendering = true;
+    this.el.innerHTML = `<div class="page-title">${this.t('progress_title', 'Progress')}</div><p class="text-muted">Loading…</p>`;
     try {
     const { user, units } = this.ctx.updateProfile.getSettings();
     const progress = await this.ctx.getProgress.execute({ historyLimit: 20 });
