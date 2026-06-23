@@ -28,7 +28,7 @@ export class SkeletonRenderer {
       this.destroy();
       this.container = canvas.closest('[data-skeleton-player]');
       this.engine = new SkeletonEngine(canvas);
-      this.engine.loadExercise(getKeyframesForExercise(exerciseId));
+      this.engine.loadExercise(getKeyframesForExercise(exerciseId), exerciseId);
       this.engine.play();
 
       this.controlHandler = (event) => {

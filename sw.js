@@ -1,7 +1,8 @@
-const CACHE_NAME = 'openfit-v26';
+const CACHE_NAME = 'openfit-v27';
 const PRECACHE = [
   'index.html',
   'manifest.json',
+  'libs/lottie.min.js',
   'css/main.css',
   'css/components.css',
   'css/animations.css',
