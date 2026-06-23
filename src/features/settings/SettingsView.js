@@ -218,6 +218,8 @@ export class SettingsView {
         return;
       }
 
+      // Only process form save on submit (not on input clicks)
+      if (event.type !== 'submit') return;
       const form = event.target.closest('#profile-form');
       if (!form) return;
       event.preventDefault();
