@@ -12,19 +12,20 @@ export class Router {
   }
   
   navigate(page) {
+    const target = document.querySelector(`[data-page="${page}"]`);
+    if (!target) return;
+
+    // Hide all pages, show target
     document.querySelectorAll('[data-page]').forEach(el => {
       el.classList.remove('active');
-      el.removeAttribute('hidden');
+      el.style.display = '';
     });
-    const target = document.querySelector(`[data-page="${page}"]`);
-    if (target) {
-      target.classList.add('active');
-      target.style.display = 'block';
-      this.#currentPage = page;
-      this.#bus.emit(Events.PAGE_CHANGED, { page });
-      window.scrollTo(0, 0);
-    }
-    // Update nav
+    target.classList.add('active');
+    this.#currentPage = page;
+    this.#bus.emit(Events.PAGE_CHANGED, { page });
+    window.scrollTo(0, 0);
+
+    // Update nav highlights
     document.querySelectorAll('[data-nav]').forEach(btn => {
       const isActive = btn.dataset.nav === page;
       btn.classList.toggle('active', isActive);
