@@ -1,7 +1,5 @@
 import { SkeletonEngine } from './SkeletonEngine.js';
-import { getExerciseAnimation, getKeyframesForExercise } from './exerciseKeyframes.js';
-
-const ACTIVE_RENDERERS = new Map();
+import { getKeyframesForExercise } from './exerciseKeyframes.js';
 
 export class SkeletonRenderer {
   constructor() {
@@ -61,29 +59,4 @@ export class SkeletonRenderer {
     this.engine = null;
   }
 }
-
-export function getExercisePlayerHTML(exerciseId, exerciseName = '') {
-  const renderer = new SkeletonRenderer();
-  return renderer.createPlayer(exerciseId, exerciseName);
-}
-
-export function renderExerciseAnimation(containerId, exerciseId, exerciseName = '') {
-  const host = document.getElementById(containerId);
-  if (!host) return null;
-
-  ACTIVE_RENDERERS.get(containerId)?.destroy();
-  const renderer = new SkeletonRenderer();
-  const { html, setup } = renderer.createPlayer(exerciseId, exerciseName);
-  host.innerHTML = html;
-  const engine = setup();
-  ACTIVE_RENDERERS.set(containerId, renderer);
-  return engine;
-}
-
-export function destroyExerciseAnimation(containerId) {
-  ACTIVE_RENDERERS.get(containerId)?.destroy();
-  ACTIVE_RENDERERS.delete(containerId);
-}
-
-export { getExerciseAnimation };
 

@@ -28,35 +28,31 @@ const HAIR = '#1C1917';
 const SHOE = '#1F2937';
 const SHOE_SOLE = '#0F172A';
 
-// Draw a smooth connected limb chain as thick round-cap strokes
-function strokeChain(ctx, points, width) {
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.lineWidth = width;
-  ctx.beginPath();
-  ctx.moveTo(points[0][0], points[0][1]);
-  for (let i = 1; i < points.length; i++) {
-    ctx.lineTo(points[i][0], points[i][1]);
-  }
-  ctx.stroke();
-}
-
-// Draw a tapered limb segment (wider at a, thinner at b)
-function drawSegment(ctx, a, b, wA, wB) {
-  if (!a || !b) return;
-  const len = dist(a, b);
-  if (len < 1) return;
+// Tapered limb segment with muscle bulge
+function limb(ctx, a, b, wA, wB, bulge = 0) {
+  if (!a || !b || dist(a, b) < 1) return;
   const angle = ang(a, b);
   const px = Math.cos(angle + Math.PI / 2);
   const py = Math.sin(angle + Math.PI / 2);
+  const mx = (a[0] + b[0]) / 2 + px * bulge;
+  const my = (a[1] + b[1]) / 2 + py * bulge;
 
   ctx.beginPath();
   ctx.moveTo(a[0] + px * wA / 2, a[1] + py * wA / 2);
-  ctx.lineTo(b[0] + px * wB / 2, b[1] + py * wB / 2);
-  ctx.arc(b[0], b[1], wB / 2, angle + Math.PI / 2, angle - Math.PI / 2, true);
-  ctx.lineTo(a[0] - px * wA / 2, a[1] - py * wA / 2);
-  ctx.arc(a[0], a[1], wA / 2, angle - Math.PI / 2, angle + Math.PI / 2, true);
+  ctx.quadraticCurveTo(mx + px * (wA + wB) / 3.5, my + py * (wA + wB) / 3.5,
+    b[0] + px * wB / 2, b[1] + py * wB / 2);
+  ctx.lineTo(b[0] - px * wB / 2, b[1] - py * wB / 2);
+  ctx.quadraticCurveTo(mx - px * (wA + wB) / 3.5, my - py * (wA + wB) / 3.5,
+    a[0] - px * wA / 2, a[1] - py * wA / 2);
   ctx.closePath();
+  ctx.fill();
+}
+
+// Circle at a joint (fills gaps between limb segments)
+function joint(ctx, pt, r) {
+  if (!pt) return;
+  ctx.beginPath();
+  ctx.arc(pt[0], pt[1], r, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -77,7 +73,6 @@ export class SkeletonEngine {
     this.frameDuration = 1000 / this.fps;
     this.boundTick = (time) => this.tick(time);
     this.prevPose = null;
-
     this.canvas.width = this.width;
     this.canvas.height = this.height;
   }
@@ -94,13 +89,10 @@ export class SkeletonEngine {
   interpolate(frame) {
     if (!this.keyframes.length) return clonePose(STANDING_FRONT);
     if (this.keyframes.length === 1) return clonePose(this.keyframes[0].pose);
-
     const wrapped = ((frame % this.totalFrames) + this.totalFrames) % this.totalFrames;
     const kfs = this.keyframes.map((k) => ({
-      frame: k.frame >= this.totalFrames ? this.totalFrames : k.frame,
-      pose: k.pose
+      frame: k.frame >= this.totalFrames ? this.totalFrames : k.frame, pose: k.pose
     }));
-
     let prev = kfs[0], next = kfs[kfs.length - 1];
     for (let i = 0; i < kfs.length; i++) {
       if (kfs[i].frame <= wrapped) prev = kfs[i];
@@ -109,11 +101,9 @@ export class SkeletonEngine {
     if (next.frame < prev.frame || wrapped > kfs[kfs.length - 1].frame) {
       next = { frame: kfs[0].frame + this.totalFrames, pose: kfs[0].pose };
     }
-
     const local = wrapped < prev.frame ? wrapped + this.totalFrames : wrapped;
     const span = Math.max(next.frame - prev.frame, 1);
     const t = easeInOut((local - prev.frame) / span);
-
     return prev.pose.map(([px, py], i) => {
       const [nx, ny] = next.pose[i] || [px, py];
       return [round(px + (nx - px) * t), round(py + (ny - py) * t)];
@@ -123,11 +113,9 @@ export class SkeletonEngine {
   clear() { this.ctx.clearRect(0, 0, this.width, this.height); }
 
   drawBackground() {
-    const ctx = this.ctx;
-    const W = this.width, H = this.height;
+    const ctx = this.ctx, W = this.width, H = this.height;
     const g = ctx.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.5, W * 0.8);
-    g.addColorStop(0, BG_2);
-    g.addColorStop(1, BG_1);
+    g.addColorStop(0, BG_2); g.addColorStop(1, BG_1);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
   }
@@ -139,187 +127,149 @@ export class SkeletonEngine {
     const cy = this.height * 0.95;
     const spread = Math.abs((lf?.[0] || 0) - (rf?.[0] || 0)) * 0.25 + 20;
     const ctx = this.ctx;
-    ctx.save();
-    ctx.globalAlpha = 0.3;
+    ctx.save(); ctx.globalAlpha = 0.3;
     const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, spread);
-    g.addColorStop(0, 'rgba(0,0,0,0.4)');
-    g.addColorStop(1, 'rgba(0,0,0,0)');
+    g.addColorStop(0, 'rgba(0,0,0,0.4)'); g.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = g;
+    ctx.beginPath(); ctx.ellipse(cx, cy, spread, 4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  // Draw one full arm: shoulder->elbow->wrist with joint fillers
+  drawArm(ctx, shoulder, elbow, wrist, side) {
+    if (!shoulder || !elbow) return;
+    const b = side === 'back' ? -1.5 : 1.5;
+
+    // Joint circles first (fill seams between segments)
+    ctx.fillStyle = SKIN;
+    joint(ctx, shoulder, 7);
+    joint(ctx, elbow, 5.5);
+
+    // Upper arm (bicep)
+    const ug = ctx.createLinearGradient(shoulder[0], shoulder[1], elbow[0], elbow[1]);
+    ug.addColorStop(0, SKIN_LT); ug.addColorStop(0.5, SKIN); ug.addColorStop(1, SKIN_DK);
+    ctx.fillStyle = ug;
+    limb(ctx, shoulder, elbow, 13, 10, b);
+
+    // Forearm
+    if (wrist) {
+      ctx.fillStyle = SKIN;
+      joint(ctx, wrist, 4);
+      const fg = ctx.createLinearGradient(elbow[0], elbow[1], wrist[0], wrist[1]);
+      fg.addColorStop(0, SKIN); fg.addColorStop(0.6, SKIN_LT); fg.addColorStop(1, SKIN_DK);
+      ctx.fillStyle = fg;
+      limb(ctx, elbow, wrist, 10, 7, b * 0.5);
+      // Hand
+      ctx.fillStyle = SKIN;
+      joint(ctx, wrist, 5);
+    }
+  }
+
+  // Draw one full leg: hip->knee->ankle with joint fillers
+  drawFullLeg(ctx, hip, knee, ankle, foot, side) {
+    if (!hip || !knee) return;
+    const b = side === 'back' ? -2.5 : 2.5;
+
+    // Joint fillers
+    ctx.fillStyle = SKIN;
+    joint(ctx, hip, 9);
+    joint(ctx, knee, 7);
+
+    // Full thigh (hip to knee)
+    const tg = ctx.createLinearGradient(hip[0], hip[1], knee[0], knee[1]);
+    tg.addColorStop(0, SKIN); tg.addColorStop(0.4, SKIN_LT); tg.addColorStop(1, SKIN);
+    ctx.fillStyle = tg;
+    limb(ctx, hip, knee, 17, 12, b);
+
+    // Calf (knee to ankle)
+    if (ankle) {
+      ctx.fillStyle = SKIN;
+      joint(ctx, ankle, 4.5);
+      const cg = ctx.createLinearGradient(knee[0], knee[1], ankle[0], ankle[1]);
+      cg.addColorStop(0, SKIN); cg.addColorStop(0.3, SKIN_LT); cg.addColorStop(1, SKIN_DK);
+      ctx.fillStyle = cg;
+      limb(ctx, knee, ankle, 12, 8, b * 0.5);
+
+      // Shoe
+      if (foot) this.drawShoe(ctx, ankle, foot);
+    }
+  }
+
+  drawShoe(ctx, ankle, foot) {
+    if (!ankle || !foot) return;
+    const a = ang(ankle, foot);
+    const len = Math.max(dist(ankle, foot), 14);
+    ctx.save();
+    ctx.translate(ankle[0], ankle[1]);
+    ctx.rotate(a);
+    ctx.fillStyle = SHOE;
     ctx.beginPath();
-    ctx.ellipse(cx, cy, spread, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(-3, -5); ctx.lineTo(len * 0.85, -4);
+    ctx.quadraticCurveTo(len + 3, 0, len * 0.85, 5);
+    ctx.lineTo(-3, 5); ctx.quadraticCurveTo(-5, 0, -3, -5);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = SHOE_SOLE;
+    ctx.beginPath();
+    ctx.moveTo(0, 4); ctx.lineTo(len * 0.85, 4.5);
+    ctx.lineTo(len * 0.88, 7); ctx.lineTo(-1, 6.5);
+    ctx.closePath(); ctx.fill();
     ctx.restore();
   }
 
-  // === LAYER 1: Full skin skeleton (continuous, no gaps) ===
-  drawSkinBase(ctx, p) {
-    const neck = p[13], pelvis = p[14];
-    const ls = p[1], rs = p[2], le = p[3], re = p[4], lw = p[5], rw = p[6];
-    const lh = p[7], rh = p[8], lk = p[9], rk = p[10], la = p[11], ra = p[12];
-
-    ctx.strokeStyle = SKIN;
-
-    // Spine (neck → pelvis): thick core
-    if (neck && pelvis) {
-      ctx.lineWidth = 22;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(neck[0], neck[1]);
-      ctx.lineTo(pelvis[0], pelvis[1]);
-      ctx.stroke();
-    }
-
-    // Shoulder bar
-    if (ls && rs) {
-      ctx.lineWidth = 14;
-      ctx.beginPath();
-      ctx.moveTo(ls[0], ls[1]);
-      ctx.lineTo(rs[0], rs[1]);
-      ctx.stroke();
-    }
-
-    // Hip bar
-    if (lh && rh) {
-      ctx.lineWidth = 16;
-      ctx.beginPath();
-      ctx.moveTo(lh[0], lh[1]);
-      ctx.lineTo(rh[0], rh[1]);
-      ctx.stroke();
-    }
-
-    // Arms — connected chains (shoulder→elbow→wrist)
-    // Back arm (left) - slightly dimmed
-    ctx.save();
-    ctx.globalAlpha = 0.75;
-    ctx.strokeStyle = SKIN;
-    if (ls && le) {
-      const armPts = [ls, le];
-      if (lw) armPts.push(lw);
-      ctx.lineWidth = 10;
-      strokeChain(ctx, armPts, 10);
-    }
-    ctx.restore();
-
-    // Front arm (right)
-    ctx.strokeStyle = SKIN;
-    if (rs && re) {
-      const armPts = [rs, re];
-      if (rw) armPts.push(rw);
-      strokeChain(ctx, armPts, 10);
-    }
-
-    // Legs — connected chains (hip→knee→ankle)
-    // Back leg (left) - slightly dimmed
-    ctx.save();
-    ctx.globalAlpha = 0.75;
-    ctx.strokeStyle = SKIN;
-    if (lh && lk) {
-      const legPts = [lh, lk];
-      if (la) legPts.push(la);
-      strokeChain(ctx, legPts, 13);
-    }
-    ctx.restore();
-
-    // Front leg (right)
-    ctx.strokeStyle = SKIN;
-    if (rh && rk) {
-      const legPts = [rh, rk];
-      if (ra) legPts.push(ra);
-      strokeChain(ctx, legPts, 13);
-    }
-
-    // Neck (connect to head area)
-    const nose = p[0];
-    if (neck && nose) {
-      ctx.strokeStyle = SKIN;
-      strokeChain(ctx, [neck, lerpPt(neck, nose, 0.3)], 11);
-    }
-
-    // Hands (circles at wrists)
-    ctx.fillStyle = SKIN_DK;
-    if (lw) { ctx.beginPath(); ctx.arc(lw[0], lw[1], 4, 0, Math.PI * 2); ctx.fill(); }
-    if (rw) { ctx.beginPath(); ctx.arc(rw[0], rw[1], 4, 0, Math.PI * 2); ctx.fill(); }
-  }
-
-  // === LAYER 2: Clothing on top of skin ===
-  drawShirt(ctx, p) {
-    const neck = p[13], pelvis = p[14];
-    const ls = p[1], rs = p[2], lh = p[7], rh = p[8];
+  drawTorso(ctx, neck, ls, rs, lh, rh, pelvis) {
     if (!neck || !ls || !rs || !lh || !rh) return;
 
-    // Extended shoulder points (for sleeve coverage)
-    const lsOut = [ls[0] - 3, ls[1] + 1];
-    const rsOut = [rs[0] + 3, rs[1] + 1];
-
-    // Waist (V-taper: narrower than shoulders)
+    // Waist narrows for V-taper
     const waistY = lerp((ls[1] + rs[1]) / 2, (lh[1] + rh[1]) / 2, 0.55);
-    const lWaist = [lerp(ls[0], lh[0], 0.5) + 4, waistY];
-    const rWaist = [lerp(rs[0], rh[0], 0.5) - 4, waistY];
+    const lW = [lerp(ls[0], lh[0], 0.5) + 4, waistY];
+    const rW = [lerp(rs[0], rh[0], 0.5) - 4, waistY];
 
-    const sg = ctx.createLinearGradient(lsOut[0], ls[1], rsOut[0], rh[1]);
-    sg.addColorStop(0, SHIRT_DK);
-    sg.addColorStop(0.3, SHIRT);
-    sg.addColorStop(0.7, SHIRT_LT);
-    sg.addColorStop(1, SHIRT_DK);
+    const sg = ctx.createLinearGradient(ls[0] - 6, ls[1], rs[0] + 6, rh[1]);
+    sg.addColorStop(0, SHIRT_DK); sg.addColorStop(0.3, SHIRT);
+    sg.addColorStop(0.7, SHIRT_LT); sg.addColorStop(1, SHIRT_DK);
     ctx.fillStyle = sg;
 
     ctx.beginPath();
-    // Neckline
-    ctx.moveTo(lsOut[0], lsOut[1]);
-    ctx.quadraticCurveTo(neck[0], neck[1] + 5, rsOut[0], rsOut[1]);
-    // Right side down
-    ctx.quadraticCurveTo(rsOut[0], lerp(rsOut[1], rWaist[1], 0.5), rWaist[0], rWaist[1]);
-    ctx.quadraticCurveTo(rh[0] + 1, lerp(rWaist[1], rh[1], 0.5), rh[0] + 2, rh[1] + 2);
-    // Bottom
-    ctx.lineTo(lh[0] - 2, lh[1] + 2);
-    // Left side up
-    ctx.quadraticCurveTo(lh[0] - 1, lerp(lWaist[1], lh[1], 0.5), lWaist[0], lWaist[1]);
-    ctx.quadraticCurveTo(lsOut[0], lerp(lsOut[1], lWaist[1], 0.5), lsOut[0], lsOut[1]);
+    ctx.moveTo(ls[0] - 5, ls[1]);
+    ctx.quadraticCurveTo(neck[0], neck[1] + 5, rs[0] + 5, rs[1]);
+    ctx.quadraticCurveTo(rs[0] + 4, lerp(rs[1], rW[1], 0.5), rW[0], rW[1]);
+    ctx.quadraticCurveTo(rh[0] + 2, lerp(rW[1], rh[1], 0.5), rh[0] + 4, rh[1] + 2);
+    ctx.lineTo(lh[0] - 4, lh[1] + 2);
+    ctx.quadraticCurveTo(lh[0] - 2, lerp(lW[1], lh[1], 0.5), lW[0], lW[1]);
+    ctx.quadraticCurveTo(ls[0] - 4, lerp(ls[1], lW[1], 0.5), ls[0] - 5, ls[1]);
     ctx.closePath();
     ctx.fill();
 
-    // Sleeve caps (cover shoulder joints)
-    const sleeveR = 9;
+    // Sleeve caps (cover shoulder-arm junction perfectly)
     ctx.fillStyle = SHIRT;
-    ctx.beginPath(); ctx.arc(ls[0], ls[1], sleeveR, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(rs[0], rs[1], sleeveR, 0, Math.PI * 2); ctx.fill();
+    joint(ctx, ls, 8);
+    joint(ctx, rs, 8);
 
     // Subtle center line
-    ctx.save();
-    ctx.globalAlpha = 0.1;
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(neck[0], neck[1] + 8);
+    ctx.save(); ctx.globalAlpha = 0.1; ctx.strokeStyle = '#000'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(neck[0], neck[1] + 6);
     ctx.lineTo(pelvis ? pelvis[0] : neck[0], waistY);
-    ctx.stroke();
-    ctx.restore();
+    ctx.stroke(); ctx.restore();
   }
 
-  drawShorts(ctx, p) {
-    const lh = p[7], rh = p[8], lk = p[9], rk = p[10];
+  drawShorts(ctx, lh, rh, lk, rk) {
     if (!lh || !rh || !lk || !rk) return;
-
     ctx.fillStyle = SHORTS;
 
-    // Left short leg (covers hip→40% toward knee)
+    // Left short leg
     const lEnd = lerpPt(lh, lk, 0.42);
-    drawSegment(ctx, [lh[0], lh[1] - 2], lEnd, 20, 15);
-
+    limb(ctx, lh, lEnd, 20, 16, 1.5);
     // Right short leg
     const rEnd = lerpPt(rh, rk, 0.42);
-    drawSegment(ctx, [rh[0], rh[1] - 2], rEnd, 20, 15);
+    limb(ctx, rh, rEnd, 20, 16, -1.5);
 
-    // Crotch fill (connect the two leg pieces)
-    const crotch = lerpPt(lh, rh, 0.5);
-    crotch[1] += 6;
+    // Crotch area fill
     ctx.beginPath();
-    ctx.moveTo(lh[0] - 6, lh[1]);
-    ctx.lineTo(rh[0] + 6, rh[1]);
-    ctx.lineTo(rh[0] + 2, crotch[1]);
-    ctx.lineTo(lh[0] - 2, crotch[1]);
-    ctx.closePath();
-    ctx.fill();
+    ctx.moveTo(lh[0] - 7, lh[1] - 1);
+    ctx.lineTo(rh[0] + 7, rh[1] - 1);
+    ctx.lineTo(rh[0] + 3, rh[1] + 8);
+    ctx.lineTo(lh[0] - 3, lh[1] + 8);
+    ctx.closePath(); ctx.fill();
 
     // Waistband
     ctx.fillStyle = SHORTS_DK;
@@ -328,124 +278,77 @@ export class SkeletonEngine {
     ctx.lineTo(rh[0] + 8, rh[1] - 3);
     ctx.lineTo(rh[0] + 7, rh[1] + 2);
     ctx.lineTo(lh[0] - 7, lh[1] + 2);
-    ctx.closePath();
-    ctx.fill();
+    ctx.closePath(); ctx.fill();
   }
 
-  // === LAYER 3: Shoes ===
-  drawShoes(ctx, p) {
-    const la = p[11], ra = p[12], lf = p[15], rf = p[16];
-
-    const drawShoe = (ankle, foot) => {
-      if (!ankle || !foot) return;
-      const shoeAngle = ang(ankle, foot);
-      const shoeLen = Math.max(dist(ankle, foot), 14);
-
-      ctx.save();
-      ctx.translate(ankle[0], ankle[1]);
-      ctx.rotate(shoeAngle);
-
-      // Shoe body
-      ctx.fillStyle = SHOE;
-      ctx.beginPath();
-      ctx.moveTo(-3, -5);
-      ctx.lineTo(shoeLen * 0.85, -4);
-      ctx.quadraticCurveTo(shoeLen + 3, 0, shoeLen * 0.85, 5);
-      ctx.lineTo(-3, 5);
-      ctx.quadraticCurveTo(-5, 0, -3, -5);
-      ctx.closePath();
-      ctx.fill();
-
-      // Sole
-      ctx.fillStyle = SHOE_SOLE;
-      ctx.beginPath();
-      ctx.moveTo(0, 4);
-      ctx.lineTo(shoeLen * 0.8, 4);
-      ctx.lineTo(shoeLen * 0.85, 6);
-      ctx.lineTo(-1, 6);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.restore();
-    };
-
-    // Back foot first (dimmed)
-    ctx.save();
-    ctx.globalAlpha = 0.75;
-    drawShoe(la, lf);
-    ctx.restore();
-    // Front foot
-    drawShoe(ra, rf);
+  drawNeck(ctx, neck, nose) {
+    if (!neck || !nose) return;
+    ctx.fillStyle = SKIN;
+    joint(ctx, neck, 6);
+    limb(ctx, neck, lerpPt(neck, nose, 0.25), 11, 9, 0);
   }
 
-  // === LAYER 4: Head ===
   drawHead(ctx, nose, neck) {
     if (!nose) return;
-    const headR = 17;
-    const headAngle = neck ? ang(neck, nose) : -Math.PI / 2;
-
+    const R = 17;
+    const ha = neck ? ang(neck, nose) : -Math.PI / 2;
     ctx.save();
     ctx.translate(nose[0], nose[1]);
-    ctx.rotate(headAngle + Math.PI / 2);
+    ctx.rotate(ha + Math.PI / 2);
 
-    // Hair (back)
+    // Hair back
     ctx.fillStyle = HAIR;
-    ctx.beginPath();
-    ctx.ellipse(0, -1, headR * 0.88, headR + 1, 0, Math.PI, 0);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0, -1, R * 0.88, R + 1, 0, Math.PI, 0); ctx.fill();
 
-    // Head shape
-    const hg = ctx.createRadialGradient(-2, -1, 0, 0, 0, headR);
-    hg.addColorStop(0, SKIN_LT);
-    hg.addColorStop(0.55, SKIN);
-    hg.addColorStop(1, SKIN_DK);
+    // Face
+    const hg = ctx.createRadialGradient(-2, -1, 0, 0, 0, R);
+    hg.addColorStop(0, SKIN_LT); hg.addColorStop(0.55, SKIN); hg.addColorStop(1, SKIN_DK);
     ctx.fillStyle = hg;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, headR * 0.8, headR, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0, 0, R * 0.8, R, 0, 0, Math.PI * 2); ctx.fill();
 
     // Hair top
     ctx.fillStyle = HAIR;
-    ctx.beginPath();
-    ctx.ellipse(0, -headR * 0.5, headR * 0.72, headR * 0.52, 0, Math.PI, 0, true);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(0, -R * 0.48, R * 0.72, R * 0.55, 0, Math.PI, 0, true); ctx.fill();
 
     // Ear
     ctx.fillStyle = SKIN_DK;
-    ctx.beginPath();
-    ctx.ellipse(headR * 0.7, 1, 3, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.ellipse(R * 0.7, 1, 3, 4, 0, 0, Math.PI * 2); ctx.fill();
 
     ctx.restore();
   }
 
-  // === MAIN DRAW: layered approach ===
   drawBody(p) {
     const ctx = this.ctx;
+    const nose = p[0], neck = p[13], pelvis = p[14];
+    const ls = p[1], rs = p[2], le = p[3], re = p[4], lw = p[5], rw = p[6];
+    const lh = p[7], rh = p[8], lk = p[9], rk = p[10], la = p[11], ra = p[12];
+    const lf = p[15], rf = p[16];
 
-    // Layer 1: Continuous skin skeleton (no gaps at joints)
-    this.drawSkinBase(ctx, p);
+    // === BACK LIMBS (slightly dimmed for depth) ===
+    ctx.save(); ctx.globalAlpha = 0.72;
+    this.drawFullLeg(ctx, lh, lk, la, lf, 'back');
+    this.drawArm(ctx, ls, le, lw, 'back');
+    ctx.restore();
 
-    // Layer 2: Clothing painted ON TOP of skin
-    this.drawShorts(ctx, p);
-    this.drawShirt(ctx, p);
+    // === CLOTHING (on top of skin, hides hip/shoulder joints) ===
+    this.drawShorts(ctx, lh, rh, lk, rk);
+    this.drawTorso(ctx, neck, ls, rs, lh, rh, pelvis);
 
-    // Layer 3: Shoes
-    this.drawShoes(ctx, p);
+    // === FRONT LIMBS ===
+    this.drawFullLeg(ctx, rh, rk, ra, rf, 'front');
+    this.drawArm(ctx, rs, re, rw, 'front');
 
-    // Layer 4: Head (always on top)
-    this.drawHead(ctx, p[0], p[13]);
+    // === NECK + HEAD ===
+    this.drawNeck(ctx, neck, nose);
+    this.drawHead(ctx, nose, neck);
   }
 
   drawFrame(pose) {
-    const W = this.width, H = this.height;
-    const p = pose.map(([x, y]) => [x * W, y * H]);
-
+    const p = pose.map(([x, y]) => [x * this.width, y * this.height]);
     this.clear();
     this.drawBackground();
     this.drawShadow(p);
     this.drawBody(p);
-
     this.prevPose = pose;
   }
 
@@ -453,7 +356,6 @@ export class SkeletonEngine {
     if (!this.playing) return;
     if (!this.lastTick) this.lastTick = timestamp;
     const delta = timestamp - this.lastTick;
-
     if (delta >= this.frameDuration) {
       const step = (delta / this.frameDuration) * this.speed;
       this.currentFrame = (this.currentFrame + step) % this.totalFrames;
@@ -465,27 +367,18 @@ export class SkeletonEngine {
 
   play() {
     if (this.playing) return;
-    this.playing = true;
-    this.lastTick = 0;
+    this.playing = true; this.lastTick = 0;
     this.animationId = window.requestAnimationFrame(this.boundTick);
   }
 
   pause() {
     this.playing = false;
-    if (this.animationId) {
-      window.cancelAnimationFrame(this.animationId);
-      this.animationId = null;
-    }
+    if (this.animationId) { window.cancelAnimationFrame(this.animationId); this.animationId = null; }
   }
 
   setSpeed(speed = 1) { this.speed = Math.max(0.1, Number(speed) || 1); }
 
-  destroy() {
-    this.pause();
-    this.keyframes = [];
-    this.prevPose = null;
-    this.clear();
-  }
+  destroy() { this.pause(); this.keyframes = []; this.prevPose = null; this.clear(); }
 }
 
 export { CONNECTIONS, easeInOut };

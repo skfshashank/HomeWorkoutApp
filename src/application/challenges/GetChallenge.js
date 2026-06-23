@@ -86,7 +86,6 @@ export class GetChallenge {
     completed.add(dayNumber);
     const completedDays = [...completed].sort((a, b) => a - b);
     this.#prefs.set(this.#completedDaysKey(), completedDays);
-    this.#bus.emit(this.#events.HABIT_COMPLETED, { type: 'challenge', day: dayNumber });
     return completedDays;
   }
 
@@ -152,7 +151,6 @@ export class GetChallenge {
             type: 'monthly'
           });
         }
-        this.#bus.emit(this.#events.MONTHLY_CHALLENGE_COMPLETED, definition);
       }
     }
 

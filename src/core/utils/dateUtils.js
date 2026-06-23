@@ -17,8 +17,6 @@ export function parseDateSafe(dateStr) {
   return new Date(year, (month || 1) - 1, day || 1);
 }
 
-export const parseDateStr = parseDateSafe;
-
 export function today() {
   return getLocalDateStr();
 }
@@ -66,11 +64,4 @@ export function getWeekDates() {
     d.setDate(start.getDate() + i);
     return getLocalDateStr(d);
   });
-}
-
-export function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 12) return 'Good Morning';
-  if (h < 17) return 'Good Afternoon';
-  return 'Good Evening';
 }

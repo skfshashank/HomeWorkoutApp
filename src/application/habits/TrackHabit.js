@@ -115,7 +115,6 @@ export class TrackHabit {
       else filled.add(index);
       dailyLog.waterGlasses = [...filled].sort((a, b) => a - b);
       habit.water = dailyLog.waterGlasses.length;
-      this.#bus.emit(this.#events.HABIT_COMPLETED, { type: 'water', date, value: habit.water });
     });
   }
 
@@ -147,7 +146,6 @@ export class TrackHabit {
       habit.mood = payload.mood || 'okay';
       habit.soreness = Array.isArray(payload.soreness) ? payload.soreness : [];
       delete habit.sleep;
-      this.#bus.emit(this.#events.HABIT_COMPLETED, { type: 'recovery', date, value: habit });
     });
   }
 

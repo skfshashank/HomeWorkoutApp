@@ -80,7 +80,6 @@ export class CompleteWorkout {
     const progressCheck = await this.#progression.checkAutoProgression();
     const payload = { record, progressCheck, rpeRating, session, profileId };
     this.#bus.emit(this.#events.WORKOUT_COMPLETED, payload);
-    this.#bus.emit(this.#events.STREAK_INCREASED, { profileId });
 
     return { record, progressCheck };
   }

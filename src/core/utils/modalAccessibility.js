@@ -7,7 +7,7 @@ const getFocusableElements = (root) => Array.from(root.querySelectorAll(FOCUSABL
 
 const getMainContent = () => document.getElementById('main-content');
 
-export const withModalCloseButton = (html) => `
+const withModalCloseButton = (html) => `
   <button type="button" class="modal-close" data-close-modal="true" aria-label="Close dialog">✕</button>
   ${html}
 `;

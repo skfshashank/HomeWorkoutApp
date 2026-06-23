@@ -154,7 +154,6 @@ export class TimerModesView {
     this.state.phase = 'complete';
     this.state.remaining = 0;
     this.announce(this.t('timer_complete', 'Timer complete'));
-    this.ctx.bus.emit(Events.TIMER_COMPLETE, { mode: this.mode, roundsCompleted: this.state.roundsCompleted });
     this.render();
   }
 
