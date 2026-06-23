@@ -1,5 +1,4 @@
 import { SkeletonEngine } from './SkeletonEngine.js';
-import { getKeyframesForExercise } from './exerciseKeyframes.js';
 
 export class SkeletonRenderer {
   constructor() {
@@ -28,7 +27,7 @@ export class SkeletonRenderer {
       this.destroy();
       this.container = canvas.closest('[data-skeleton-player]');
       this.engine = new SkeletonEngine(canvas);
-      this.engine.loadExercise(getKeyframesForExercise(exerciseId), exerciseId);
+      this.engine.loadExercise(null, exerciseId);
       this.engine.play();
 
       this.controlHandler = (event) => {

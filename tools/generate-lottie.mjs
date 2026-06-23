@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { EXERCISE_KEYFRAMES } from '../src/core/animation/exerciseKeyframes.js';
+import { EXERCISE_KEYFRAMES } from './exerciseKeyframes.js';
 
 const FRAME_RATE = 30;
 const TOTAL_FRAMES = 60;

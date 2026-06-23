@@ -1,28 +1,16 @@
-const CONNECTIONS = [
-  [13, 0], [1, 13], [2, 13], [1, 3], [3, 5], [2, 4], [4, 6],
-  [13, 14], [7, 14], [8, 14], [7, 9], [9, 11], [8, 10], [10, 12], [11, 15], [12, 16]
-];
-
-const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-
 export class SkeletonEngine {
-  constructor(canvas, options = {}) {
+  constructor(canvas) {
     this.playing = false;
     this.speed = 1;
     this.lottieAnim = null;
     this.exerciseId = null;
+    this._loadId = 0;
 
-    // Create a container div to replace the canvas
+    // Replace canvas with a div container for Lottie SVG rendering
     this.container = document.createElement('div');
     this.container.className = canvas?.className || '';
-    this.container.style.width = '100%';
-    this.container.style.aspectRatio = '1';
-    this.container.style.display = 'block';
-    this.container.style.background = '#111827';
-    this.container.style.overflow = 'hidden';
-    this.container.style.position = 'relative';
+    this.container.style.cssText = 'width:100%;aspect-ratio:1;display:block;background:#111827;overflow:hidden;position:relative;';
     if (canvas?.id) this.container.id = canvas.id;
-    this.container.dataset.renderer = 'lottie';
 
     if (canvas?.parentNode) {
       canvas.parentNode.replaceChild(this.container, canvas);
@@ -31,50 +19,49 @@ export class SkeletonEngine {
 
   loadExercise(keyframes, exerciseId) {
     this.exerciseId = exerciseId;
-    if (exerciseId) {
-      this._loadLottie(exerciseId);
-    }
+    if (exerciseId) this._loadLottie(exerciseId);
   }
 
-  _loadLottie(exerciseId) {
-    if (this.lottieAnim) {
-      this.lottieAnim.destroy();
-      this.lottieAnim = null;
-    }
+  async _loadLottie(exerciseId) {
+    // Increment load ID to ignore stale fetches
+    const loadId = ++this._loadId;
+
+    this._destroyAnim();
     this.container.innerHTML = '';
 
     const lottieLib = window.lottie;
     if (!lottieLib) {
-      console.warn('Lottie library not loaded');
-      this.container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#64748B;font-size:14px;">Loading...</div>';
+      this.container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:14px;">Animation loading...</div>';
       return;
     }
 
-    // Resolve path relative to page location
-    const animPath = `animations/${exerciseId}.json`;
-
     try {
+      // Fetch JSON directly with cache-busting to avoid stale SW cache
+      const resp = await fetch(`animations/${exerciseId}.json`, { cache: 'reload' });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const animationData = await resp.json();
+
+      // Abort if a newer load was requested while we were fetching
+      if (loadId !== this._loadId) return;
+
       this.lottieAnim = lottieLib.loadAnimation({
         container: this.container,
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: animPath,
+        animationData,
         rendererSettings: {
           preserveAspectRatio: 'xMidYMid meet',
-          progressiveLoad: false,
-          hideOnTransparent: true
+          progressiveLoad: false
         }
       });
 
       this.lottieAnim.setSpeed(this.speed);
-
-      this.lottieAnim.addEventListener('data_failed', () => {
-        console.warn(`Lottie load failed: ${exerciseId}`);
-        this.container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#64748B;font-size:13px;">⚠️ Animation unavailable</div>';
-      });
+      if (!this.playing) this.lottieAnim.pause();
     } catch (err) {
-      console.warn('Lottie error:', err);
+      if (loadId !== this._loadId) return;
+      console.warn(`Lottie load failed for ${exerciseId}:`, err);
+      this.container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;font-size:13px;">⚠️ Animation unavailable</div>';
     }
   }
 
@@ -93,14 +80,17 @@ export class SkeletonEngine {
     if (this.lottieAnim) this.lottieAnim.setSpeed(this.speed);
   }
 
-  destroy() {
-    this.playing = false;
+  _destroyAnim() {
     if (this.lottieAnim) {
       this.lottieAnim.destroy();
       this.lottieAnim = null;
     }
+  }
+
+  destroy() {
+    this.playing = false;
+    this._loadId++;
+    this._destroyAnim();
     this.container.innerHTML = '';
   }
 }
-
-export { CONNECTIONS, easeInOut };
