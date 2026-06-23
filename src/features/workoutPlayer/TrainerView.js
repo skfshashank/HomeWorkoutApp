@@ -128,7 +128,10 @@ export class TrainerView {
           <div class="text-sm text-muted">${this.session.workoutName}</div>
           <strong>${this.currentIndex + 1} / ${this.queue.length} ${this.t('exercises', 'Exercises').toLowerCase()}</strong>
         </div>
-        <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')}</button>
+        <div class="flex gap-8">
+          <button class="btn btn-secondary btn-sm" data-action="exit-workout">✕ ${this.t('exit', 'Exit')}</button>
+          <button class="btn btn-secondary btn-sm" data-action="skip">${this.t('skip', 'Skip')}</button>
+        </div>
       </div>
       <div class="progress-bar" role="progressbar" aria-label="${this.t('progress_title', 'Progress')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><div class="fill" style="width:${percent}%"></div></div>
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
@@ -593,6 +596,16 @@ export class TrainerView {
     const action = event.target.closest('[data-action]')?.dataset.action;
     if (!action || !this.session) return;
 
+    if (action === 'exit-workout') {
+      clearInterval(this.timerId);
+      this.timerId = null;
+      this.session = null;
+      this.mode = 'idle';
+      this.el.classList.remove('active');
+      this.el.innerHTML = '';
+      this.ctx.router.navigate('dashboard');
+      return;
+    }
     if (action === 'complete-set' && !this.paused) this.completeSet(false);
     if (action === 'adjust-target') this.openAdjustTargetModal();
     if (action === 'swap-exercise') this.openSwapModal();

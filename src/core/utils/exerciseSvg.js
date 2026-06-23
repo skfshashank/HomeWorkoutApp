@@ -128,20 +128,22 @@ const svgs = {
     <path d='M54 44l2 16'/>
   `),
   'child-pose': wrap(`
-    <circle cx='72' cy='42' r='6'/>
-    <path d='M18 56c14 0 22-8 34-10h14'/>
-    <path d='M46 44 38 60'/>
-    <path d='M54 44l8 14'/>
-    <g opacity='0.5'>
-      <ellipse cx='60' cy='48' rx='30' ry='4' stroke='none' fill='#22c55e'>
-        <animate attributeName='rx' values='30;34;30' dur='3s' repeatCount='indefinite'/>
-        <animate attributeName='opacity' values='0.15;0.05;0.15' dur='3s' repeatCount='indefinite'/>
-      </ellipse>
-    </g>
-    <g stroke='#4ade80' stroke-width='1' opacity='0.6'>
-      <path d='M84 36c4-4 6-8 6-12'><animate attributeName='opacity' values='0;0.6;0' dur='3s' repeatCount='indefinite'/></path>
-      <path d='M88 38c4-4 6-8 6-12'><animate attributeName='opacity' values='0;0.6;0' dur='3s' repeatCount='indefinite' begin='1s'/></path>
-    </g>
+    <circle cx='72' cy='30' r='6'>
+      <animate attributeName='cx' values='72;62;72' dur='3s' repeatCount='indefinite'/>
+      <animate attributeName='cy' values='30;44;30' dur='3s' repeatCount='indefinite'/>
+    </circle>
+    <path d='M66 36 56 44 46 50 36 50'>
+      <animate attributeName='d' values='M66 36 56 44 46 50 36 50;M56 48 46 54 36 56 26 56;M66 36 56 44 46 50 36 50' dur='3s' repeatCount='indefinite'/>
+    </path>
+    <path d='M46 50 42 62'>
+      <animate attributeName='d' values='M46 50 42 62;M36 56 34 64;M46 50 42 62' dur='3s' repeatCount='indefinite'/>
+    </path>
+    <path d='M56 44 60 60'>
+      <animate attributeName='d' values='M56 44 60 60;M46 54 50 64;M56 44 60 60' dur='3s' repeatCount='indefinite'/>
+    </path>
+    <path d='M72 36 86 30'>
+      <animate attributeName='d' values='M72 36 86 30;M62 48 50 42;M72 36 86 30' dur='3s' repeatCount='indefinite'/>
+    </path>
   `),
   'high-knees': wrap(`
     <circle cx='60' cy='14' r='6'><animate attributeName='cy' values='14;12;14' dur='0.8s' repeatCount='indefinite'/></circle>

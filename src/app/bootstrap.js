@@ -24,7 +24,21 @@ export class AppBootstrap {
 
   registerServiceWorker() {
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-      navigator.serviceWorker.register('./sw.js').catch((error) => {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        // Force update check on every page load
+        reg.update();
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'activated') {
+                // New SW activated — reload to get fresh assets
+                window.location.reload();
+              }
+            });
+          }
+        });
+      }).catch((error) => {
         this.#logger.error('Service worker registration failed', error);
       });
     }

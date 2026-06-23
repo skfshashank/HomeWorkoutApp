@@ -39,6 +39,7 @@ export class ProgressView {
   }
 
   async render() {
+    try {
     const { user, units } = this.ctx.updateProfile.getSettings();
     const progress = await this.ctx.getProgress.execute({ historyLimit: 20 });
     const stats = progress.stats;
@@ -134,6 +135,12 @@ export class ProgressView {
 
       <section class="card"><div class="flex flex-between gap-12 mb-16"><div><h2>${this.t('measurement_log', 'Measurement Log')}</h2><p class="text-sm text-muted">${this.t('current_profile', 'Current profile')}: ${formatUnitsWeight(user.weight, units)} • ${this.t('height', 'Height')}: ${formatUnitsHeight(user.height, units)}</p></div><button class="btn btn-primary btn-sm" data-action="add-weight">${this.t('add', 'Add')}</button></div>${measurements.length ? measurements.slice(0, 20).map((entry) => `
           <div class="history-item"><div class="history-info"><h4>${formatDate(entry.date)}</h4><p>${formatUnitsWeight(Number(entry.weight || 0), units)}${entry.waist ? ` • ${this.t('waist', 'Waist')} ${entry.waist} cm` : ''}${entry.bodyFat ? ` • ${entry.bodyFat.toFixed(1)}% ${this.t('body_fat_short', 'BF')}` : ''}${entry.note ? ` • ${entry.note}` : ''}</p></div></div>`).join('') : `<p class="text-sm text-muted">${this.t('no_measurement_entries', 'No measurement entries yet.')}</p>`}</section>`;
+    } catch (err) {
+      console.error('[ProgressView] render error:', err);
+      this.el.innerHTML = `
+        <div class="page-title">${this.t('progress_title', 'Progress')}</div>
+        <section class="card"><p class="text-muted">Unable to load progress data. Complete a workout to get started!</p><p class="text-sm text-muted mt-8">Error: ${err.message}</p></section>`;
+    }
   }
 
   renderHeatmap(logs) {
