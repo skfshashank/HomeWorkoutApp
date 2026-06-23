@@ -45,7 +45,9 @@ const svgs = {
   'high-knees': wrap(`${arc('M84 68q-18 -10 -8 -36', '1.6s')}${arc('M116 68q18 -10 8 -36', '1.6s', '.8s')}${glow(100, 92, 16, 10, '1.6s')}${head(100, 26)}${torso(89, 37, 22, 34)}${limb(95, 44, 26, 8, -42, 18, '1.6s')}${limb(105, 44, 26, 8, 42, -18, '1.6s', '.8s')}${limb(96, 69, 40, 10, 12, -18, '1.6s')}${limb(104, 69, 40, 10, -12, -58, '1.6s', '.8s')}`, 'High Knees'),
   'butt-kicks': wrap(`${arc('M82 78q-10 -18 6 -42', '1.6s')}${arc('M118 78q10 -18 -6 -42', '1.6s', '.8s')}${glow(100, 100, 16, 10, '1.6s')}${head(100, 26)}${torso(89, 37, 22, 34)}${limb(95, 44, 26, 8, -34, 10, '1.6s')}${limb(105, 44, 26, 8, 34, -10, '1.6s', '.8s')}${limb(96, 69, 40, 10, 16, -26, '1.6s')}${limb(104, 69, 40, 10, -16, -74, '1.6s', '.8s')}`, 'Butt Kicks'),
   'lateral-shuffle': wrap(`${arc('M74 70q18 -14 42 0', '1.8s')}${glow(100, 98, 18, 10, '1.8s')}<g><animateTransform attributeName='transform' type='translate' values='-10 0;10 0;-10 0' dur='1.8s' repeatCount='indefinite' ${ease}/>${head(100, 28)}${torso(89, 39, 22, 34)}${limb(95, 46, 24, 8, -56, -10, '1.8s')}${limb(105, 46, 24, 8, 24, -24, '1.8s')}${limb(96, 69, 40, 10, 18, 34, '1.8s')}${limb(104, 69, 40, 10, -26, -42, '1.8s')}</g>`, 'Lateral Shuffle'),
-  bridge: wrap(`${arc('M72 92q30 -34 62 -6', '2.6s')}${glow(96, 88, 18, 10, '2.6s')}<g><animateTransform attributeName='transform' type='translate' values='0 10;0 0;0 10' dur='2.6s' repeatCount='indefinite' ${ease}/>${capsule(52, 86, 44, 16, 'url(#body-grad)')}${head(42, 94, 8)}${capsule(90, 76, 34, 20, 'url(#body-grad)')}${limb(94, 92, 30, 9, 58, 46, '2.6s')}${limb(110, 92, 30, 9, 24, 12, '2.6s')}${swing(54, 96, 22, 7, 0, 0, '2.6s')}${swing(68, 96, 20, 7, 0, 0, '2.6s')}</g>`, 'Bridge')
+  bridge: wrap(`${arc('M72 92q30 -34 62 -6', '2.6s')}${glow(96, 88, 18, 10, '2.6s')}<g><animateTransform attributeName='transform' type='translate' values='0 10;0 0;0 10' dur='2.6s' repeatCount='indefinite' ${ease}/>${capsule(52, 86, 44, 16, 'url(#body-grad)')}${head(42, 94, 8)}${capsule(90, 76, 34, 20, 'url(#body-grad)')}${limb(94, 92, 30, 9, 58, 46, '2.6s')}${limb(110, 92, 30, 9, 24, 12, '2.6s')}${swing(54, 96, 22, 7, 0, 0, '2.6s')}${swing(68, 96, 20, 7, 0, 0, '2.6s')}</g>`, 'Bridge'),
+  'neck-rolls': wrap(`${arc('M100 22q-14 -8 0 -16q14 8 0 16', '3s')}${glow(100, 32, 12, 8, '3s')}${head(100, 28)}${torso(89, 42, 22, 34)}${limb(95, 48, 28, 8, -48, -48, '3s')}${limb(105, 48, 28, 8, 48, 48, '3s')}${limb(96, 72, 42, 10, 8, 8, '3s')}${limb(104, 72, 42, 10, -8, -8, '3s')}<circle cx='100' cy='28' r='9' fill='none' stroke='#5eead4' stroke-width='1.5' stroke-dasharray='4 3' opacity='.4'><animateTransform attributeName='transform' type='rotate' values='0 100 28;360 100 28' dur='3s' repeatCount='indefinite'/></circle><g><animateTransform attributeName='transform' type='rotate' values='-12 100 36;12 100 36;-12 100 36' dur='3s' repeatCount='indefinite' ${ease}/>${head(100, 28)}</g>`, 'Neck Rolls'),
+  'shoulder-shrugs': wrap(`${arc('M82 42q-10 -12 0 -20', '2s')}${arc('M118 42q10 -12 0 -20', '2s')}${glow(100, 44, 16, 9, '2s')}${head(100, 26)}${torso(89, 38, 22, 34)}<g><animateTransform attributeName='transform' type='translate' values='0 0;0 -6;0 0' dur='2s' repeatCount='indefinite' ${ease}/>${limb(92, 44, 28, 8, -50, -50, '2s')}${limb(108, 44, 28, 8, 50, 50, '2s')}</g>${limb(96, 70, 42, 10, 8, 8, '2s')}${limb(104, 70, 42, 10, -8, -8, '2s')}`, 'Shoulder Shrugs')
 };
 
 const aliases = {
@@ -73,7 +75,10 @@ const aliases = {
   balasana: 'child-pose',
   'high-knees': 'high-knees',
   'butt-kicks': 'butt-kicks',
-  'lateral-shuffles': 'lateral-shuffle'
+  'lateral-shuffles': 'lateral-shuffle',
+  'neck-roll': 'neck-rolls',
+  'shoulder-shrug': 'shoulder-shrugs',
+  'shoulder-rolls': 'shoulder-shrugs'
 };
 
 function getGenericSvg(id = '') {
@@ -82,6 +87,8 @@ function getGenericSvg(id = '') {
   if (key.includes('plank') || key.includes('climber')) return svgs.plank;
   if (key.includes('crunch') || key.includes('raise') || key.includes('twist')) return svgs.crunch;
   if (key.includes('squat') || key.includes('lunge')) return svgs.squat;
+  if (key.includes('neck') || key.includes('roll')) return svgs['neck-rolls'];
+  if (key.includes('shoulder') || key.includes('shrug')) return svgs['shoulder-shrugs'];
   if (key.includes('jump') || key.includes('knee') || key.includes('kick') || key.includes('shuffle')) return svgs['jumping-jack'];
   return wrap(`<g><animateTransform attributeName='transform' type='translate' values='0 0;0 2;0 0' dur='3s' repeatCount='indefinite' ${ease}/>${glow(100, 86, 15, 10, '3s')}${head(100, 28)}${torso(89, 39, 22, 34)}${limb(95, 46, 28, 8, -52, -42, '3s')}${limb(105, 46, 28, 8, 52, 42, '3s')}${limb(96, 69, 42, 10, 10, 14, '3s')}${limb(104, 69, 42, 10, -10, -14, '3s')}</g>`, 'Exercise');
 }

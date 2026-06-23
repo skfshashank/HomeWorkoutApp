@@ -160,6 +160,8 @@ export class SettingsView {
   }
 
   handleChange(event) {
+    // Ignore change events while modal is open
+    if (this.modalCleanup) return;
     const action = event.target.dataset.action;
     if (action === 'toggle-sound') {
       this.ctx.updateProfile.setPreference('soundEnabled', event.target.checked);

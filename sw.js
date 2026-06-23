@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v10';
+const CACHE_NAME = 'openfit-v11';
 const PRECACHE = [
   'index.html',
   'manifest.json',
@@ -81,16 +81,33 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
+  const url = new URL(event.request.url);
+  const isAppCode = url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html');
+
+  if (isAppCode) {
+    // Network-first for app code: always get fresh version, fall back to cache offline
+    event.respondWith(
+      fetch(event.request).then((response) => {
         if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      }).catch(() => caches.match(new URL('index.html', self.location).toString()));
-    })
-  );
+      }).catch(() => caches.match(event.request).then((cached) => cached || caches.match(new URL('index.html', self.location).toString())))
+    );
+  } else {
+    // Cache-first for assets (images, JSON data, fonts)
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        }).catch(() => caches.match(new URL('index.html', self.location).toString()));
+      })
+    );
+  }
 });
