@@ -9,7 +9,7 @@ export class SkeletonEngine {
     // Replace canvas with a div container for Lottie SVG rendering
     this.container = document.createElement('div');
     this.container.className = canvas?.className || '';
-    this.container.style.cssText = 'width:100%;aspect-ratio:1;display:block;background:#111827;overflow:hidden;position:relative;';
+    this.container.style.cssText = 'width:100%;aspect-ratio:1;display:block;background:#f5f5f5;overflow:hidden;position:relative;border-radius:12px;';
     if (canvas?.id) this.container.id = canvas.id;
 
     if (canvas?.parentNode) {

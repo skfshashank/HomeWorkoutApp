@@ -10,28 +10,30 @@ const CANVAS = 400;
 const HALF = CANVAS / 2;
 const EASE_IN = { x: 0.5, y: 1 };
 const EASE_OUT = { x: 0.5, y: 0 };
+const rgb = (r, g, b, a = 1) => [r / 255, g / 255, b / 255, a];
 
 const COLORS = {
-  skin: [0.83, 0.65, 0.45, 1],
-  skinShadow: [0.77, 0.6, 0.42, 1],
-  shirt: [0.23, 0.51, 0.96, 1],
-  shirtDark: [0.15, 0.39, 0.92, 1],
-  shorts: [0.22, 0.26, 0.32, 1],
-  hair: [0.16, 0.15, 0.14, 1],
-  shoes: [0.12, 0.16, 0.22, 1],
-  shadow: [0.02, 0.03, 0.05, 1]
+  skin: rgb(226, 189, 159),
+  skinShadow: rgb(213, 160, 116),
+  shirt: rgb(214, 98, 39),
+  shirtDark: rgb(180, 61, 38),
+  shorts: rgb(22, 18, 19),
+  hair: rgb(74, 35, 15),
+  shoes: rgb(22, 18, 19),
+  sole: rgb(60, 60, 60),
+  shadow: rgb(38, 34, 36)
 };
 
 const SEGMENT_LENGTHS = {
-  upperArm: 55,
-  forearm: 50,
-  hand: 10,
-  thigh: 65,
-  calf: 60,
-  foot: 22,
-  torso: 95,
-  shorts: 35,
-  head: 30
+  upperArm: 58,
+  forearm: 54,
+  hand: 14,
+  thigh: 74,
+  calf: 68,
+  foot: 28,
+  torso: 110,
+  shorts: 40,
+  head: 34
 };
 const MAX_SOURCE_KEYFRAMES = 4;
 
@@ -45,7 +47,6 @@ const avgPoint = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
 const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 const angleDeg = (a, b) => round((Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI);
 const toPx = ([x, y]) => [Math.round(x * CANVAS), Math.round(y * CANVAS)];
-const withAlpha = (rgba, alpha) => [rgba[0], rgba[1], rgba[2], alpha];
 const normalizeAngle = (value) => {
   let angle = value;
   while (angle > 180) angle -= 360;
@@ -77,11 +78,44 @@ function makePath(vertices, inTangents, outTangents, closed = true) {
   };
 }
 
+function smoothTangents(vertices, factor = 0.2, closed = true) {
+  return vertices.map((vertex, index) => {
+    const prev = closed ? vertices[(index - 1 + vertices.length) % vertices.length] : (vertices[index - 1] ?? vertex);
+    const next = closed ? vertices[(index + 1) % vertices.length] : (vertices[index + 1] ?? vertex);
+
+    return {
+      i: [round((prev[0] - vertex[0]) * factor), round((prev[1] - vertex[1]) * factor)],
+      o: [round((next[0] - vertex[0]) * factor), round((next[1] - vertex[1]) * factor)]
+    };
+  });
+}
+
+function makeSmoothPath(vertices, factor = 0.2, closed = true) {
+  const tangents = smoothTangents(vertices, factor, closed);
+  return makePath(
+    vertices,
+    tangents.map((tangent) => tangent.i),
+    tangents.map((tangent) => tangent.o),
+    closed
+  );
+}
+
 function fill(color, opacity = 100) {
   return {
     ty: 'fl',
     c: { a: 0, k: color },
     o: { a: 0, k: opacity }
+  };
+}
+
+function stroke(color, width, opacity = 100) {
+  return {
+    ty: 'st',
+    c: { a: 0, k: color },
+    o: { a: 0, k: opacity },
+    w: { a: 0, k: width },
+    lc: 2,
+    lj: 2
   };
 }
 
@@ -94,7 +128,7 @@ function ellipse(size, position = [0, 0]) {
 }
 
 function group(name, items) {
-  return { ty: 'gr', it: [...items, shapeTransform()] };
+  return { ty: 'gr', nm: name, it: [...items, shapeTransform()] };
 }
 
 function basicKeyframe(t, s) {
@@ -284,127 +318,201 @@ function buildAnimatedLayer(nm, shapes, frames, { opacity = 100, ind, parent } =
 }
 
 function makeUpperArmShape(color) {
+  const armShadow = COLORS.skinShadow;
   return [
-    group('upper-arm', [
-      makePath(
-        [[0, -7], [18, -6], [36, -5.6], [55, -5], [55, 5], [36, 5.6], [18, 6], [0, 7]],
-        [[0, 0], [-3, 0], [-3, 0], [0, -1.6], [0, 0], [3, 0], [3, 0], [0, 1.6]],
-        [[3, 0], [3, 0], [3, 0], [0, 1.6], [0, 0], [-3, 0], [-3, 0], [0, -1.6]]
-      ),
+    group('upper-arm-base', [
+      makeSmoothPath([[0, -11], [8, -13], [18, -12], [30, -10], [42, -8], [52, -6], [58, -4], [57, 6], [46, 9], [28, 11], [12, 10], [0, 12]], 0.22),
       fill(color)
+    ]),
+    group('upper-arm-shadow', [
+      makeSmoothPath([[20, -10], [34, -9], [48, -7], [58, -4], [57, 5], [49, 7], [37, 9], [25, 10], [22, 2]], 0.18),
+      fill(armShadow, 32)
+    ]),
+    group('deltoid-cap', [
+      makeSmoothPath([[-2, -10], [5, -14], [12, -13], [16, -8], [14, 0], [7, 5], [0, 3], [-4, -2]], 0.28),
+      fill(color)
+    ]),
+    group('shoulder-joint', [
+      ellipse([16, 16], [4, 0]),
+      fill(color)
+    ]),
+    group('elbow-joint', [
+      ellipse([14, 14], [58, 1]),
+      fill(armShadow, 85)
     ])
   ];
 }
 
 function makeForearmShape(color) {
+  const armShadow = COLORS.skinShadow;
   return [
-    group('forearm', [
-      makePath(
-        [[0, -5], [18, -4.5], [34, -4.1], [50, -3.5], [50, 3.5], [34, 4.1], [18, 4.5], [0, 5]],
-        [[0, 0], [-2, 0], [-2, 0], [0, -1.2], [0, 0], [2, 0], [2, 0], [0, 1.2]],
-        [[2, 0], [2, 0], [2, 0], [0, 1.2], [0, 0], [-2, 0], [-2, 0], [0, -1.2]]
-      ),
+    group('forearm-base', [
+      makeSmoothPath([[0, -8], [10, -9], [22, -8], [34, -7], [44, -6], [52, -4], [54, -2], [53, 3], [46, 5], [34, 7], [20, 8], [8, 7], [0, 8]], 0.22),
       fill(color)
+    ]),
+    group('forearm-shadow', [
+      makeSmoothPath([[18, -7], [31, -6], [44, -5], [54, -2], [52, 3], [42, 5], [28, 6], [18, 6], [15, 0]], 0.18),
+      fill(armShadow, 34)
+    ]),
+    group('elbow-cover', [
+      ellipse([14, 14], [2, 0]),
+      fill(color)
+    ]),
+    group('wrist-joint', [
+      ellipse([12, 12], [54, 1]),
+      fill(armShadow, 85)
     ])
   ];
 }
 
 function makeHandShape(color) {
   return [
-    group('hand', [
-      ellipse([10, 10], [4, 0]),
+    group('hand-palm', [
+      makeSmoothPath([[-1, -5], [5, -8], [11, -7], [14, -4], [14, 1], [11, 5], [5, 7], [0, 5], [-2, 1]], 0.26),
+      fill(color)
+    ]),
+    group('hand-fingers', [
+      makeSmoothPath([[5, -7], [10, -9], [14, -7], [15, -2], [13, 4], [9, 6], [6, 4], [8, 0], [6, -3]], 0.24),
+      fill(COLORS.skinShadow, 28)
+    ]),
+    group('thumb', [
+      makeSmoothPath([[0, -1], [4, -4], [7, -3], [8, 1], [5, 4], [1, 3], [-1, 1]], 0.24),
       fill(color)
     ])
   ];
 }
 
 function makeThighShape(color) {
+  const legShadow = COLORS.skinShadow;
   return [
-    group('thigh', [
-      makePath(
-        [[0, -9], [20, -8], [42, -7.4], [65, -6.5], [65, 6.5], [42, 7.4], [20, 8], [0, 9]],
-        [[0, 0], [-3, 0], [-3, 0], [0, -1.8], [0, 0], [3, 0], [3, 0], [0, 1.8]],
-        [[3, 0], [3, 0], [3, 0], [0, 1.8], [0, 0], [-3, 0], [-3, 0], [0, -1.8]]
-      ),
+    group('thigh-base', [
+      makeSmoothPath([[0, -11], [10, -12], [22, -12], [36, -11], [50, -10], [63, -8], [72, -5], [74, 4], [71, 8], [60, 11], [44, 13], [28, 13], [12, 12], [0, 12]], 0.22),
       fill(color)
+    ]),
+    group('shorts-overlap', [
+      makeSmoothPath([[-1, -11], [18, -12], [38, -11], [56, -9], [69, -6], [71, 1], [56, 2], [38, 3], [18, 3], [0, 2]], 0.2),
+      fill(COLORS.shorts)
+    ]),
+    group('thigh-shadow', [
+      makeSmoothPath([[26, -10], [44, -9], [61, -7], [73, -4], [72, 5], [62, 8], [48, 10], [34, 11], [26, 5]], 0.18),
+      fill(legShadow, 28)
+    ]),
+    group('hip-joint', [
+      ellipse([16, 16], [5, 0]),
+      fill(color)
+    ]),
+    group('knee-joint', [
+      ellipse([14, 14], [74, 2]),
+      fill(legShadow, 85)
     ])
   ];
 }
 
 function makeCalfShape(color) {
+  const legShadow = COLORS.skinShadow;
   return [
-    group('calf', [
-      makePath(
-        [[0, -6.5], [20, -6.2], [40, -5.2], [60, -4], [60, 4], [40, 5.2], [20, 6.2], [0, 6.5]],
-        [[0, 0], [-2, 0], [-2, 0], [0, -1.4], [0, 0], [2, 0], [2, 0], [0, 1.4]],
-        [[2, 0], [2, 0], [2, 0], [0, 1.4], [0, 0], [-2, 0], [-2, 0], [0, -1.4]]
-      ),
+    group('calf-base', [
+      makeSmoothPath([[0, -8], [10, -9], [22, -8], [34, -6], [46, -4], [58, -3], [67, -2], [68, 3], [62, 6], [52, 9], [40, 10], [28, 9], [14, 8], [0, 8]], 0.22),
       fill(color)
+    ]),
+    group('calf-muscle', [
+      makeSmoothPath([[18, -7], [30, -6], [42, -4], [54, -2], [66, -1], [61, 5], [50, 8], [38, 8], [26, 6]], 0.18),
+      fill(legShadow, 30)
+    ]),
+    group('knee-cover', [
+      ellipse([14, 14], [2, 0]),
+      fill(color)
+    ]),
+    group('ankle-joint', [
+      ellipse([12, 12], [68, 1]),
+      fill(legShadow, 85)
     ])
   ];
 }
 
 function makeFootShape() {
   return [
-    group('shoe', [
-      makePath(
-        [[-2, -4], [10, -4], [18, -2], [22, 1], [18, 4], [8, 5], [0, 5], [-2, 2]],
-        [[0, 0], [-2, 0], [-2, 0], [0, -1.5], [0, 0], [2, 0], [2, 0], [0, 1]],
-        [[2, 0], [2, 0], [2, 0], [0, 1.5], [0, 0], [-2, 0], [-2, 0], [0, -1]]
-      ),
+    group('shoe-upper', [
+      makeSmoothPath([[-2, -5], [5, -7], [14, -7], [22, -5], [27, -1], [28, 3], [24, 6], [16, 8], [6, 8], [-1, 5], [-2, 1]], 0.24),
       fill(COLORS.shoes)
+    ]),
+    group('shoe-sole', [
+      makeSmoothPath([[0, 4], [7, 6], [16, 6], [24, 5], [28, 4], [27, 7], [20, 9], [11, 10], [3, 9], [-1, 7]], 0.18),
+      fill(COLORS.sole)
     ])
   ];
 }
 
 function makeTorsoShape() {
   return [
-    group('torso', [
-      makePath(
-        [[-30, 0], [30, 0], [25, 38], [20, 68], [18, 95], [-18, 95], [-20, 68], [-25, 38]],
-        [[0, 0], [0, 0], [3, -4], [2, -2], [0, 0], [0, 0], [-2, -2], [-3, -4]],
-        [[0, 0], [0, 0], [-3, 4], [-2, 2], [0, 0], [0, 0], [2, 2], [3, 4]]
-      ),
+    group('tank-top-main', [
+      makeSmoothPath([[-42, 4], [-38, 0], [-28, 2], [-20, 8], [-12, 18], [-8, 34], [-6, 52], [-6, 72], [-10, 90], [-16, 106], [16, 106], [10, 90], [6, 72], [6, 52], [8, 34], [12, 18], [20, 8], [28, 2], [38, 0], [42, 4]], 0.18),
       fill(COLORS.shirt),
-      makePath(
-        [[-30, 0], [-10, 10], [0, 26], [10, 10], [30, 0], [16, 0], [0, 14], [-16, 0]],
-        [[0, 0], [-3, 0], [-2, -2], [2, -2], [0, 0], [2, 0], [0, -2], [-2, 0]],
-        [[3, 0], [3, 0], [2, 2], [-2, 2], [0, 0], [-2, 0], [0, 2], [2, 0]]
-      ),
-      fill(COLORS.shirtDark)
+    ]),
+    group('tank-top-left-panel', [
+      makeSmoothPath([[-30, 6], [-20, 10], [-14, 24], [-12, 46], [-14, 70], [-18, 92], [-10, 100], [-4, 72], [-4, 44], [-8, 20]], 0.18),
+      fill(COLORS.shirtDark, 82)
+    ]),
+    group('tank-top-right-panel', [
+      makeSmoothPath([[30, 6], [20, 10], [14, 24], [12, 46], [14, 70], [18, 92], [10, 100], [4, 72], [4, 44], [8, 20]], 0.18),
+      fill(COLORS.shirtDark, 62)
+    ]),
+    group('collar-v', [
+      makeSmoothPath([[-15, 6], [-8, 8], [-2, 18], [0, 24], [2, 18], [8, 8], [15, 6]], 0.2, false),
+      stroke(COLORS.shirtDark, 3, 88)
+    ]),
+    group('torso-shadow', [
+      makeSmoothPath([[8, 8], [20, 10], [30, 18], [28, 56], [22, 92], [10, 104], [5, 78], [6, 42]], 0.18),
+      fill(COLORS.shirtDark, 42)
+    ]),
+    group('left-deltoid', [
+      ellipse([18, 18], [-34, 14]),
+      fill(COLORS.skin)
+    ]),
+    group('right-deltoid', [
+      ellipse([18, 18], [34, 14]),
+      fill(COLORS.skinShadow, 90)
     ])
   ];
 }
 
 function makeShortsShape() {
   return [
-    group('shorts', [
-      makePath(
-        [[-26, 0], [26, 0], [22, 16], [18, 35], [6, 35], [2, 16], [-2, 35], [-18, 35], [-22, 16]],
-        [[0, 0], [0, 0], [2, -2], [0, 0], [1, 0], [0, -2], [0, 2], [-1, 0], [-2, -2]],
-        [[0, 0], [0, 0], [-2, 2], [0, 0], [-1, 0], [0, 2], [0, -2], [1, 0], [2, 2]]
-      ),
+    group('shorts-main', [
+      makeSmoothPath([[-30, 0], [-28, 10], [-24, 22], [-18, 34], [-8, 38], [-1, 18], [1, 18], [8, 38], [18, 34], [24, 22], [28, 10], [30, 0], [18, -6], [0, -2], [-18, -6]], 0.2),
       fill(COLORS.shorts)
+    ]),
+    group('shorts-inner-shadow', [
+      makeSmoothPath([[-2, 16], [0, 8], [2, 16], [2, 32], [0, 36], [-2, 32]], 0.24),
+      fill(COLORS.sole, 55)
     ])
   ];
 }
 
 function makeHeadShape() {
   return [
-    group('head', [
-      makePath(
-        [[-4, 0], [4, 0], [4, -12], [-4, -12]],
-        [[0, 0], [0, 0], [0, 0], [0, 0]],
-        [[0, 0], [0, 0], [0, 0], [0, 0]]
-      ),
+    group('neck', [
+      makeSmoothPath([[-6, 0], [6, 0], [6, -12], [3, -17], [-3, -17], [-6, -12]], 0.24),
       fill(COLORS.skin),
-      ellipse([28, 34], [0, -26]),
-      fill(COLORS.skin),
-      makePath(
-        [[-14, -30], [-10, -40], [0, -44], [11, -40], [14, -28], [10, -18], [0, -16], [-11, -18]],
-        [[0, 0], [-1, 0], [-2, 0], [2, -1], [0, 0], [1, 2], [0, 0], [-1, 2]],
-        [[1, 0], [1, 0], [2, 0], [-2, 1], [0, 0], [-1, -2], [0, 0], [1, -2]]
-      ),
+    ]),
+    group('neck-shadow', [
+      makeSmoothPath([[1, 0], [6, 0], [6, -11], [3, -17], [1, -14]], 0.22),
+      fill(COLORS.skinShadow, 55)
+    ]),
+    group('ear', [
+      ellipse([8, 11], [17, -29]),
+      fill(COLORS.skin)
+    ]),
+    group('face', [
+      makeSmoothPath([[-3, -8], [7, -10], [14, -16], [18, -25], [19, -35], [16, -45], [10, -52], [2, -56], [-8, -54], [-16, -47], [-20, -37], [-20, -26], [-16, -16], [-10, -10]], 0.2),
+      fill(COLORS.skin)
+    ]),
+    group('face-shadow', [
+      makeSmoothPath([[2, -10], [11, -12], [17, -18], [20, -28], [20, -38], [17, -47], [10, -52], [3, -53], [1, -40], [2, -24]], 0.18),
+      fill(COLORS.skinShadow, 36)
+    ]),
+    group('hair', [
+      makeSmoothPath([[-16, -28], [-18, -41], [-11, -51], [-1, -57], [10, -55], [17, -49], [20, -39], [18, -29], [10, -22], [0, -20], [-9, -21]], 0.22),
       fill(COLORS.hair)
     ])
   ];
@@ -413,8 +521,8 @@ function makeHeadShape() {
 function makeShadowShape() {
   return [
     group('ground-shadow', [
-      ellipse([120, 26], [0, 0]),
-      fill(withAlpha(COLORS.shadow, 0.28), 100)
+      ellipse([168, 34], [0, 0]),
+      fill(COLORS.shadow, 18)
     ])
   ];
 }
@@ -425,7 +533,7 @@ function buildBackgroundLayer() {
     nm: 'bg',
     sw: CANVAS,
     sh: CANVAS,
-    sc: '#111827',
+    sc: '#f5f5f5',
     ks: {
       o: staticProp(100),
       r: staticProp(0),
@@ -526,7 +634,7 @@ function buildLottie(exerciseId, definition) {
   const keyframes = compactKeyframes(definition.keyframes);
 
   return {
-    v: '5.7.4',
+    v: '5.12.2',
     fr: FRAME_RATE,
     ip: 0,
     op: TOTAL_FRAMES,
