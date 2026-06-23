@@ -371,6 +371,23 @@ class App {
     });
 
     Object.values(this.views).forEach((view) => view.render?.());
+
+    // Ensure views render when their page is navigated to
+    const pageViewMap = {
+      exercises: 'exerciseLibrary',
+      'custom-workouts': 'customWorkout',
+      timers: 'timers',
+      habits: 'habits',
+      recovery: 'soreness',
+      achievements: 'achievements'
+    };
+    this.bus.on(Events.PAGE_CHANGED, ({ page }) => {
+      const viewName = pageViewMap[page];
+      const view = viewName && this.views[viewName];
+      if (view && view.el && !view.el.innerHTML.trim()) {
+        (view.safeRender || view.render)?.call(view);
+      }
+    });
   }
 
   registerView(name, view, { page, feature = null, init = null }) {

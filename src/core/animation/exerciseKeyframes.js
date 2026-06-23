@@ -925,6 +925,8 @@ const rolloutExtended = updatePose(KNEELING_SIDE, {
 
 const neckLeft = updatePose(STANDING_FRONT, { 0: [0.46, 0.15] });
 const neckRight = updatePose(STANDING_FRONT, { 0: [0.54, 0.15] });
+const neckForward = updatePose(STANDING_FRONT, { 0: [0.50, 0.17] });
+const neckBack = updatePose(STANDING_FRONT, { 0: [0.50, 0.13] });
 
 const shoulderStretchLeft = updatePose(STANDING_FRONT, {
   3: [0.52, 0.34],
@@ -2039,7 +2041,7 @@ const EXERCISE_BUILDERS = {
   'superman-core': () => def('side', PRONE_FLAT, supermanHigh, PRONE_FLAT),
   'plank-walk': () => def('front', PLANK_FRONT, plankWalkForward, PLANK_FRONT),
   'ab-rollout-towel': () => def('side', KNEELING_SIDE, rolloutExtended, KNEELING_SIDE),
-  'neck-rolls': () => def('front', STANDING_FRONT, neckLeft, STANDING_FRONT, neckRight, STANDING_FRONT),
+  'neck-rolls': () => def('front', STANDING_FRONT, neckForward, neckRight, neckBack, neckLeft, neckForward, STANDING_FRONT),
   'shoulder-stretch': () => def('front', STANDING_FRONT, shoulderStretchLeft, STANDING_FRONT, mirrorPose(shoulderStretchLeft), STANDING_FRONT),
   'chest-opener': () => def('front', STANDING_FRONT, chestOpen, STANDING_FRONT),
   'quad-stretch': () => def('side', STANDING_SIDE, quadStretch, STANDING_SIDE),
@@ -2047,7 +2049,7 @@ const EXERCISE_BUILDERS = {
   'hip-flexor-stretch': () => def('side', STANDING_SIDE, hipFlexorStretch, STANDING_SIDE),
   'cat-cow-stretch': () => def('side', catPose, cowPose, catPose),
   'spinal-twist-lying': () => def('side', LYING_BACK_KNEES_UP, spinalTwistLeft, LYING_BACK_KNEES_UP, spinalTwistRight, LYING_BACK_KNEES_UP),
-  'desk-neck-rolls': () => def('front', SEATED_FRONT, neckLeft, SEATED_FRONT, neckRight, SEATED_FRONT),
+  'desk-neck-rolls': () => def('front', SEATED_FRONT, updatePose(SEATED_FRONT, {0:[0.50,0.25]}), updatePose(SEATED_FRONT, {0:[0.54,0.23]}), updatePose(SEATED_FRONT, {0:[0.50,0.21]}), updatePose(SEATED_FRONT, {0:[0.46,0.23]}), updatePose(SEATED_FRONT, {0:[0.50,0.25]}), SEATED_FRONT),
   'seated-shoulder-shrugs': () => def('front', SEATED_FRONT, shrugHigh, SEATED_FRONT),
   'seated-spinal-twist': () => def('front', SEATED_FRONT, seatedTwistLeft, SEATED_FRONT, seatedTwistRight, SEATED_FRONT),
   'wrist-circles': () => def('front', wristCircleLeft, SEATED_FRONT, wristCircleRight, SEATED_FRONT),
