@@ -462,61 +462,63 @@ function buildCharacterLayers(keyframes) {
     head: 16
   };
 
+  // Lottie layer order: first in array = rendered on top
+  // Order: head > front arm > front leg > torso > shorts > back arm > back leg > shadow
   return [
-    buildAnimatedLayer('shadow', makeShadowShape(), shadowFrames(keyframes), { opacity: 100, ind: ids.shadow }),
-    buildAnimatedLayer('back thigh', makeThighShape(backSkin), segmentFrames(keyframes, 7, 9, SEGMENT_LENGTHS.thigh), { opacity: 70, ind: ids.leftThigh }),
-    buildAnimatedLayer(
-      'back calf',
-      makeCalfShape(backSkin),
-      childSegmentFrames(keyframes, 9, 11, 7, 9, SEGMENT_LENGTHS.calf, SEGMENT_LENGTHS.thigh),
-      { opacity: 70, ind: ids.leftCalf, parent: ids.leftThigh }
-    ),
-    buildAnimatedLayer(
-      'back foot',
-      makeFootShape(),
-      footFrames(keyframes, 11, 15, 9, 11),
-      { opacity: 70, ind: ids.leftFoot, parent: ids.leftCalf }
-    ),
-    buildAnimatedLayer('back upper arm', makeUpperArmShape(backSkin), segmentFrames(keyframes, 1, 3, SEGMENT_LENGTHS.upperArm), { opacity: 70, ind: ids.leftUpperArm }),
-    buildAnimatedLayer(
-      'back forearm',
-      makeForearmShape(backSkin),
-      childSegmentFrames(keyframes, 3, 5, 1, 3, SEGMENT_LENGTHS.forearm, SEGMENT_LENGTHS.upperArm),
-      { opacity: 70, ind: ids.leftForearm, parent: ids.leftUpperArm }
-    ),
-    buildAnimatedLayer('back hand', makeHandShape(backSkin), childPointFrames(keyframes, SEGMENT_LENGTHS.forearm), {
-      opacity: 70,
-      ind: ids.leftHand,
-      parent: ids.leftForearm
+    buildAnimatedLayer('head', makeHeadShape(), headFrames(keyframes), { opacity: 100, ind: ids.head }),
+    buildAnimatedLayer('front hand', makeHandShape(frontSkin), childPointFrames(keyframes, SEGMENT_LENGTHS.forearm), {
+      opacity: 100,
+      ind: ids.rightHand,
+      parent: ids.rightForearm
     }),
-    buildAnimatedLayer('shorts', makeShortsShape(), shortsFrames(keyframes), { opacity: 100, ind: ids.shorts }),
-    buildAnimatedLayer('torso', makeTorsoShape(), torsoFrames(keyframes), { opacity: 100, ind: ids.torso }),
-    buildAnimatedLayer('front thigh', makeThighShape(frontSkin), segmentFrames(keyframes, 8, 10, SEGMENT_LENGTHS.thigh), { opacity: 100, ind: ids.rightThigh }),
-    buildAnimatedLayer(
-      'front calf',
-      makeCalfShape(frontSkin),
-      childSegmentFrames(keyframes, 10, 12, 8, 10, SEGMENT_LENGTHS.calf, SEGMENT_LENGTHS.thigh),
-      { opacity: 100, ind: ids.rightCalf, parent: ids.rightThigh }
-    ),
-    buildAnimatedLayer(
-      'front foot',
-      makeFootShape(),
-      footFrames(keyframes, 12, 16, 10, 12),
-      { opacity: 100, ind: ids.rightFoot, parent: ids.rightCalf }
-    ),
-    buildAnimatedLayer('front upper arm', makeUpperArmShape(frontSkin), segmentFrames(keyframes, 2, 4, SEGMENT_LENGTHS.upperArm), { opacity: 100, ind: ids.rightUpperArm }),
     buildAnimatedLayer(
       'front forearm',
       makeForearmShape(frontSkin),
       childSegmentFrames(keyframes, 4, 6, 2, 4, SEGMENT_LENGTHS.forearm, SEGMENT_LENGTHS.upperArm),
       { opacity: 100, ind: ids.rightForearm, parent: ids.rightUpperArm }
     ),
-    buildAnimatedLayer('front hand', makeHandShape(frontSkin), childPointFrames(keyframes, SEGMENT_LENGTHS.forearm), {
-      opacity: 100,
-      ind: ids.rightHand,
-      parent: ids.rightForearm
+    buildAnimatedLayer('front upper arm', makeUpperArmShape(frontSkin), segmentFrames(keyframes, 2, 4, SEGMENT_LENGTHS.upperArm), { opacity: 100, ind: ids.rightUpperArm }),
+    buildAnimatedLayer(
+      'front foot',
+      makeFootShape(),
+      footFrames(keyframes, 12, 16, 10, 12),
+      { opacity: 100, ind: ids.rightFoot, parent: ids.rightCalf }
+    ),
+    buildAnimatedLayer(
+      'front calf',
+      makeCalfShape(frontSkin),
+      childSegmentFrames(keyframes, 10, 12, 8, 10, SEGMENT_LENGTHS.calf, SEGMENT_LENGTHS.thigh),
+      { opacity: 100, ind: ids.rightCalf, parent: ids.rightThigh }
+    ),
+    buildAnimatedLayer('front thigh', makeThighShape(frontSkin), segmentFrames(keyframes, 8, 10, SEGMENT_LENGTHS.thigh), { opacity: 100, ind: ids.rightThigh }),
+    buildAnimatedLayer('torso', makeTorsoShape(), torsoFrames(keyframes), { opacity: 100, ind: ids.torso }),
+    buildAnimatedLayer('shorts', makeShortsShape(), shortsFrames(keyframes), { opacity: 100, ind: ids.shorts }),
+    buildAnimatedLayer('back hand', makeHandShape(backSkin), childPointFrames(keyframes, SEGMENT_LENGTHS.forearm), {
+      opacity: 80,
+      ind: ids.leftHand,
+      parent: ids.leftForearm
     }),
-    buildAnimatedLayer('head', makeHeadShape(), headFrames(keyframes), { opacity: 100, ind: ids.head })
+    buildAnimatedLayer(
+      'back forearm',
+      makeForearmShape(backSkin),
+      childSegmentFrames(keyframes, 3, 5, 1, 3, SEGMENT_LENGTHS.forearm, SEGMENT_LENGTHS.upperArm),
+      { opacity: 80, ind: ids.leftForearm, parent: ids.leftUpperArm }
+    ),
+    buildAnimatedLayer('back upper arm', makeUpperArmShape(backSkin), segmentFrames(keyframes, 1, 3, SEGMENT_LENGTHS.upperArm), { opacity: 80, ind: ids.leftUpperArm }),
+    buildAnimatedLayer(
+      'back foot',
+      makeFootShape(),
+      footFrames(keyframes, 11, 15, 9, 11),
+      { opacity: 80, ind: ids.leftFoot, parent: ids.leftCalf }
+    ),
+    buildAnimatedLayer(
+      'back calf',
+      makeCalfShape(backSkin),
+      childSegmentFrames(keyframes, 9, 11, 7, 9, SEGMENT_LENGTHS.calf, SEGMENT_LENGTHS.thigh),
+      { opacity: 80, ind: ids.leftCalf, parent: ids.leftThigh }
+    ),
+    buildAnimatedLayer('back thigh', makeThighShape(backSkin), segmentFrames(keyframes, 7, 9, SEGMENT_LENGTHS.thigh), { opacity: 80, ind: ids.leftThigh }),
+    buildAnimatedLayer('shadow', makeShadowShape(), shadowFrames(keyframes), { opacity: 100, ind: ids.shadow }),
   ];
 }
 
@@ -532,7 +534,7 @@ function buildLottie(exerciseId, definition) {
     h: CANVAS,
     nm: exerciseId,
     assets: [],
-    layers: [buildBackgroundLayer(), ...buildCharacterLayers(keyframes)]
+    layers: [...buildCharacterLayers(keyframes), buildBackgroundLayer()]
   };
 }
 
