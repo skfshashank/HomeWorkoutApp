@@ -111,6 +111,15 @@ async function run() {
       else if (e.includes('bird') && e.includes('dog')) match = db.find(i => i.name === 'bird dog');
       else if (e.includes('inchworm')) match = db.find(i => i.name === 'inchworm');
       else if (e.includes('cat') && e.includes('cow')) match = db.find(i => i.name === 'cat cow');
+      else if (e.includes('quad') && e.includes('stretch')) match = db.find(i => i.name === 'Quad Stretch');
+      else if (e.includes('hamstring') && e.includes('stretch')) match = db.find(i => i.name === 'Hamstring Stretch');
+      else if (e.includes('shoulder') && e.includes('stretch')) match = db.find(i => i.name === 'Shoulder Stretch');
+      else if (e.includes('stretch')) match = db.find(i => i.name.includes('Stretch'));
+      else if (e.includes('shrug')) match = db.find(i => i.name.includes('shrug'));
+      else if (e.includes('roll')) match = db.find(i => i.name.includes('roll'));
+      else if (e.includes('circle')) match = db.find(i => i.name.includes('circle'));
+      else if (e.includes('walk')) match = db.find(i => i.name.includes('walk'));
+      else if (e.includes('yoga') || e.includes('asana') || e.includes('bhramari') || e.includes('sheetali') || e.includes('ujjayi') || e.includes('kapalbhati') || e.includes('anulom') || e.includes('tadasana')) match = db.find(i => i.name.includes('yoga') || i.name.includes('stretch'));
     }
 
     try {
