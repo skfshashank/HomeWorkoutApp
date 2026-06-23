@@ -124,7 +124,7 @@ export class DashboardView {
     ];
     return quickLinks
       .filter(([feature]) => this.ctx.features?.[feature] !== false)
-      .map(([, page, label]) => `<button class="quick-link" data-action="open-page" data-page="${page}">${label}</button>`)
+      .map(([, page, label]) => `<button class="quick-link" data-action="open-page" data-target="${page}">${label}</button>`)
       .join('');
   }
 
@@ -184,7 +184,7 @@ export class DashboardView {
     if (action === 'start-today') this.ctx.startWorkout.execute(this.todaysPlan, this.ctx.updateProfile.getUser().level);
     if (action === 'browse-workouts') this.ctx.router.navigate('workouts');
     if (action === 'open-achievements') this.ctx.router.navigate('achievements');
-    if (action === 'open-page') this.ctx.router.navigate(button.dataset.page);
+    if (action === 'open-page') this.ctx.router.navigate(button.dataset.target);
     if (action === 'toggle-water') this.toggleWater(Number(button.dataset.index));
   }
 

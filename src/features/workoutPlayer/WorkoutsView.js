@@ -87,16 +87,13 @@ export class WorkoutsView {
       if (plan) this.ctx.startWorkout.execute(plan, this.ctx.updateProfile.getUser().level);
     }
     if (button.dataset.action === 'open-library' && this.ctx.features.exerciseLibrary !== false) {
-      this.ensurePageContent('exercises', this.t('exercise_library_title', 'Exercise Library'));
       this.ctx.router.navigate('exercises');
     }
     if (button.dataset.action === 'open-custom' && this.ctx.features.customWorkouts !== false) {
       this.ctx.openCustomWorkoutEditor();
-      this.ensurePageContent('custom-workouts', this.t('custom_workout_creator', 'Custom Workout Creator'));
       this.ctx.router.navigate('custom-workouts');
     }
     if (button.dataset.action === 'open-timers' && this.ctx.features.timers !== false) {
-      this.ensurePageContent('timers', this.t('timer_modes_title', 'Timer Modes'));
       this.ctx.router.navigate('timers');
     }
     if (button.dataset.action === 'start-custom') {
@@ -113,13 +110,6 @@ export class WorkoutsView {
     }
     if (button.dataset.action === 'delete-custom') {
       await this.ctx.manageWorkouts.deleteCustomWorkout(button.dataset.workoutId);
-    }
-  }
-
-  ensurePageContent(page, title) {
-    const el = document.querySelector(`[data-page="${page}"]`);
-    if (el && !el.innerHTML.trim()) {
-      el.innerHTML = `<div class="page-title">${title}</div><p class="text-sm text-muted">Loading...</p>`;
     }
   }
 }

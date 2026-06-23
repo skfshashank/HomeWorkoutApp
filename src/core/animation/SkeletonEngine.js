@@ -12,41 +12,43 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const ang = (a, b) => Math.atan2(b[1] - a[1], b[0] - a[0]);
 const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
 
-// Silhouette palette
-const BODY_TOP = '#2DD4BF';     // Teal/mint gradient top
-const BODY_BOT = '#0F766E';     // Darker teal bottom
-const GLOW = 'rgba(45,212,191,0.25)';
-const BG_1 = '#0F172A';         // Dark navy bg
-const BG_2 = '#1E293B';
-const SHADOW_COL = 'rgba(45,212,191,0.08)';
-const TRAIL_COL = [45, 212, 191]; // RGB for trails
+// Color scheme
+const BG_1 = '#0B1120';
+const BG_2 = '#162032';
+const ACCENT = [45, 212, 191]; // Teal RGB
+const ACCENT_HEX = '#2DD4BF';
+const ACCENT_DK = '#0D9488';
+const ACCENT_LT = '#5EEAD4';
+const GLOW_COL = 'rgba(45,212,191,0.3)';
 
-// Draw a tapered rounded limb (the core building block)
-function limb(ctx, a, b, wA, wB) {
+// Smooth thick limb with round caps — the key building block
+function drawLimb(ctx, a, b, w) {
   if (!a || !b) return;
-  const angle = ang(a, b);
-  const px = Math.cos(angle + Math.PI / 2);
-  const py = Math.sin(angle + Math.PI / 2);
-  const mx = lerp(a[0], b[0], 0.4);
-  const my = lerp(a[1], b[1], 0.4);
-  const bulge = Math.max(wA, wB) * 1.1;
-
+  ctx.lineWidth = w;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
   ctx.beginPath();
-  ctx.moveTo(a[0] + px * wA, a[1] + py * wA);
-  ctx.quadraticCurveTo(mx + px * bulge, my + py * bulge, b[0] + px * wB, b[1] + py * wB);
-  ctx.lineTo(b[0] - px * wB, b[1] - py * wB);
-  ctx.quadraticCurveTo(mx - px * bulge, my - py * bulge, a[0] - px * wA, a[1] - py * wA);
-  ctx.closePath();
-  ctx.fill();
+  ctx.moveTo(a[0], a[1]);
+  ctx.lineTo(b[0], b[1]);
+  ctx.stroke();
 }
 
-// Rounded joint connector
-function joint(ctx, pt, r) {
-  if (!pt) return;
+// Curved limb through a midpoint for natural bend
+function drawCurvedLimb(ctx, a, cp, b, w) {
+  if (!a || !b) return;
+  ctx.lineWidth = w;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
   ctx.beginPath();
-  ctx.arc(pt[0], pt[1], r, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.moveTo(a[0], a[1]);
+  if (cp) {
+    ctx.quadraticCurveTo(cp[0], cp[1], b[0], b[1]);
+  } else {
+    ctx.lineTo(b[0], b[1]);
+  }
+  ctx.stroke();
 }
 
 export class SkeletonEngine {
@@ -114,35 +116,37 @@ export class SkeletonEngine {
   drawBackground() {
     const ctx = this.ctx;
     const W = this.width, H = this.height;
-    // Dark gradient background
-    const grad = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.5, W * 0.85);
-    grad.addColorStop(0, BG_2);
-    grad.addColorStop(1, BG_1);
-    ctx.fillStyle = grad;
+    // Deep dark radial gradient
+    const g = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.5, W);
+    g.addColorStop(0, BG_2);
+    g.addColorStop(1, BG_1);
+    ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
 
-    // Subtle floor glow
-    const floorGrad = ctx.createRadialGradient(W / 2, H * 0.94, 0, W / 2, H * 0.94, W * 0.4);
-    floorGrad.addColorStop(0, 'rgba(45,212,191,0.06)');
-    floorGrad.addColorStop(1, 'rgba(45,212,191,0)');
-    ctx.fillStyle = floorGrad;
-    ctx.fillRect(0, H * 0.85, W, H * 0.15);
+    // Floor glow
+    const fg = ctx.createRadialGradient(W / 2, H * 0.95, 0, W / 2, H * 0.95, W * 0.35);
+    fg.addColorStop(0, 'rgba(45,212,191,0.07)');
+    fg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = fg;
+    ctx.beginPath();
+    ctx.ellipse(W / 2, H * 0.95, W * 0.35, 15, 0, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   drawShadow(p) {
     const lf = p[15] || p[11], rf = p[16] || p[12];
+    if (!lf && !rf) return;
     const cx = ((lf?.[0] || this.width * 0.45) + (rf?.[0] || this.width * 0.55)) / 2;
-    const cy = this.height * 0.94;
-    const spread = Math.abs((lf?.[0] || 0) - (rf?.[0] || 0)) * 0.4 + 35;
-
+    const cy = this.height * 0.95;
+    const spread = Math.abs((lf?.[0] || 0) - (rf?.[0] || 0)) * 0.35 + 30;
     const ctx = this.ctx;
     ctx.save();
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, spread);
-    grad.addColorStop(0, SHADOW_COL);
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grad;
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, spread);
+    g.addColorStop(0, 'rgba(45,212,191,0.12)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
     ctx.beginPath();
-    ctx.ellipse(cx, cy, spread, 8, 0, 0, Math.PI * 2);
+    ctx.ellipse(cx, cy, spread, 6, 0, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
   }
@@ -151,17 +155,18 @@ export class SkeletonEngine {
     if (!prev) return;
     const ctx = this.ctx;
     ctx.save();
-    [5, 6, 15, 16].forEach((i) => {
+    const pts = [5, 6, 15, 16];
+    pts.forEach((i) => {
       const c = p[i], pr = prev[i];
       if (!c || !pr) return;
       const d = dist(c, pr);
-      if (d < 5) return;
-      const alpha = Math.min(0.4, d / 40);
-      const grad = ctx.createLinearGradient(pr[0], pr[1], c[0], c[1]);
-      grad.addColorStop(0, `rgba(${TRAIL_COL},0)`);
-      grad.addColorStop(1, `rgba(${TRAIL_COL},${alpha})`);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = Math.min(10, d / 4);
+      if (d < 4) return;
+      const alpha = Math.min(0.5, d / 30);
+      const g = ctx.createLinearGradient(pr[0], pr[1], c[0], c[1]);
+      g.addColorStop(0, `rgba(${ACCENT},0)`);
+      g.addColorStop(1, `rgba(${ACCENT},${alpha})`);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = Math.min(12, d / 3);
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(pr[0], pr[1]);
@@ -171,86 +176,124 @@ export class SkeletonEngine {
     ctx.restore();
   }
 
-  // Build the body gradient (top-to-bottom teal)
-  bodyGradient(p) {
-    const minY = Math.min(...p.filter(Boolean).map(pt => pt[1]));
-    const maxY = Math.max(...p.filter(Boolean).map(pt => pt[1]));
-    const grad = this.ctx.createLinearGradient(0, minY - 20, 0, maxY + 10);
-    grad.addColorStop(0, BODY_TOP);
-    grad.addColorStop(1, BODY_BOT);
-    return grad;
+  makeBodyGradient(p) {
+    const ys = p.filter(Boolean).map(pt => pt[1]);
+    const minY = Math.min(...ys) - 15;
+    const maxY = Math.max(...ys) + 10;
+    const g = this.ctx.createLinearGradient(0, minY, 0, maxY);
+    g.addColorStop(0, ACCENT_LT);
+    g.addColorStop(0.4, ACCENT_HEX);
+    g.addColorStop(1, ACCENT_DK);
+    return g;
   }
 
   drawBody(p) {
     const ctx = this.ctx;
-    const grad = this.bodyGradient(p);
 
-    // Outer glow
+    // Two-pass: glow layer then body layer
+    // Pass 1: Soft glow (bigger, blurred)
     ctx.save();
-    ctx.shadowColor = GLOW;
-    ctx.shadowBlur = 18;
+    ctx.globalAlpha = 0.25;
+    ctx.shadowColor = ACCENT_HEX;
+    ctx.shadowBlur = 25;
+    const glowStyle = ACCENT_HEX;
+    ctx.strokeStyle = glowStyle;
+    ctx.fillStyle = glowStyle;
+    this.drawBodyParts(ctx, p, 1.4); // 40% wider for glow
+    ctx.restore();
+
+    // Pass 2: Crisp body
+    ctx.save();
+    const grad = this.makeBodyGradient(p);
+    ctx.strokeStyle = grad;
     ctx.fillStyle = grad;
+    ctx.shadowColor = GLOW_COL;
+    ctx.shadowBlur = 12;
+    this.drawBodyParts(ctx, p, 1.0);
+    ctx.restore();
+  }
 
-    // === HEAD ===
-    const nose = p[0], neck = p[13];
-    if (nose && neck) {
-      const hr = Math.max(16, Math.min(22, dist(nose, neck) * 1.3));
-      joint(ctx, nose, hr);
-      // Neck connector
-      limb(ctx, [nose[0], nose[1] + hr * 0.5], neck, 8, 10);
+  drawBodyParts(ctx, p, scale) {
+    const s = scale;
+    const nose = p[0], neck = p[13], pelvis = p[14];
+    const ls = p[1], rs = p[2], le = p[3], re = p[4], lw = p[5], rw = p[6];
+    const lh = p[7], rh = p[8], lk = p[9], rk = p[10], la = p[11], ra = p[12];
+    const lf = p[15], rf = p[16];
+
+    // --- BACK LIMBS (dimmed) ---
+    ctx.globalAlpha = (scale > 1) ? ctx.globalAlpha : 0.55;
+
+    // Left arm
+    drawLimb(ctx, ls, le, 14 * s);
+    drawLimb(ctx, le, lw, 12 * s);
+    if (lw) { ctx.beginPath(); ctx.arc(lw[0], lw[1], 6 * s, 0, Math.PI * 2); ctx.fill(); }
+
+    // Left leg
+    drawLimb(ctx, lh, lk, 18 * s);
+    drawLimb(ctx, lk, la, 15 * s);
+    if (la && lf) drawLimb(ctx, la, lf, 12 * s);
+    else if (la) { ctx.beginPath(); ctx.arc(la[0], la[1], 7 * s, 0, Math.PI * 2); ctx.fill(); }
+
+    // --- TORSO (full opacity) ---
+    ctx.globalAlpha = (scale > 1) ? ctx.globalAlpha : 1;
+
+    // Torso: draw as thick lines connecting shoulders to hips through neck/pelvis
+    if (neck && pelvis) {
+      // Central spine
+      drawLimb(ctx, neck, pelvis, 28 * s);
     }
-
-    // === TORSO (shaped trapezoid) ===
-    const ls = p[1], rs = p[2], lh = p[7], rh = p[8];
+    // Shoulder bar
+    if (ls && rs) {
+      drawLimb(ctx, ls, rs, 16 * s);
+    }
+    // Hip bar
+    if (lh && rh) {
+      drawLimb(ctx, lh, rh, 16 * s);
+    }
+    // Fill the torso area as a smooth shape on top
     if (ls && rs && lh && rh) {
-      const waistY = lerp(ls[1], lh[1], 0.55);
-      const waistL = lerp(ls[0], lh[0], 0.55) + 2;
-      const waistR = lerp(rs[0], rh[0], 0.55) - 2;
-
       ctx.beginPath();
-      ctx.moveTo(ls[0] - 8, ls[1]);
-      ctx.lineTo(rs[0] + 8, rs[1]);
-      ctx.bezierCurveTo(rs[0] + 6, waistY, waistR, waistY, rh[0] + 4, rh[1]);
-      ctx.lineTo(lh[0] - 4, lh[1]);
-      ctx.bezierCurveTo(waistL, waistY, ls[0] - 6, waistY, ls[0] - 8, ls[1]);
+      ctx.moveTo(ls[0] - 4 * s, ls[1]);
+      ctx.lineTo(rs[0] + 4 * s, rs[1]);
+      ctx.quadraticCurveTo(
+        rs[0] + 2 * s, lerp(rs[1], rh[1], 0.5),
+        rh[0] + 2 * s, rh[1]
+      );
+      ctx.lineTo(lh[0] - 2 * s, lh[1]);
+      ctx.quadraticCurveTo(
+        ls[0] - 2 * s, lerp(ls[1], lh[1], 0.5),
+        ls[0] - 4 * s, ls[1]
+      );
       ctx.closePath();
       ctx.fill();
-
-      // Shoulder spheres
-      joint(ctx, ls, 9);
-      joint(ctx, rs, 9);
-      // Hip spheres
-      joint(ctx, lh, 8);
-      joint(ctx, rh, 8);
     }
 
-    // === ARMS ===
-    // Left arm (back)
-    ctx.globalAlpha = 0.7;
-    if (p[1] && p[3]) { limb(ctx, p[1], p[3], 10, 8); joint(ctx, p[3], 6); }
-    if (p[3] && p[5]) { limb(ctx, p[3], p[5], 8, 6); }
-    if (p[5]) joint(ctx, p[5], 5); // hand
-    ctx.globalAlpha = 1;
-    // Right arm (front)
-    if (p[2] && p[4]) { limb(ctx, p[2], p[4], 10, 8); joint(ctx, p[4], 6); }
-    if (p[4] && p[6]) { limb(ctx, p[4], p[6], 8, 6); }
-    if (p[6]) joint(ctx, p[6], 5); // hand
+    // Neck
+    if (nose && neck) {
+      drawLimb(ctx, neck, [nose[0], nose[1] + 10 * s], 12 * s);
+    }
 
-    // === LEGS ===
-    // Left leg (back)
-    ctx.globalAlpha = 0.75;
-    if (p[7] && p[9]) { limb(ctx, p[7], p[9], 12, 10); joint(ctx, p[9], 7); }
-    if (p[9] && p[11]) { limb(ctx, p[9], p[11], 10, 7); }
-    if (p[11] && p[15]) { limb(ctx, p[11], p[15], 7, 10); } // foot
-    else if (p[11]) joint(ctx, p[11], 6);
-    ctx.globalAlpha = 1;
-    // Right leg (front)
-    if (p[8] && p[10]) { limb(ctx, p[8], p[10], 12, 10); joint(ctx, p[10], 7); }
-    if (p[10] && p[12]) { limb(ctx, p[10], p[12], 10, 7); }
-    if (p[12] && p[16]) { limb(ctx, p[12], p[16], 7, 10); } // foot
-    else if (p[12]) joint(ctx, p[12], 6);
+    // Head
+    if (nose) {
+      const hr = 18 * s;
+      ctx.beginPath();
+      ctx.arc(nose[0], nose[1], hr, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
-    ctx.restore(); // End glow shadow
+    // --- FRONT LIMBS (full opacity) ---
+    ctx.globalAlpha = (scale > 1) ? ctx.globalAlpha : 1;
+
+    // Right arm
+    drawLimb(ctx, rs, re, 14 * s);
+    drawLimb(ctx, re, rw, 12 * s);
+    if (rw) { ctx.beginPath(); ctx.arc(rw[0], rw[1], 6 * s, 0, Math.PI * 2); ctx.fill(); }
+
+    // Right leg
+    drawLimb(ctx, rh, rk, 18 * s);
+    drawLimb(ctx, rk, ra, 15 * s);
+    if (ra && rf) drawLimb(ctx, ra, rf, 12 * s);
+    else if (ra) { ctx.beginPath(); ctx.arc(ra[0], ra[1], 7 * s, 0, Math.PI * 2); ctx.fill(); }
   }
 
   drawFrame(pose) {
