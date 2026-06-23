@@ -1,4 +1,4 @@
-const strings = {
+export const strings = {
   en: {
     today_workout: "Today's Workout",
     start: 'Start',

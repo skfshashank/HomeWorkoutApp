@@ -839,7 +839,6 @@ select:not(.form-select) {
 .fs-content { flex: 1; padding: 0 20px 40px; display: flex; flex-direction: column; align-items: center; }
 
 /* ===== COMPLETION SCREEN ===== */
-.completion-trophy { font-size: 5rem; margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)); }
 .note-input {
   resize: vertical;
   min-height: 120px;
@@ -874,15 +873,6 @@ select:not(.form-select) {
   justify-content: space-between;
   gap: 12px;
 }
-.dashboard-workout-card { margin-bottom: 0; }
-.dashboard-secondary-scroll {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-height: 52vh;
-  overflow-y: auto;
-  padding-right: 4px;
-}
 .offline-badge {
   display: inline-flex;
   align-items: center;
@@ -914,19 +904,6 @@ select:not(.form-select) {
   color: var(--text-muted);
   line-height: 1.4;
 }
-.exercise-preview-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.exercise-preview-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-}
-.exercise-preview-item:last-child { border-bottom: none; }
 
 /* ===== OPENFIT EXPANSION ===== */
 .quick-links-grid, .exercise-picker-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
