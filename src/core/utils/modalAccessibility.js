@@ -1,5 +1,7 @@
 const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+import { upgradeSelects } from './customDropdown.js';
+
 const getFocusableElements = (root) => Array.from(root.querySelectorAll(FOCUSABLE_SELECTOR))
   .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true');
 
@@ -69,6 +71,7 @@ export function openAccessibleModal(controller, html, handler, options = {}) {
   document.addEventListener('keydown', controller._trapFocus);
 
   window.requestAnimationFrame(() => {
+    upgradeSelects(controller.modalContent);
     const focusable = getFocusableElements(controller.modalContent);
     (focusable[0] || controller.modalContent).focus();
   });

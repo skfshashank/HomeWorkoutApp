@@ -1,4 +1,5 @@
 import { Events } from '../../app/eventBus.js';
+import { upgradeSelects } from '../../core/utils/customDropdown.js';
 
 export class CustomWorkoutView {
   constructor() {
@@ -74,6 +75,7 @@ export class CustomWorkoutView {
         </div>
         <div class="exercise-picker-grid">${exercises.map((exercise) => `<button class="picker-chip" data-action="add-exercise" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('')}</div>
       </section>`;
+    upgradeSelects(this.el);
   }
 
   renderDraftItem(item, index) {

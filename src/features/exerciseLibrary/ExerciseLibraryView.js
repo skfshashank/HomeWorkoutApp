@@ -1,5 +1,6 @@
 import { Events } from '../../app/eventBus.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
+import { upgradeSelects } from '../../core/utils/customDropdown.js';
 
 export class ExerciseLibraryView {
   constructor() {
@@ -70,6 +71,7 @@ export class ExerciseLibraryView {
       <section class="card"><h2>${this.t('favorites', 'Favorites')}</h2><div class="exercise-chip-row">${favorites.length ? favorites.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : `<span class="text-sm text-muted">${this.t('favorites_empty', 'Tap the star on any exercise to favorite it.')}</span>`}</div></section>
       <section class="card"><h2>${this.t('recently_used', 'Recently Used')}</h2><div class="exercise-chip-row">${recent.length ? recent.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : `<span class="text-sm text-muted">${this.t('recent_exercises_empty', 'Finish a workout and your recent exercises will appear here.')}</span>`}</div></section>
       <section>${exercises.map((exercise) => this.renderCard(exercise, favoriteIds.has(exercise.id))).join('') || `<div class="card"><p class="text-sm text-muted">${this.t('no_exercises_match', 'No exercises match those filters yet.')}</p></div>`}</section>`;
+    upgradeSelects(this.el);
   }
 
   formatOption(option) {
