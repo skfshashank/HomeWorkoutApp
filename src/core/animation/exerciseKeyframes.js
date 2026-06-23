@@ -1316,16 +1316,214 @@ const REQUIRED_EXERCISES = [
 ];
 
 const EXERCISE_BUILDERS = {
-  'crunches': () => def('front', LYING_BACK, updatePose(LYING_BACK, { 0: [0.24, 0.60], 13: [0.32, 0.64], 3: [0.42, 0.60], 4: [0.42, 0.80], 5: [0.52, 0.56], 6: [0.52, 0.84] }), LYING_BACK),
-  'bicycle-crunches': () => def('front', LYING_BACK_KNEES_UP, updatePose(LYING_BACK_KNEES_UP, { 0: [0.24, 0.58], 3: [0.40, 0.58], 5: [0.56, 0.50], 9: [0.66, 0.60], 11: [0.80, 0.48], 15: [0.88, 0.40] }), LYING_BACK_KNEES_UP, mirrorPose(updatePose(LYING_BACK_KNEES_UP, { 0: [0.24, 0.58], 3: [0.40, 0.58], 5: [0.56, 0.50], 9: [0.66, 0.60], 11: [0.80, 0.48], 15: [0.88, 0.40] })), LYING_BACK_KNEES_UP),
+  'crunches': () => {
+    const crunchPrep = updatePose(LYING_BACK, {
+      0: [0.20, 0.66],
+      3: [0.36, 0.62],
+      4: [0.36, 0.78],
+      5: [0.28, 0.58],
+      6: [0.28, 0.82],
+      13: [0.30, 0.69]
+    });
+    const crunchMid = updatePose(LYING_BACK, {
+      0: [0.24, 0.61],
+      1: [0.34, 0.62],
+      2: [0.34, 0.74],
+      3: [0.40, 0.58],
+      4: [0.40, 0.78],
+      5: [0.48, 0.54],
+      6: [0.48, 0.82],
+      13: [0.34, 0.66]
+    });
+    const crunchPeak = updatePose(LYING_BACK, {
+      0: [0.30, 0.55],
+      1: [0.36, 0.58],
+      2: [0.36, 0.72],
+      3: [0.42, 0.54],
+      4: [0.42, 0.76],
+      5: [0.50, 0.49],
+      6: [0.50, 0.81],
+      13: [0.38, 0.63]
+    });
+    return def('front', LYING_BACK, crunchPrep, crunchMid, crunchPeak, crunchMid, crunchPrep, LYING_BACK);
+  },
+  'bicycle-crunches': () => {
+    const bicycleCenter = updatePose(LYING_BACK_KNEES_UP, {
+      3: [0.38, 0.60],
+      4: [0.38, 0.76],
+      5: [0.28, 0.56],
+      6: [0.28, 0.80]
+    });
+    const bicycleLeftPrep = updatePose(bicycleCenter, {
+      0: [0.22, 0.62],
+      1: [0.32, 0.64],
+      2: [0.34, 0.74],
+      3: [0.38, 0.58],
+      5: [0.44, 0.52],
+      9: [0.64, 0.64],
+      11: [0.78, 0.54],
+      15: [0.84, 0.46],
+      13: [0.30, 0.68]
+    });
+    const bicycleLeftPeak = updatePose(bicycleCenter, {
+      0: [0.28, 0.56],
+      1: [0.36, 0.60],
+      2: [0.36, 0.72],
+      3: [0.40, 0.54],
+      5: [0.50, 0.48],
+      9: [0.62, 0.62],
+      11: [0.74, 0.50],
+      15: [0.80, 0.42],
+      13: [0.36, 0.64]
+    });
+    return def(
+      'front',
+      bicycleCenter,
+      bicycleLeftPrep,
+      bicycleLeftPeak,
+      bicycleCenter,
+      mirrorPose(bicycleLeftPrep),
+      mirrorPose(bicycleLeftPeak),
+      bicycleCenter
+    );
+  },
   'reverse-crunches': () => def('front', LYING_BACK, LYING_BACK_KNEES_UP, reverseCrunchHigh, LYING_BACK_KNEES_UP, LYING_BACK),
-  'leg-raises': () => def('front', LYING_BACK, updatePose(LYING_BACK, { 9: [0.72, 0.60], 10: [0.72, 0.84], 11: [0.76, 0.42], 12: [0.76, 0.98], 15: [0.78, 0.32], 16: [0.78, 1.04] }), LEGS_UP, updatePose(LYING_BACK, { 9: [0.72, 0.60], 10: [0.72, 0.84], 11: [0.76, 0.42], 12: [0.76, 0.98], 15: [0.78, 0.32], 16: [0.78, 1.04] }), LYING_BACK),
+  'leg-raises': () => {
+    const lowRaise = updatePose(LYING_BACK, {
+      9: [0.70, 0.62],
+      10: [0.70, 0.82],
+      11: [0.80, 0.54],
+      12: [0.80, 0.94],
+      15: [0.86, 0.48],
+      16: [0.86, 1.0]
+    });
+    const midRaise = updatePose(LYING_BACK, {
+      9: [0.70, 0.60],
+      10: [0.70, 0.84],
+      11: [0.76, 0.42],
+      12: [0.76, 0.98],
+      15: [0.80, 0.34],
+      16: [0.80, 1.04]
+    });
+    const highRaise = updatePose(LEGS_UP, {
+      7: [0.54, 0.66],
+      8: [0.54, 0.74],
+      14: [0.54, 0.70]
+    });
+    return def('front', LYING_BACK, lowRaise, midRaise, highRaise, midRaise, lowRaise, LYING_BACK);
+  },
   'flutter-kicks': () => def('front', scissorLeft, mirrorPose(scissorLeft), scissorLeft),
-  'russian-twists': () => def('front', V_SEAT, sideBendLeft, V_SEAT, mirrorPose(sideBendLeft), V_SEAT),
-  'plank-hold': () => def('side', PLANK_SIDE, shiftPose(PLANK_SIDE, 0, -0.01), PLANK_SIDE),
+  'russian-twists': () => {
+    const twistCenter = boatReach;
+    const twistLeftPrep = updatePose(twistCenter, {
+      0: [0.48, 0.22],
+      1: [0.42, 0.34],
+      2: [0.54, 0.32],
+      3: [0.38, 0.40],
+      4: [0.60, 0.38],
+      5: [0.34, 0.52],
+      6: [0.64, 0.48],
+      13: [0.49, 0.33]
+    });
+    const twistLeftPeak = updatePose(twistCenter, {
+      0: [0.46, 0.22],
+      1: [0.40, 0.34],
+      2: [0.54, 0.30],
+      3: [0.34, 0.40],
+      4: [0.60, 0.36],
+      5: [0.28, 0.58],
+      6: [0.66, 0.46],
+      13: [0.47, 0.32]
+    });
+    return def(
+      'front',
+      twistCenter,
+      twistLeftPrep,
+      twistLeftPeak,
+      twistCenter,
+      mirrorPose(twistLeftPrep),
+      mirrorPose(twistLeftPeak),
+      twistCenter
+    );
+  },
+  'plank-hold': () => {
+    const plankBrace = updatePose(PLANK_SIDE, {
+      0: [0.78, 0.40],
+      1: [0.62, 0.44],
+      2: [0.60, 0.42],
+      5: [0.38, 0.68],
+      6: [0.36, 0.66],
+      7: [0.54, 0.54],
+      8: [0.52, 0.52],
+      9: [0.38, 0.70],
+      10: [0.36, 0.68],
+      11: [0.22, 0.86],
+      12: [0.20, 0.84],
+      13: [0.61, 0.43],
+      14: [0.53, 0.53]
+    });
+    const plankForward = updatePose(plankBrace, {
+      1: [0.61, 0.45],
+      2: [0.59, 0.43],
+      3: [0.48, 0.57],
+      4: [0.46, 0.55],
+      5: [0.37, 0.66],
+      6: [0.35, 0.64],
+      7: [0.55, 0.55],
+      8: [0.53, 0.53],
+      9: [0.39, 0.71],
+      10: [0.37, 0.69],
+      11: [0.24, 0.87],
+      12: [0.22, 0.85]
+    });
+    const plankSag = updatePose(PLANK_SIDE, {
+      0: [0.81, 0.44],
+      7: [0.56, 0.60],
+      8: [0.54, 0.58],
+      9: [0.40, 0.74],
+      10: [0.38, 0.72],
+      11: [0.26, 0.90],
+      12: [0.24, 0.88],
+      13: [0.63, 0.47],
+      14: [0.55, 0.59]
+    });
+    return def('side', PLANK_SIDE, plankBrace, plankForward, plankBrace, PLANK_SIDE, plankSag, PLANK_SIDE);
+  },
   'side-plank': () => def('side', SIDE_PLANK, shiftPose(SIDE_PLANK, 0, -0.01), SIDE_PLANK),
   'plank-hip-dips': () => def('front', updatePose(PLANK_FRONT, { 7: [0.44, 0.60], 8: [0.54, 0.56], 14: [0.49, 0.58] }), PLANK_FRONT, updatePose(PLANK_FRONT, { 7: [0.46, 0.56], 8: [0.56, 0.60], 14: [0.51, 0.58] }), PLANK_FRONT),
-  'mountain-climbers': () => def('side', PLANK_SIDE, plankKneeLeft, PLANK_SIDE, mirrorPose(plankKneeLeft), PLANK_SIDE),
+  'mountain-climbers': () => {
+    const kneeDriveLeftMid = updatePose(PLANK_SIDE, {
+      7: [0.53, 0.55],
+      8: [0.51, 0.53],
+      9: [0.44, 0.66],
+      10: [0.36, 0.70],
+      11: [0.52, 0.58],
+      12: [0.22, 0.86],
+      15: [0.56, 0.54],
+      16: [0.16, 0.90]
+    });
+    const kneeDriveLeftPeak = updatePose(PLANK_SIDE, {
+      0: [0.77, 0.44],
+      7: [0.52, 0.56],
+      8: [0.50, 0.54],
+      9: [0.50, 0.60],
+      10: [0.36, 0.70],
+      11: [0.60, 0.50],
+      12: [0.22, 0.86],
+      15: [0.64, 0.46],
+      16: [0.16, 0.90]
+    });
+    return def(
+      'side',
+      PLANK_SIDE,
+      kneeDriveLeftMid,
+      kneeDriveLeftPeak,
+      PLANK_SIDE,
+      mirrorPose(kneeDriveLeftMid),
+      mirrorPose(kneeDriveLeftPeak),
+      PLANK_SIDE
+    );
+  },
   'v-ups': () => def('front', LYING_BACK, updatePose(LYING_BACK, { 0: [0.28, 0.60], 5: [0.50, 0.48], 6: [0.50, 0.82], 11: [0.76, 0.44], 12: [0.76, 0.96], 15: [0.82, 0.34], 16: [0.82, 1.02] }), V_UP, updatePose(LYING_BACK, { 0: [0.28, 0.60], 5: [0.50, 0.48], 6: [0.50, 0.82], 11: [0.76, 0.44], 12: [0.76, 0.96], 15: [0.82, 0.34], 16: [0.82, 1.02] }), LYING_BACK),
   'dead-bug': () => def('front', LYING_BACK_KNEES_UP, deadBugRight, LYING_BACK_KNEES_UP, mirrorPose(deadBugRight), LYING_BACK_KNEES_UP),
   'heel-taps': () => def('front', LYING_BACK_KNEES_UP, heelTapLeft, LYING_BACK_KNEES_UP, mirrorPose(heelTapLeft), LYING_BACK_KNEES_UP),
@@ -1340,13 +1538,117 @@ const EXERCISE_BUILDERS = {
   'tadasana': () => def('front', STANDING_FRONT, armsOverhead, STANDING_FRONT),
   'utkatasana': () => def('front', STANDING_FRONT, chairPose, STANDING_FRONT),
   'virabhadrasana-i': () => def('side', STANDING_SIDE, lungeArmsUp, STANDING_SIDE),
-  'virabhadrasana-ii': () => def('front', WIDE_STANCE_FRONT, warrior2, WIDE_STANCE_FRONT),
+  'virabhadrasana-ii': () => {
+    const wideArms = updatePose(WIDE_STANCE_FRONT, {
+      0: [0.46, 0.18],
+      1: [0.40, 0.32],
+      2: [0.52, 0.32],
+      3: [0.28, 0.32],
+      4: [0.66, 0.32],
+      5: [0.14, 0.32],
+      6: [0.82, 0.32]
+    });
+    const warriorHalf = updatePose(warrior2, {
+      0: [0.44, 0.20],
+      7: [0.43, 0.57],
+      8: [0.57, 0.56],
+      9: [0.38, 0.73],
+      10: [0.64, 0.72]
+    });
+    const warriorOpen = updatePose(warrior2, {
+      0: [0.40, 0.18],
+      1: [0.39, 0.31],
+      2: [0.53, 0.31],
+      13: [0.46, 0.31]
+    });
+    return def('front', wideArms, warriorHalf, warrior2, warriorOpen, warrior2, warriorHalf, wideArms);
+  },
   'trikonasana': () => def('front', WIDE_STANCE_FRONT, trianglePose, WIDE_STANCE_FRONT),
-  'downward-dog': () => def('side', PLANK_SIDE, downwardDog, PLANK_SIDE),
-  'bhujangasana': () => def('side', PRONE_FLAT, cobraHigh, PRONE_FLAT),
+  'downward-dog': () => {
+    const dogTransition1 = updatePose(PLANK_SIDE, {
+      0: [0.70, 0.46],
+      1: [0.58, 0.48],
+      2: [0.56, 0.46],
+      3: [0.46, 0.58],
+      4: [0.44, 0.56],
+      5: [0.34, 0.70],
+      6: [0.32, 0.68],
+      7: [0.56, 0.52],
+      8: [0.54, 0.50],
+      9: [0.42, 0.72],
+      10: [0.40, 0.70],
+      13: [0.57, 0.47],
+      14: [0.55, 0.51]
+    });
+    const dogTransition2 = updatePose(downwardDog, {
+      0: [0.48, 0.60],
+      1: [0.50, 0.54],
+      2: [0.52, 0.52],
+      3: [0.38, 0.66],
+      4: [0.40, 0.62],
+      5: [0.28, 0.78],
+      6: [0.30, 0.74],
+      9: [0.58, 0.68],
+      10: [0.60, 0.66],
+      11: [0.68, 0.86],
+      12: [0.70, 0.84],
+      13: [0.51, 0.53],
+      14: [0.58, 0.49]
+    });
+    return def('side', PLANK_SIDE, dogTransition1, dogTransition2, downwardDog, dogTransition2, dogTransition1, PLANK_SIDE);
+  },
+  'bhujangasana': () => {
+    const cobraPrep = updatePose(PRONE_FLAT, {
+      0: [0.22, 0.72],
+      3: [0.38, 0.64],
+      4: [0.38, 0.84],
+      5: [0.44, 0.68],
+      6: [0.44, 0.88],
+      13: [0.31, 0.74]
+    });
+    const cobraBaby = updatePose(PRONE_FLAT, {
+      0: [0.30, 0.64],
+      1: [0.36, 0.66],
+      2: [0.36, 0.78],
+      3: [0.42, 0.64],
+      4: [0.42, 0.80],
+      5: [0.50, 0.66],
+      6: [0.50, 0.82],
+      13: [0.35, 0.70]
+    });
+    const cobraMid = updatePose(PRONE_FLAT, {
+      0: [0.36, 0.58],
+      1: [0.40, 0.62],
+      2: [0.40, 0.74],
+      3: [0.46, 0.64],
+      4: [0.46, 0.78],
+      5: [0.54, 0.70],
+      6: [0.54, 0.82],
+      13: [0.39, 0.66]
+    });
+    return def('side', PRONE_FLAT, cobraPrep, cobraBaby, cobraMid, cobraHigh, cobraMid, PRONE_FLAT);
+  },
   'dhanurasana': () => def('side', PRONE_FLAT, bowPose, PRONE_FLAT),
   'naukasana': () => def('front', V_SEAT, boatReach, V_SEAT),
-  'setu-bandhasana': () => def('side', LYING_BACK_KNEES_UP, bridgeHigh, LYING_BACK_KNEES_UP),
+  'setu-bandhasana': () => {
+    const bridgeBrace = updatePose(LYING_BACK_KNEES_UP, {
+      0: [0.18, 0.68],
+      7: [0.54, 0.66],
+      8: [0.54, 0.74],
+      13: [0.28, 0.69],
+      14: [0.54, 0.70]
+    });
+    const bridgeMid = updatePose(LYING_BACK_KNEES_UP, {
+      0: [0.19, 0.72],
+      1: [0.30, 0.70],
+      2: [0.30, 0.78],
+      7: [0.54, 0.62],
+      8: [0.54, 0.70],
+      13: [0.28, 0.74],
+      14: [0.54, 0.66]
+    });
+    return def('side', LYING_BACK_KNEES_UP, bridgeBrace, bridgeMid, bridgeHigh, bridgeMid, bridgeBrace, LYING_BACK_KNEES_UP);
+  },
   'balasana': () => def('side', VAJRASANA, childPose, VAJRASANA),
   'vajrasana': () => def('front', VAJRASANA, shiftPose(VAJRASANA, 0, -0.008), VAJRASANA),
   'paschimottanasana': () => def('front', SEATED_FRONT, seatedFold, SEATED_FRONT),
@@ -1361,44 +1663,375 @@ const EXERCISE_BUILDERS = {
   'bhramari': () => def('front', SEATED_FRONT, earsCovered, SEATED_FRONT),
   'ujjayi': () => def('front', SEATED_FRONT, chestExpand, SEATED_FRONT),
   'sheetali': () => def('front', SEATED_FRONT, headNod, SEATED_FRONT),
-  'deep-belly-breathing': () => def('front', SEATED_FRONT, chestExpand, SEATED_FRONT),
-  'jumping-jacks': () => def('front', STANDING_FRONT, jumpingJackMid, jumpingJackPeak, jumpingJackMid, STANDING_FRONT),
-  'high-knees': () => def('front', STANDING_FRONT, highKneeLeft, STANDING_FRONT, mirrorPose(highKneeLeft), STANDING_FRONT),
+  'deep-belly-breathing': () => {
+    const handsOnKnees = updatePose(SEATED_FRONT, {
+      3: [0.45, 0.56],
+      4: [0.55, 0.56],
+      5: [0.44, 0.72],
+      6: [0.56, 0.72]
+    });
+    const armsRising = updatePose(handsOnKnees, {
+      0: [0.50, 0.22],
+      1: [0.43, 0.34],
+      2: [0.57, 0.34],
+      3: [0.38, 0.46],
+      4: [0.62, 0.46],
+      5: [0.36, 0.56],
+      6: [0.64, 0.56],
+      13: [0.50, 0.34]
+    });
+    const armsShoulderHeight = updatePose(handsOnKnees, {
+      0: [0.50, 0.20],
+      1: [0.42, 0.32],
+      2: [0.58, 0.32],
+      3: [0.32, 0.34],
+      4: [0.68, 0.34],
+      5: [0.22, 0.34],
+      6: [0.78, 0.34],
+      13: [0.50, 0.31],
+      14: [0.50, 0.59]
+    });
+    const armsOverheadInhale = updatePose(handsOnKnees, {
+      0: [0.50, 0.17],
+      1: [0.42, 0.31],
+      2: [0.58, 0.31],
+      3: [0.40, 0.18],
+      4: [0.60, 0.18],
+      5: [0.43, 0.06],
+      6: [0.57, 0.06],
+      13: [0.50, 0.29],
+      14: [0.50, 0.59]
+    });
+    return def(
+      'front',
+      handsOnKnees,
+      armsRising,
+      armsShoulderHeight,
+      armsOverheadInhale,
+      armsShoulderHeight,
+      armsRising,
+      handsOnKnees
+    );
+  },
+  'jumping-jacks': () => {
+    const jackQuarter = updatePose(STANDING_FRONT, {
+      3: [0.36, 0.26],
+      4: [0.64, 0.26],
+      5: [0.30, 0.30],
+      6: [0.70, 0.30],
+      9: [0.41, 0.72],
+      10: [0.59, 0.72],
+      11: [0.38, 0.88],
+      12: [0.62, 0.88],
+      15: [0.35, 0.92],
+      16: [0.65, 0.92]
+    });
+    const jackHalf = updatePose(jumpingJackMid, {
+      3: [0.30, 0.24],
+      4: [0.70, 0.24],
+      5: [0.22, 0.16],
+      6: [0.78, 0.16],
+      7: [0.43, 0.56],
+      8: [0.57, 0.56],
+      9: [0.36, 0.72],
+      10: [0.64, 0.72],
+      11: [0.30, 0.88],
+      12: [0.70, 0.88],
+      15: [0.25, 0.92],
+      16: [0.75, 0.92]
+    });
+    return def('front', STANDING_FRONT, jackQuarter, jackHalf, jumpingJackPeak, jackHalf, jackQuarter, STANDING_FRONT);
+  },
+  'high-knees': () => {
+    const kneeDrivePrep = updatePose(STANDING_FRONT, {
+      0: [0.48, 0.14],
+      3: [0.40, 0.34],
+      4: [0.60, 0.42],
+      5: [0.36, 0.46],
+      6: [0.64, 0.56],
+      7: [0.44, 0.54],
+      8: [0.56, 0.56],
+      9: [0.44, 0.64],
+      10: [0.58, 0.74],
+      11: [0.46, 0.48],
+      12: [0.58, 0.88],
+      15: [0.46, 0.40]
+    });
+    const kneeDrivePeak = updatePose(STANDING_FRONT, {
+      0: [0.46, 0.13],
+      3: [0.38, 0.30],
+      4: [0.62, 0.44],
+      5: [0.34, 0.42],
+      6: [0.66, 0.58],
+      7: [0.44, 0.52],
+      8: [0.56, 0.56],
+      9: [0.44, 0.54],
+      10: [0.58, 0.76],
+      11: [0.46, 0.34],
+      12: [0.58, 0.90],
+      15: [0.46, 0.24],
+      16: [0.59, 0.94]
+    });
+    const switchHop = updatePose(STANDING_FRONT, {
+      0: [0.50, 0.13],
+      3: [0.40, 0.36],
+      4: [0.60, 0.36],
+      5: [0.36, 0.48],
+      6: [0.64, 0.48],
+      7: [0.45, 0.53],
+      8: [0.55, 0.53],
+      9: [0.45, 0.68],
+      10: [0.55, 0.68],
+      11: [0.43, 0.84],
+      12: [0.57, 0.84],
+      15: [0.41, 0.88],
+      16: [0.59, 0.88]
+    });
+    return def(
+      'front',
+      STANDING_FRONT,
+      kneeDrivePrep,
+      kneeDrivePeak,
+      switchHop,
+      mirrorPose(kneeDrivePeak),
+      mirrorPose(kneeDrivePrep),
+      STANDING_FRONT
+    );
+  },
   'butt-kicks': () => def('front', STANDING_FRONT, buttKickLeft, STANDING_FRONT, mirrorPose(buttKickLeft), STANDING_FRONT),
-  'jump-squats-hiit': () => def('front', STANDING_FRONT, squatDeep, jumpReach, STANDING_FRONT),
+  'jump-squats-hiit': () => {
+    const squatLoad = updatePose(STANDING_FRONT, {
+      0: [0.50, 0.17],
+      3: [0.38, 0.44],
+      4: [0.62, 0.44],
+      5: [0.34, 0.56],
+      6: [0.66, 0.56],
+      7: [0.44, 0.60],
+      8: [0.56, 0.60],
+      9: [0.40, 0.76],
+      10: [0.60, 0.76],
+      11: [0.38, 0.88],
+      12: [0.62, 0.88]
+    });
+    const squatExplode = updatePose(STANDING_FRONT, {
+      0: [0.49, 0.14],
+      3: [0.40, 0.24],
+      4: [0.60, 0.24],
+      5: [0.38, 0.12],
+      6: [0.62, 0.12],
+      7: [0.44, 0.54],
+      8: [0.56, 0.54],
+      9: [0.42, 0.70],
+      10: [0.58, 0.70],
+      11: [0.40, 0.84],
+      12: [0.60, 0.84],
+      15: [0.38, 0.88],
+      16: [0.62, 0.88]
+    });
+    return def('front', STANDING_FRONT, squatLoad, squatDeep, squatExplode, jumpReach, squatLoad, STANDING_FRONT);
+  },
   'star-jumps': () => def('front', STANDING_FRONT, jumpingJackPeak, STANDING_FRONT),
   'skaters': () => def('front', skaterLeft, STANDING_FRONT, mirrorPose(skaterLeft), STANDING_FRONT),
   'tuck-jumps': () => def('front', STANDING_FRONT, squatMid, tuckJump, STANDING_FRONT),
   'squat-thrusts': () => def('front', STANDING_FRONT, burpeeSquat, PLANK_FRONT, burpeeSquat, STANDING_FRONT),
   'plank-jacks-hiit': () => def('front', PLANK_FRONT, plankJackWide, PLANK_FRONT),
-  'burpees-hiit': () => def('front', STANDING_FRONT, burpeeSquat, PLANK_FRONT, jumpReach, STANDING_FRONT),
+  'burpees-hiit': () => {
+    const burpeeLoad = updatePose(STANDING_FRONT, {
+      0: [0.50, 0.18],
+      3: [0.40, 0.40],
+      4: [0.60, 0.40],
+      5: [0.36, 0.54],
+      6: [0.64, 0.54],
+      7: [0.44, 0.60],
+      8: [0.56, 0.60],
+      9: [0.41, 0.78],
+      10: [0.59, 0.78],
+      11: [0.38, 0.89],
+      12: [0.62, 0.89]
+    });
+    const burpeePushup = updatePose(PLANK_FRONT, {
+      0: [0.50, 0.50],
+      1: [0.44, 0.52],
+      2: [0.56, 0.52],
+      3: [0.40, 0.60],
+      4: [0.60, 0.60],
+      5: [0.38, 0.72],
+      6: [0.62, 0.72],
+      7: [0.45, 0.60],
+      8: [0.55, 0.60]
+    });
+    return def('front', STANDING_FRONT, burpeeLoad, burpeeSquat, PLANK_FRONT, burpeePushup, burpeeSquat, jumpReach, STANDING_FRONT);
+  },
   'fast-feet': () => def('front', fastFeetLeft, fastFeetRight, fastFeetLeft),
   'lateral-shuffles': () => def('front', shiftPose(STANDING_FRONT, -0.05, 0), shiftPose(STANDING_FRONT, 0.05, 0), shiftPose(STANDING_FRONT, -0.05, 0)),
-  'push-ups-standard': () => def('side', pushupTop, pushupBottom, pushupTop),
+  'push-ups-standard': () => {
+    const pushupQuarter = updatePose(pushupTop, {
+      0: [0.76, 0.45],
+      1: [0.61, 0.49],
+      2: [0.59, 0.47],
+      3: [0.52, 0.60],
+      4: [0.50, 0.58],
+      5: [0.42, 0.70],
+      6: [0.40, 0.68],
+      7: [0.53, 0.56],
+      8: [0.51, 0.54]
+    });
+    const pushupMid = updatePose(pushupTop, {
+      0: [0.72, 0.48],
+      1: [0.58, 0.52],
+      2: [0.58, 0.50],
+      3: [0.50, 0.62],
+      4: [0.50, 0.60],
+      5: [0.40, 0.72],
+      6: [0.40, 0.70],
+      7: [0.53, 0.57],
+      8: [0.53, 0.55]
+    });
+    return def('side', pushupTop, pushupQuarter, pushupMid, pushupBottom, pushupMid, pushupQuarter, pushupTop);
+  },
   'wide-push-ups': () => def('front', widePushupTop, widePushupBottom, widePushupTop),
   'diamond-push-ups': () => def('front', diamondPushupTop, diamondPushupBottom, diamondPushupTop),
   'pike-push-ups': () => def('side', pikeTop, pikeBottom, pikeTop),
   'knee-push-ups': () => def('side', kneePushupTop, kneePushupBottom, kneePushupTop),
   'tricep-dips-chair': () => def('side', dipTop, dipBottom, dipTop),
   'superman-hold': () => def('side', PRONE_FLAT, supermanHigh, PRONE_FLAT),
-  'arm-circles': () => def('front', armsT, updatePose(armsT, { 5: [0.34, 0.14], 6: [0.66, 0.14] }), armsOverhead, updatePose(armsT, { 5: [0.34, 0.42], 6: [0.66, 0.42] }), armsT),
+  'arm-circles': () => {
+    const circleUp = updatePose(armsT, {
+      3: [0.34, 0.22],
+      4: [0.66, 0.22],
+      5: [0.26, 0.14],
+      6: [0.74, 0.14]
+    });
+    const circleFront = updatePose(STANDING_FRONT, {
+      3: [0.38, 0.26],
+      4: [0.62, 0.26],
+      5: [0.36, 0.18],
+      6: [0.64, 0.18]
+    });
+    const circleLowFront = updatePose(STANDING_FRONT, {
+      3: [0.36, 0.40],
+      4: [0.64, 0.40],
+      5: [0.42, 0.54],
+      6: [0.58, 0.54]
+    });
+    const circleDown = updatePose(armsT, {
+      3: [0.34, 0.34],
+      4: [0.66, 0.34],
+      5: [0.24, 0.42],
+      6: [0.76, 0.42]
+    });
+    return def('front', armsT, circleUp, armsOverhead, circleFront, circleLowFront, circleDown, armsBack, armsT);
+  },
   'inchworms': () => def('side', STANDING_SIDE, inchwormFold, inchwormPlank, inchwormFold, STANDING_SIDE),
   'shoulder-taps-plank': () => def('front', PLANK_FRONT, shoulderTapLeft, PLANK_FRONT, mirrorPose(shoulderTapLeft), PLANK_FRONT),
   'reverse-snow-angels': () => def('side', PRONE_FLAT, snowAngelWide, snowAngelOverhead, snowAngelWide, PRONE_FLAT),
   'wall-push-ups': () => def('side', DESK_PUSHUP, updatePose(DESK_PUSHUP, { 0: [0.66, 0.40], 1: [0.56, 0.44], 2: [0.58, 0.42], 5: [0.46, 0.62], 6: [0.48, 0.60] }), DESK_PUSHUP),
-  'bodyweight-squats': () => def('front', STANDING_FRONT, squatMid, squatDeep, squatMid, STANDING_FRONT),
+  'bodyweight-squats': () => {
+    const squatHinge = updatePose(STANDING_SIDE, {
+      0: [0.52, 0.16],
+      1: [0.49, 0.29],
+      2: [0.53, 0.29],
+      3: [0.46, 0.40],
+      4: [0.56, 0.40],
+      5: [0.42, 0.48],
+      6: [0.60, 0.48],
+      7: [0.48, 0.57],
+      8: [0.52, 0.57],
+      9: [0.50, 0.73],
+      10: [0.54, 0.73],
+      13: [0.51, 0.29],
+      14: [0.50, 0.57]
+    });
+    const squatMidSide = updatePose(STANDING_SIDE, {
+      0: [0.54, 0.18],
+      1: [0.50, 0.32],
+      2: [0.54, 0.32],
+      3: [0.46, 0.46],
+      4: [0.58, 0.46],
+      5: [0.40, 0.60],
+      6: [0.62, 0.60],
+      7: [0.50, 0.60],
+      8: [0.54, 0.60],
+      9: [0.58, 0.74],
+      10: [0.62, 0.74],
+      11: [0.50, 0.88],
+      12: [0.54, 0.88],
+      15: [0.48, 0.92],
+      16: [0.56, 0.92],
+      13: [0.52, 0.32],
+      14: [0.52, 0.60]
+    });
+    const squatDeepSide = updatePose(squatMidSide, {
+      0: [0.56, 0.20],
+      1: [0.51, 0.34],
+      2: [0.55, 0.34],
+      3: [0.48, 0.48],
+      4: [0.60, 0.48],
+      5: [0.42, 0.62],
+      6: [0.64, 0.62],
+      7: [0.52, 0.64],
+      8: [0.56, 0.64],
+      9: [0.64, 0.74],
+      10: [0.68, 0.74],
+      11: [0.56, 0.88],
+      12: [0.60, 0.88],
+      15: [0.54, 0.92],
+      16: [0.62, 0.92],
+      13: [0.53, 0.34],
+      14: [0.54, 0.64]
+    });
+    return def('side', STANDING_SIDE, squatHinge, squatMidSide, squatDeepSide, squatMidSide, squatHinge, STANDING_SIDE);
+  },
   'sumo-squats': () => def('front', WIDE_STANCE_FRONT, updatePose(WIDE_STANCE_FRONT, { 7: [0.42, 0.60], 8: [0.58, 0.60], 9: [0.34, 0.80], 10: [0.66, 0.80], 11: [0.32, 0.90], 12: [0.68, 0.90] }), WIDE_STANCE_FRONT),
-  'forward-lunges': () => def('side', STANDING_SIDE, lungeDeep, STANDING_SIDE),
+  'forward-lunges': () => {
+    const lungeStep = lungeForward;
+    const lungeMid = updatePose(lungeForward, {
+      0: [0.48, 0.17],
+      1: [0.46, 0.30],
+      2: [0.50, 0.30],
+      3: [0.44, 0.42],
+      4: [0.54, 0.42],
+      5: [0.42, 0.54],
+      6: [0.56, 0.54],
+      7: [0.48, 0.60],
+      8: [0.52, 0.60],
+      9: [0.61, 0.75],
+      10: [0.52, 0.73],
+      11: [0.70, 0.89],
+      12: [0.43, 0.89],
+      13: [0.48, 0.30],
+      14: [0.50, 0.60]
+    });
+    return def('side', STANDING_SIDE, lungeStep, lungeMid, lungeDeep, lungeMid, lungeStep, STANDING_SIDE);
+  },
   'reverse-lunges': () => def('side', STANDING_SIDE, mirrorPose(lungeDeep), STANDING_SIDE),
-  'jump-squats-lower': () => def('front', STANDING_FRONT, squatDeep, jumpReach, STANDING_FRONT),
+  'jump-squats-lower': () => EXERCISE_BUILDERS['jump-squats-hiit'](),
   'wall-sit': () => def('side', WALL_SIT, shiftPose(WALL_SIT, 0, -0.008), WALL_SIT),
-  'glute-bridges': () => def('side', LYING_BACK_KNEES_UP, bridgeHigh, LYING_BACK_KNEES_UP),
+  'glute-bridges': () => {
+    const bridgeBrace = updatePose(LYING_BACK_KNEES_UP, {
+      0: [0.18, 0.68],
+      7: [0.54, 0.66],
+      8: [0.54, 0.74],
+      13: [0.28, 0.69],
+      14: [0.54, 0.70]
+    });
+    const bridgeMid = updatePose(LYING_BACK_KNEES_UP, {
+      0: [0.19, 0.72],
+      1: [0.30, 0.70],
+      2: [0.30, 0.78],
+      7: [0.54, 0.62],
+      8: [0.54, 0.70],
+      13: [0.28, 0.74],
+      14: [0.54, 0.66]
+    });
+    return def('side', LYING_BACK_KNEES_UP, bridgeBrace, bridgeMid, bridgeHigh, bridgeMid, bridgeBrace, LYING_BACK_KNEES_UP);
+  },
   'single-leg-bridges': () => def('side', updatePose(LYING_BACK_KNEES_UP, { 10: [0.68, 0.76], 12: [0.80, 0.58], 16: [0.86, 0.50] }), updatePose(bridgeHigh, { 10: [0.68, 0.76], 12: [0.80, 0.58], 16: [0.86, 0.50] }), updatePose(LYING_BACK_KNEES_UP, { 10: [0.68, 0.76], 12: [0.80, 0.58], 16: [0.86, 0.50] })),
   'calf-raises': () => def('side', STANDING_SIDE, calfRaiseTop, STANDING_SIDE),
   'donkey-kicks': () => def('side', HANDS_KNEES, donkeyKickRight, HANDS_KNEES, mirrorPose(donkeyKickRight), HANDS_KNEES),
   'fire-hydrants': () => def('side', HANDS_KNEES, fireHydrantRight, HANDS_KNEES, mirrorPose(fireHydrantRight), HANDS_KNEES),
   'side-leg-raises': () => def('front', STANDING_FRONT, sideLegRaise, STANDING_FRONT, mirrorPose(sideLegRaise), STANDING_FRONT),
-  'plank-hold-core': () => def('side', PLANK_SIDE, shiftPose(PLANK_SIDE, 0, -0.01), PLANK_SIDE),
+  'plank-hold-core': () => EXERCISE_BUILDERS['plank-hold'](),
   'side-plank-core': () => def('side', SIDE_PLANK, shiftPose(SIDE_PLANK, 0, -0.01), SIDE_PLANK),
   'dead-bug-core': () => def('front', LYING_BACK_KNEES_UP, deadBugRight, LYING_BACK_KNEES_UP, mirrorPose(deadBugRight), LYING_BACK_KNEES_UP),
   'bird-dog': () => def('side', HANDS_KNEES, birdDogRight, HANDS_KNEES, mirrorPose(birdDogRight), HANDS_KNEES),
@@ -1426,7 +2059,7 @@ const EXERCISE_BUILDERS = {
   'inchworm': () => def('side', STANDING_SIDE, inchwormFold, inchwormPlank, inchwormFold, STANDING_SIDE),
   'bear-crawl': () => def('side', HANDS_KNEES, bearCrawlLeft, HANDS_KNEES, mirrorPose(bearCrawlLeft), HANDS_KNEES),
   'plank-to-pushup': () => def('side', plankToPushupForearm, pushupTop, plankToPushupForearm),
-  'squat-jumps': () => def('front', STANDING_FRONT, squatDeep, jumpReach, STANDING_FRONT),
+  'squat-jumps': () => EXERCISE_BUILDERS['jump-squats-hiit'](),
   'turkish-getup-lite': () => def('side', LYING_BACK_KNEES_UP, getupHalf, KNEELING_SIDE, STANDING_SIDE),
   'sprawl': () => def('front', STANDING_FRONT, burpeeSquat, PLANK_FRONT, STANDING_FRONT),
   'walk-out-pushup': () => def('side', STANDING_SIDE, walkoutFold, pushupBottom, walkoutFold, STANDING_SIDE)
