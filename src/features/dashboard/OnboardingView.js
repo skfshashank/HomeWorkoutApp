@@ -68,6 +68,19 @@ export class OnboardingView {
   }
 
   async #next() {
+    // Validate current step - user must select an option
+    const requiredKeys = ['goal', 'focus', 'time', 'level'];
+    const currentKey = requiredKeys[this.#step - 1];
+    if (!this.#data[currentKey]) {
+      // Shake the options to indicate selection required
+      const content = document.getElementById('onb-content');
+      content.querySelectorAll('.goal-option').forEach(opt => {
+        opt.classList.add('shake');
+        setTimeout(() => opt.classList.remove('shake'), 500);
+      });
+      return;
+    }
+
     if (this.#step < 4) {
       this.#step += 1;
       this.#renderStep();
@@ -75,10 +88,10 @@ export class OnboardingView {
     }
 
     await this.#updateProfile.createFromOnboarding({
-      goal: this.#data.goal || 'fat_loss',
-      focusArea: this.#data.focus || 'core',
-      dailyMinutes: parseInt(this.#data.time, 10) || 30,
-      level: this.#data.level || 'beginner'
+      goal: this.#data.goal,
+      focusArea: this.#data.focus,
+      dailyMinutes: parseInt(this.#data.time, 10),
+      level: this.#data.level
     });
   }
 

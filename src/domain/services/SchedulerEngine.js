@@ -49,8 +49,8 @@ export class SchedulerEngine {
   }
   
   isRestDay(dayOfYear, streak) {
-    // Rest every 3rd day, or if streak >= 6
-    return (dayOfYear % 3 === 0) || streak >= 6;
+    // Rest every 7th day, or after 6 consecutive streak days
+    return (dayOfYear % 7 === 0) && streak >= 6;
   }
   
   #generateRestDay(user, seed) {
@@ -74,17 +74,18 @@ export class SchedulerEngine {
   
   #goalToCategories(goal, focus) {
     const map = {
-      'fat_loss': ['belly_fat', 'hiit', 'full_body', 'belly_fat', 'hiit', 'yoga'],
-      'strength': ['upper', 'lower', 'core', 'full_body', 'upper', 'lower'],
+      'fat_loss': ['belly_fat', 'hiit', 'core', 'belly_fat', 'hiit', 'yoga'],
+      'strength': ['upper', 'lower', 'core', 'upper', 'lower', 'hiit'],
       'flexibility': ['yoga', 'stretch', 'yoga', 'pranayama', 'yoga', 'stretch'],
       'stress_relief': ['yoga', 'pranayama', 'stretch', 'yoga', 'pranayama', 'yoga']
     };
     const base = map[goal] || map['fat_loss'];
     
     // Boost focus area
-    if (focus === 'core') base.unshift('belly_fat');
+    if (focus === 'core') base.unshift('belly_fat', 'core');
     if (focus === 'upper') base.unshift('upper');
     if (focus === 'lower') base.unshift('lower');
+    if (focus === 'full_body') base.unshift('hiit', 'core');
     
     return base;
   }
@@ -100,7 +101,8 @@ export class SchedulerEngine {
   #pickMain(category, user, seed) {
     let pool = this.#exerciseRepo.getByCategory(category);
     if (pool.length < 4) {
-      pool = [...pool, ...this.#exerciseRepo.getByCategory('full_body')];
+      // Fallback to combined pool from core categories
+      pool = [...pool, ...this.#exerciseRepo.getByCategory('belly_fat'), ...this.#exerciseRepo.getByCategory('hiit')];
     }
     
     const shuffled = seededShuffle(pool, seed + 2);
