@@ -54,34 +54,34 @@ const BASE_LENGTHS = {
 
 const PART_SHAPES = {
   torso: `
-    <path fill="url(#shirt-gradient)" d="M0 0 C-11 2 -23 6 -31 12 C-35 29 -33 57 -23 84 C-20 92 -16 98 -12 100 L12 100 C16 98 20 92 23 84 C33 57 35 29 31 12 C23 6 11 2 0 0 Z" />
-    <path fill="url(#shirt-shadow-gradient)" d="M31 12 C35 29 33 57 23 84 C20 92 16 98 12 100 L2 100 C9 82 12 57 10 34 C9 22 14 15 31 12 Z" opacity="0.95" />
-    <path fill="url(#shirt-highlight-gradient)" d="M-20 18 C-10 11 2 9 12 12 C6 21 2 36 3 54 C-7 52 -16 44 -20 18 Z" opacity="0.72" />
-    <path fill="${SHIRT_SHADOW}" d="M-10 11 C-6 6 6 6 10 11 C8 15 -8 15 -10 11 Z" opacity="0.9" />
+    <path fill="url(#shirt-gradient)" d="M0 0 C-14 2 -28 6 -35 12 C-39 29 -36 57 -26 84 C-22 92 -17 98 -13 100 L13 100 C17 98 22 92 26 84 C36 57 39 29 35 12 C28 6 14 2 0 0 Z" />
+    <path fill="url(#shirt-shadow-gradient)" d="M35 12 C39 29 36 57 26 84 C22 92 17 98 13 100 L3 100 C10 82 13 57 11 34 C10 22 16 15 35 12 Z" opacity="0.95" />
+    <path fill="url(#shirt-highlight-gradient)" d="M-22 18 C-12 11 2 9 14 12 C8 21 3 36 4 54 C-8 52 -18 44 -22 18 Z" opacity="0.72" />
+    <path fill="${SHIRT_SHADOW}" d="M-11 10 C-7 5 7 5 11 10 C9 14 -9 14 -11 10 Z" opacity="0.9" />
   `,
   neck: `
     <path fill="url(#skin-gradient)" d="M0 0 C3 -4 13 -4 18 0 C13 4 3 4 0 0 Z" />
     <path fill="url(#skin-highlight-gradient)" d="M2 -1 C6 -3 11 -3 15 -1 C11 1 6 2 2 -1 Z" opacity="0.6" />
   `,
   upperArm: `
-    <path fill="url(#skin-gradient)" d="M0 0 C3 -7 18 -9 35 -8 C49 -7 58 -4 60 0 C58 4 49 7 35 8 C18 9 3 7 0 0 Z" />
-    <path fill="url(#skin-highlight-gradient)" d="M5 -3 C17 -6 34 -6 50 -2 C34 1 18 2 5 -3 Z" opacity="0.52" />
+    <path fill="url(#skin-gradient)" d="M-8 0 C-5 -8 12 -10 30 -9 C47 -8 58 -4 60 0 C58 4 47 8 30 9 C12 10 -5 8 -8 0 Z" />
+    <path fill="url(#skin-highlight-gradient)" d="M0 -4 C14 -7 32 -7 50 -3 C34 0 16 1 0 -4 Z" opacity="0.52" />
   `,
   forearm: `
-    <path fill="url(#skin-gradient)" d="M0 0 C3 -6 16 -7 31 -6 C44 -5 53 -2 55 0 C53 2 44 5 31 6 C16 7 3 6 0 0 Z" />
-    <path fill="url(#skin-highlight-gradient)" d="M4 -2 C14 -5 27 -5 42 -2 C29 0 16 1 4 -2 Z" opacity="0.5" />
+    <path fill="url(#skin-gradient)" d="M-6 0 C-3 -6 12 -8 28 -7 C42 -6 53 -3 55 0 C53 3 42 6 28 7 C12 8 -3 6 -6 0 Z" />
+    <path fill="url(#skin-highlight-gradient)" d="M0 -3 C12 -6 26 -6 42 -2 C28 0 14 1 0 -3 Z" opacity="0.5" />
   `,
   hand: `
     <path fill="url(#skin-gradient)" d="M0 0 C4 -4 10 -5 14 -2 C16 0 15 3 11 5 C7 7 2 5 0 0 Z" />
     <path fill="url(#skin-highlight-gradient)" d="M3 -1 C6 -3 10 -2 12 0 C9 2 6 2 3 -1 Z" opacity="0.45" />
   `,
   thigh: `
-    <path fill="url(#skin-gradient)" d="M0 0 C3 -9 19 -11 39 -10 C55 -9 67 -5 70 0 C67 5 55 9 39 10 C19 11 3 9 0 0 Z" />
-    <path fill="url(#skin-highlight-gradient)" d="M6 -4 C20 -8 40 -7 57 -3 C41 0 23 1 6 -4 Z" opacity="0.5" />
+    <path fill="url(#skin-gradient)" d="M-10 0 C-7 -10 12 -12 34 -11 C52 -10 67 -6 70 0 C67 6 52 10 34 11 C12 12 -7 10 -10 0 Z" />
+    <path fill="url(#skin-highlight-gradient)" d="M0 -5 C16 -9 36 -8 55 -4 C38 0 20 1 0 -5 Z" opacity="0.5" />
   `,
   calf: `
-    <path fill="url(#skin-gradient)" d="M0 0 C3 -7 16 -8 34 -7 C48 -6 61 -3 65 0 C61 3 48 6 34 7 C16 8 3 7 0 0 Z" />
-    <path fill="url(#skin-highlight-gradient)" d="M5 -3 C17 -6 33 -6 50 -2 C36 0 20 1 5 -3 Z" opacity="0.48" />
+    <path fill="url(#skin-gradient)" d="M-8 0 C-5 -7 10 -9 28 -8 C44 -7 59 -4 65 0 C59 4 44 7 28 8 C10 9 -5 7 -8 0 Z" />
+    <path fill="url(#skin-highlight-gradient)" d="M0 -3 C14 -7 30 -6 48 -3 C32 0 16 1 0 -3 Z" opacity="0.48" />
   `,
   foot: `
     <path fill="url(#shoe-gradient)" d="M0 0 C6 -4 17 -4 24 -1 C26 0 26 3 22 6 C16 9 6 9 0 5 Z" />
@@ -89,8 +89,8 @@ const PART_SHAPES = {
     <path fill="#9CA3AF" d="M1 4 C7 7 16 7 22 4 C20 7 12 9 3 7 Z" opacity="0.5" />
   `,
   shorts: `
-    <path fill="url(#shorts-gradient)" d="M-25 -8 C-13 -14 13 -14 25 -8 L29 8 C25 19 20 29 15 36 L4 28 L0 16 L-4 28 L-15 36 C-20 29 -25 19 -29 8 Z" />
-    <path fill="url(#shorts-shadow-gradient)" d="M7 -11 C16 -11 24 -10 25 -8 L29 8 C26 18 22 28 15 36 L4 28 C9 15 10 1 7 -11 Z" opacity="0.96" />
+    <path fill="url(#shorts-gradient)" d="M-28 -10 C-15 -16 15 -16 28 -10 L32 8 C28 21 22 32 16 40 L5 30 L0 18 L-5 30 L-16 40 C-22 32 -28 21 -32 8 Z" />
+    <path fill="url(#shorts-shadow-gradient)" d="M8 -13 C18 -13 26 -12 28 -10 L32 8 C28 20 24 30 16 40 L5 30 C10 17 11 2 8 -13 Z" opacity="0.96" />
   `,
   head: `
     <path fill="url(#hair-gradient)" d="M-15 -6 C-14 -15 -6 -20 2 -19 C11 -18 18 -11 18 -1 C18 4 16 9 12 13 C8 6 1 2 -8 3 C-11 1 -15 -1 -15 -6 Z" />
