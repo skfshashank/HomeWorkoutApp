@@ -128,8 +128,10 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Close on scroll so menu doesn't float detached
-window.addEventListener('scroll', () => closeActiveMenu(), { passive: true, capture: true });
+// Reposition menu on scroll so it stays aligned with the trigger
+window.addEventListener('scroll', () => {
+  if (activeMenu) positionMenu(activeMenu.menu, activeMenu.trigger);
+}, { passive: true, capture: true });
 
 /**
  * Upgrade all native <select> elements inside a container to custom dropdowns.
