@@ -194,7 +194,7 @@ export class ProgressView {
     if (action === 'calc-bmi') this.calculateBMI();
     if (action === 'calc-bodyfat') this.updateBodyFatOutput();
     if (action === 'open-achievements') this.ctx.router.navigate('achievements');
-    if (action === 'go-dashboard') this.ctx.bus.emit(Events.PAGE_CHANGED, { page: 'dashboard' });
+    if (action === 'go-dashboard') this.ctx.router.navigate('dashboard');
   }
 
   getBmiCategoryKey(bmi) {

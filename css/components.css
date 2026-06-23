@@ -221,10 +221,22 @@
 .form-input::placeholder { color: var(--text-dim); }
 .form-select {
   appearance: none;
+  background-color: var(--input-bg);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 40px;
+}
+.form-select option,
+select option {
+  background: var(--bg-soft, #0d1327);
+  color: var(--text, #e2e8f0);
+}
+select:not(.form-select) {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
 }
 
 /* ===== TOGGLE SWITCH ===== */
