@@ -34,6 +34,15 @@ export class TrainerView {
     return `<span class="exercise-name">${exercise.name}</span>${exercise.nameHindi ? `<span class="exercise-name-hindi">${exercise.nameHindi}</span>` : ''}`;
   }
 
+  renderExerciseVideo(exercise) {
+    if (exercise && exercise.video) {
+      return `<div class="exercise-video-wrap">
+        <video class="exercise-video" src="${exercise.video}" autoplay loop muted playsinline preload="auto" aria-label="${exercise.name} ${this.t('animated_demo_description', 'animated demonstration')}"></video>
+      </div>`;
+    }
+    return `<div class="exercise-demo__avatar ${exercise?.animation || ''}">${exercise?.emoji || '💪'}</div>`;
+  }
+
   renderProgressLiveText(percent) {
     return this.ctx.i18n?.format?.('workout_progress', { percent, current: this.currentIndex + 1, total: this.queue.length })
       || `Workout progress ${percent} percent. Exercise ${this.currentIndex + 1} of ${this.queue.length}.`;
@@ -166,6 +175,7 @@ export class TrainerView {
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
       <div class="exercise-demo-shell w-full mb-16">
+        ${this.renderExerciseVideo(exercise)}
         <div class="exercise-demo__caption">
           <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
           <div class="text-sm text-muted">${item.phaseLabel}</div>

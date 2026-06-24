@@ -156,7 +156,7 @@ export class ExerciseLibraryView {
     this.closeModal();
     openAccessibleModal(this, `
       <div class="exercise-detail">
-        <div class="exercise-demo w-full mb-16"><div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div><div class="exercise-demo__caption"><h2 id="modal-title">${exercise.name}</h2><div class="text-sm text-muted">${exercise.nameHindi || this.t('animated_demo_description', 'Animated demo description')} • ${exercise.category.replaceAll('_', ' ')}</div></div></div>
+        <div class="exercise-demo w-full mb-16">${exercise.video ? `<video class="exercise-video" src="${exercise.video}" autoplay loop muted playsinline preload="auto" aria-label="${exercise.name} ${this.t('animated_demo_description', 'animated demonstration')}"></video>` : `<div class="exercise-demo__avatar ${exercise.animation || ''}">${exercise.emoji}</div>`}<div class="exercise-demo__caption"><h2 id="modal-title">${exercise.name}</h2><div class="text-sm text-muted">${exercise.nameHindi || this.t('animated_demo_description', 'Animated demo description')} • ${exercise.category.replaceAll('_', ' ')}</div></div></div>
         <p class="text-sm mb-16">${exercise.description}</p>
         <div class="card card-compact mb-16"><strong>${this.t('how_to_do_it', 'How to do it')}</strong><ul style="padding-left:18px;list-style:disc;">${(exercise.steps || []).map((step) => `<li>${step}</li>`).join('')}</ul></div>
         <div class="card card-compact mb-16"><strong>${this.t('breathing_tips', 'Breathing tips')}</strong><p class="text-sm text-muted">${exercise.breathing || this.t('breathing_tips_fallback', 'Keep a smooth inhale/exhale rhythm.')}</p></div>

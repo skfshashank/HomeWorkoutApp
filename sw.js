@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v38';
+const CACHE_NAME = 'openfit-v39';
 const PRECACHE = [
   'index.html',
   'manifest.json',
@@ -67,6 +67,22 @@ self.addEventListener('install', (event) => {
     const cache = await caches.open(CACHE_NAME);
     // Tolerant precache: one bad URL must not abort the whole install.
     await Promise.allSettled(PRECACHE.map((url) => cache.add(url)));
+    // Precache exercise demo videos derived from the catalog so the app is fully
+    // usable offline. Failures here are non-fatal: the fetch handler caches any
+    // missed video lazily on first play.
+    try {
+      const res = await fetch(new URL('assets/plans/exercise_catalog_v1.json', self.location).toString());
+      if (res.ok) {
+        const data = await res.json();
+        const videos = (data.exercises || [])
+          .map((exercise) => exercise.video)
+          .filter(Boolean)
+          .map((path) => new URL(path, self.location).toString());
+        await Promise.allSettled(videos.map((url) => cache.add(url)));
+      }
+    } catch (err) {
+      /* offline install: videos will be cached lazily via the fetch handler */
+    }
     await self.skipWaiting();
   })());
 });

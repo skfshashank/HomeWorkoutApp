@@ -52,7 +52,7 @@ export class ProgressionEngine {
   }
 
   getRecoverySubstitutes() {
-    return ['balasana', 'shavasana', 'anulom-vilom', 'cat-cow', 'child-pose'];
+    return ['cow-pose', 'reclined-twist', 'legs-up-the-wall', 'seated-forward-bend', 'puppy-pose'];
   }
 
   async checkAutoProgression() {

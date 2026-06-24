@@ -13,6 +13,7 @@ export class Exercise {
     this.setsDefault = data.setsDefault || 3;
     this.caloriesPerSet = data.caloriesPerSet || 5;
     this.animation = data.animation || '';
+    this.video = data.video || '';
     this.emoji = data.emoji || '💪';
     this.description = data.description || '';
     this.steps = data.steps || [];

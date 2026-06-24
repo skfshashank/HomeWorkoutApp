@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "plans": [
     {
       "id": "belly-fat-burner-beginner",
@@ -11,15 +11,15 @@
       "description": "Targeted beginner core workout for belly fat reduction at home.",
       "warmUp": [
         {
-          "exerciseId": "neck-rolls",
-          "sets": 1
-        },
-        {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
@@ -33,94 +33,90 @@
           "sets": 2
         },
         {
-          "exerciseId": "heel-taps",
+          "exerciseId": "crunch-kicks",
           "sets": 2
         },
         {
-          "exerciseId": "plank-hold",
+          "exerciseId": "plank-pose",
           "sets": 2
         },
         {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "reverse-crunches",
           "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "balasana",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hip-flexor-stretch",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 25,
-      "restBetweenExercises": 30
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "belly-fat-burner-intermediate",
-      "name": "Belly Fat Burner",
+      "name": "Belly Fat Burner+",
       "category": "belly_fat",
       "difficulty": "intermediate",
       "duration": 20,
       "icon": "🔥",
-      "description": "Intermediate belly-focused circuit mixing core tension and calorie burn.",
+      "description": "Step-up core circuit to torch the midsection.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "inchworms",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "bicycle-crunches",
+          "exerciseId": "reaching-crunches",
           "sets": 3
         },
         {
-          "exerciseId": "reverse-crunches",
+          "exerciseId": "lying-scissor-kicks",
           "sets": 3
         },
         {
-          "exerciseId": "russian-twists",
+          "exerciseId": "legs-up-crunches",
           "sets": 3
         },
         {
-          "exerciseId": "plank-hip-dips",
+          "exerciseId": "plank-knee-raises",
           "sets": 3
         },
         {
           "exerciseId": "mountain-climbers",
           "sets": 3
-        },
-        {
-          "exerciseId": "plank-jacks",
-          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "spinal-twist-lying",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "balasana",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
@@ -129,23 +125,23 @@
     },
     {
       "id": "belly-fat-burner-advanced",
-      "name": "Belly Fat Burner",
+      "name": "Belly Fat Burner Pro",
       "category": "belly_fat",
       "difficulty": "advanced",
       "duration": 25,
       "icon": "🔥",
-      "description": "Advanced home session for core endurance, obliques, and overall fat burn.",
+      "description": "Advanced ab circuit for serious core definition.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "jumping-jacks",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
@@ -155,46 +151,42 @@
           "sets": 3
         },
         {
-          "exerciseId": "leg-raises",
+          "exerciseId": "lying-scissor-kicks",
           "sets": 3
         },
         {
-          "exerciseId": "knee-to-elbow-plank",
+          "exerciseId": "legs-up-crunches",
           "sets": 3
         },
         {
-          "exerciseId": "boat-hold",
+          "exerciseId": "diagonal-plank",
           "sets": 3
         },
         {
-          "exerciseId": "plank-jacks",
+          "exerciseId": "mountain-climbers",
           "sets": 3
         },
         {
-          "exerciseId": "burpees",
+          "exerciseId": "reverse-crunches",
           "sets": 3
-        },
-        {
-          "exerciseId": "bicycle-crunches",
-          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "hamstring-stretch-standing",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "spinal-twist-lying",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
       "restBetweenSets": 20,
-      "restBetweenExercises": 20
+      "restBetweenExercises": 25
     },
     {
       "id": "morning-yoga-flow",
@@ -202,64 +194,64 @@
       "category": "yoga",
       "difficulty": "beginner",
       "duration": 15,
-      "icon": "🌞",
-      "description": "Wake-up yoga flow centered around Surya Namaskar and energizing standing poses.",
+      "icon": "🌅",
+      "description": "Gentle morning flow to wake up the body and mind.",
       "warmUp": [
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "tadasana",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "surya-namaskar",
-          "sets": 1
+          "exerciseId": "mountain-pose",
+          "sets": 2
         },
         {
-          "exerciseId": "utkatasana",
-          "sets": 1
+          "exerciseId": "upward-salute",
+          "sets": 2
         },
         {
-          "exerciseId": "virabhadrasana-i",
-          "sets": 1
+          "exerciseId": "chair-pose",
+          "sets": 2
         },
         {
-          "exerciseId": "virabhadrasana-ii",
-          "sets": 1
+          "exerciseId": "warrior-one",
+          "sets": 2
         },
         {
-          "exerciseId": "trikonasana",
-          "sets": 1
+          "exerciseId": "warrior-two",
+          "sets": 2
         },
         {
-          "exerciseId": "downward-dog",
-          "sets": 1
+          "exerciseId": "tree-pose",
+          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "vajrasana",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "balasana",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 10,
-      "restBetweenExercises": 15
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "hiit-fat-blast",
@@ -268,18 +260,18 @@
       "difficulty": "intermediate",
       "duration": 20,
       "icon": "⚡",
-      "description": "Sweaty HIIT blast for busy office workers wanting a quick calorie burn.",
+      "description": "High-intensity intervals to maximize calorie burn.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "inchworms",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
@@ -293,33 +285,29 @@
           "sets": 3
         },
         {
-          "exerciseId": "jump-squats-hiit",
+          "exerciseId": "mountain-climbers",
           "sets": 3
         },
         {
-          "exerciseId": "skaters",
+          "exerciseId": "crab-kicks",
           "sets": 3
         },
         {
-          "exerciseId": "squat-thrusts",
+          "exerciseId": "jump-rope",
           "sets": 3
-        },
-        {
-          "exerciseId": "burpees-hiit",
-          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "quad-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hip-flexor-stretch",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
@@ -331,45 +319,57 @@
       "name": "Office Break Stretch",
       "category": "office",
       "difficulty": "beginner",
-      "duration": 5,
-      "icon": "🪑",
-      "description": "Five-minute reset for neck, shoulders, wrists, and hips between meetings.",
+      "duration": 10,
+      "icon": "💼",
+      "description": "Quick desk-friendly stretches to relieve tension.",
       "warmUp": [
         {
-          "exerciseId": "desk-neck-rolls",
+          "exerciseId": "arm-circles",
+          "sets": 1
+        },
+        {
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "seated-shoulder-shrugs",
-          "sets": 1
+          "exerciseId": "standing-side-stretch",
+          "sets": 2
         },
         {
-          "exerciseId": "wrist-circles",
-          "sets": 1
+          "exerciseId": "standing-toe-touch",
+          "sets": 2
         },
         {
-          "exerciseId": "seated-spinal-twist",
-          "sets": 1
+          "exerciseId": "standing-back-leg-lift",
+          "sets": 2
         },
         {
-          "exerciseId": "standing-calf-raises",
-          "sets": 1
+          "exerciseId": "seated-side-stretch",
+          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "hip-flexor-stretch-standing",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 10,
-      "restBetweenExercises": 10
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "core-crusher-beginner",
@@ -377,105 +377,117 @@
       "category": "core",
       "difficulty": "beginner",
       "duration": 12,
-      "icon": "🧱",
-      "description": "Low-impact beginner core workout to build strong basics.",
+      "icon": "🎯",
+      "description": "Build a solid foundation of core strength.",
       "warmUp": [
         {
-          "exerciseId": "cat-cow-stretch",
+          "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "bird-dog",
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "dead-bug-core",
+          "exerciseId": "crunches",
           "sets": 2
         },
         {
-          "exerciseId": "plank-hold-core",
+          "exerciseId": "dead-bug",
           "sets": 2
         },
         {
-          "exerciseId": "bird-dog",
+          "exerciseId": "plank-pose",
           "sets": 2
         },
         {
-          "exerciseId": "superman-core",
-          "sets": 2
-        }
-      ],
-      "coolDown": [
-        {
-          "exerciseId": "balasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "spinal-twist-lying",
-          "sets": 1
-        }
-      ],
-      "restBetweenSets": 25,
-      "restBetweenExercises": 25
-    },
-    {
-      "id": "core-crusher-intermediate",
-      "name": "Core Crusher",
-      "category": "core",
-      "difficulty": "intermediate",
-      "duration": 18,
-      "icon": "🧱",
-      "description": "Intermediate core builder with anti-rotation, holds, and trunk control.",
-      "warmUp": [
-        {
-          "exerciseId": "cat-cow-stretch",
-          "sets": 1
-        },
-        {
-          "exerciseId": "inchworms",
-          "sets": 1
-        }
-      ],
-      "main": [
-        {
-          "exerciseId": "plank-hold-core",
-          "sets": 3
-        },
-        {
-          "exerciseId": "side-plank-core",
-          "sets": 3
-        },
-        {
-          "exerciseId": "hollow-hold",
-          "sets": 3
-        },
-        {
-          "exerciseId": "plank-walk",
-          "sets": 3
-        },
-        {
-          "exerciseId": "ab-rollout-towel",
+          "exerciseId": "standing-knee-raises",
           "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "balasana",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hamstring-stretch-standing",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
       "restBetweenSets": 20,
-      "restBetweenExercises": 20
+      "restBetweenExercises": 25
+    },
+    {
+      "id": "core-crusher-intermediate",
+      "name": "Core Crusher+",
+      "category": "core",
+      "difficulty": "intermediate",
+      "duration": 18,
+      "icon": "🎯",
+      "description": "Challenge your core with planks and dynamic holds.",
+      "warmUp": [
+        {
+          "exerciseId": "arm-circles",
+          "sets": 1
+        },
+        {
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
+          "sets": 1
+        }
+      ],
+      "main": [
+        {
+          "exerciseId": "plank-knee-raises",
+          "sets": 3
+        },
+        {
+          "exerciseId": "diagonal-plank",
+          "sets": 3
+        },
+        {
+          "exerciseId": "side-plank-pose",
+          "sets": 3
+        },
+        {
+          "exerciseId": "lying-scissor-kicks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 3
+        }
+      ],
+      "coolDown": [
+        {
+          "exerciseId": "seated-forward-bend",
+          "sets": 1
+        },
+        {
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "puppy-pose",
+          "sets": 1
+        }
+      ],
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "night-relaxation-yoga",
@@ -484,360 +496,364 @@
       "difficulty": "beginner",
       "duration": 15,
       "icon": "🌙",
-      "description": "Calming night yoga sequence to release tension and improve sleep readiness.",
+      "description": "Wind-down poses to relax before sleep.",
       "warmUp": [
-        {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
-        },
-        {
-          "exerciseId": "vajrasana",
-          "sets": 1
-        }
-      ],
-      "main": [
-        {
-          "exerciseId": "balasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "paschimottanasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "setu-bandhasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "matsyasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "cat-cow",
-          "sets": 1
-        }
-      ],
-      "coolDown": [
-        {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
-        },
-        {
-          "exerciseId": "shavasana",
-          "sets": 1
-        }
-      ],
-      "restBetweenSets": 10,
-      "restBetweenExercises": 15
-    },
-    {
-      "id": "quick-burn-15",
-      "name": "15-Min Quick Burn",
-      "category": "hiit",
-      "difficulty": "intermediate",
-      "duration": 15,
-      "icon": "⚡",
-      "description": "Fast blend of HIIT and core work for lunch break fat burning.",
-      "warmUp": [
-        {
-          "exerciseId": "jumping-jacks",
-          "sets": 1
-        },
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "high-knees",
+          "exerciseId": "seated-forward-bend",
           "sets": 2
         },
         {
-          "exerciseId": "plank-jacks",
+          "exerciseId": "reclined-twist",
           "sets": 2
         },
         {
-          "exerciseId": "crunches",
+          "exerciseId": "reclined-figure-four",
           "sets": 2
         },
         {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "legs-up-the-wall",
           "sets": 2
         },
         {
-          "exerciseId": "squat-thrusts",
-          "sets": 2
-        },
-        {
-          "exerciseId": "heel-taps",
+          "exerciseId": "reclined-eagle-twist",
           "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "quad-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "balasana",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
       "restBetweenSets": 20,
-      "restBetweenExercises": 20
+      "restBetweenExercises": 25
+    },
+    {
+      "id": "quick-burn-15",
+      "name": "Quick Burn 15",
+      "category": "full_body",
+      "difficulty": "intermediate",
+      "duration": 15,
+      "icon": "⏱️",
+      "description": "Efficient full-body session when time is short.",
+      "warmUp": [
+        {
+          "exerciseId": "arm-circles",
+          "sets": 1
+        },
+        {
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
+          "sets": 1
+        }
+      ],
+      "main": [
+        {
+          "exerciseId": "squats",
+          "sets": 3
+        },
+        {
+          "exerciseId": "push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "jumping-jacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        },
+        {
+          "exerciseId": "crab-kicks",
+          "sets": 3
+        }
+      ],
+      "coolDown": [
+        {
+          "exerciseId": "seated-forward-bend",
+          "sets": 1
+        },
+        {
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "puppy-pose",
+          "sets": 1
+        }
+      ],
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "no-jump-cardio",
       "name": "No-Jump Cardio",
       "category": "hiit",
       "difficulty": "beginner",
-      "duration": 20,
-      "icon": "🚶",
-      "description": "Apartment-friendly cardio with no jumping but plenty of sweat.",
+      "duration": 15,
+      "icon": "🤫",
+      "description": "Apartment-friendly cardio with no jumping.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "desk-neck-rolls",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "fast-feet",
-          "sets": 3
-        },
-        {
-          "exerciseId": "lateral-shuffles",
-          "sets": 3
-        },
-        {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "power-march",
           "sets": 2
         },
         {
-          "exerciseId": "desk-chair-squats",
+          "exerciseId": "high-knees",
           "sets": 2
         },
         {
-          "exerciseId": "standing-calf-raises",
+          "exerciseId": "standing-knee-raises",
           "sets": 2
         },
         {
-          "exerciseId": "russian-twists",
+          "exerciseId": "standing-oblique-crunch",
+          "sets": 2
+        },
+        {
+          "exerciseId": "run-in-place",
           "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "hamstring-stretch-standing",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hip-flexor-stretch-standing",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
       "restBetweenSets": 20,
-      "restBetweenExercises": 20
+      "restBetweenExercises": 25
     },
     {
       "id": "full-body-toning-beginner",
       "name": "Full Body Toning",
       "category": "full_body",
       "difficulty": "beginner",
-      "duration": 20,
-      "icon": "🏠",
-      "description": "Beginner full-body toner using only bodyweight at home.",
+      "duration": 18,
+      "icon": "💪",
+      "description": "Total-body routine to tone and strengthen.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "wall-push-ups",
+          "exerciseId": "squats",
           "sets": 2
         },
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "knee-push-ups",
           "sets": 2
         },
         {
-          "exerciseId": "glute-bridges",
+          "exerciseId": "glute-kickbacks",
           "sets": 2
         },
         {
-          "exerciseId": "dead-bug",
+          "exerciseId": "calf-raises",
           "sets": 2
         },
         {
-          "exerciseId": "superman-hold",
-          "sets": 2
-        },
-        {
-          "exerciseId": "standing-calf-raises",
+          "exerciseId": "plank-pose",
           "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "shoulder-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "quad-stretch",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 25,
+      "restBetweenSets": 20,
       "restBetweenExercises": 25
     },
     {
       "id": "full-body-toning-intermediate",
-      "name": "Full Body Toning",
+      "name": "Full Body Toning+",
       "category": "full_body",
       "difficulty": "intermediate",
-      "duration": 30,
-      "icon": "🏠",
-      "description": "Longer intermediate full-body workout balancing upper, lower, and core work.",
+      "duration": 24,
+      "icon": "💪",
+      "description": "Compound moves for full-body strength.",
       "warmUp": [
         {
-          "exerciseId": "jumping-jacks",
+          "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "inchworms",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "push-ups-standard",
+          "exerciseId": "squats",
           "sets": 3
         },
         {
-          "exerciseId": "reverse-lunges",
+          "exerciseId": "push-ups",
           "sets": 3
         },
         {
-          "exerciseId": "plank-walk",
+          "exerciseId": "single-leg-glute-bridge",
           "sets": 3
         },
         {
-          "exerciseId": "glute-bridges",
+          "exerciseId": "tricep-dips",
           "sets": 3
         },
         {
-          "exerciseId": "pike-push-ups",
-          "sets": 2
-        },
-        {
-          "exerciseId": "sumo-squats",
+          "exerciseId": "mountain-climbers",
           "sets": 3
         },
         {
-          "exerciseId": "hollow-hold",
-          "sets": 2
+          "exerciseId": "plank-knee-raises",
+          "sets": 3
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "shoulder-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hamstring-stretch-standing",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 25,
-      "restBetweenExercises": 20
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "pranayama-meditation",
       "name": "Pranayama & Meditation",
       "category": "pranayama",
       "difficulty": "beginner",
-      "duration": 10,
-      "icon": "🫁",
-      "description": "Centered breathwork routine for stress relief, focus, and digestion.",
+      "duration": 12,
+      "icon": "🧘",
+      "description": "Calming breath-focused holds to center the mind.",
       "warmUp": [
         {
-          "exerciseId": "vajrasana",
+          "exerciseId": "arm-circles",
+          "sets": 1
+        },
+        {
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "anjali-mudra",
+          "sets": 2
         },
         {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
+          "exerciseId": "staff-pose",
+          "sets": 2
         },
         {
-          "exerciseId": "bhramari",
-          "sets": 1
+          "exerciseId": "seated-forward-bend",
+          "sets": 2
         },
         {
-          "exerciseId": "ujjayi",
-          "sets": 1
+          "exerciseId": "legs-up-the-wall",
+          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "sheetali",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 10,
-      "restBetweenExercises": 15
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "lower-body-blast",
@@ -846,28 +862,28 @@
       "difficulty": "intermediate",
       "duration": 20,
       "icon": "🦵",
-      "description": "Glute and leg blast for toning the lower body without equipment.",
+      "description": "Sculpt and strengthen the legs and glutes.",
       "warmUp": [
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "glute-bridges",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "calf-raises",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "sumo-squats",
+          "exerciseId": "squats",
           "sets": 3
         },
         {
-          "exerciseId": "reverse-lunges",
+          "exerciseId": "narrow-squats",
           "sets": 3
         },
         {
@@ -875,34 +891,34 @@
           "sets": 3
         },
         {
-          "exerciseId": "single-leg-bridges",
-          "sets": 2
+          "exerciseId": "single-leg-glute-bridge",
+          "sets": 3
         },
         {
-          "exerciseId": "donkey-kicks",
-          "sets": 2
+          "exerciseId": "calf-raises",
+          "sets": 3
         },
         {
-          "exerciseId": "fire-hydrants",
-          "sets": 2
+          "exerciseId": "glute-kickbacks",
+          "sets": 3
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "quad-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "hip-flexor-stretch",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "hamstring-stretch-standing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
       "restBetweenSets": 20,
-      "restBetweenExercises": 20
+      "restBetweenExercises": 25
     },
     {
       "id": "upper-body-strength",
@@ -911,62 +927,58 @@
       "difficulty": "intermediate",
       "duration": 20,
       "icon": "💪",
-      "description": "Push, shoulder, and posture work for stronger upper body at home.",
+      "description": "Push and pull movements for upper-body power.",
       "warmUp": [
         {
           "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "wall-push-ups",
+          "exerciseId": "arm-swings",
           "sets": 1
         },
         {
-          "exerciseId": "reverse-snow-angels",
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "push-ups-standard",
+          "exerciseId": "push-ups",
           "sets": 3
         },
         {
-          "exerciseId": "wide-push-ups",
-          "sets": 2
-        },
-        {
-          "exerciseId": "tricep-dips-chair",
+          "exerciseId": "incline-push-ups",
           "sets": 3
         },
         {
-          "exerciseId": "pike-push-ups",
-          "sets": 2
+          "exerciseId": "tricep-dips",
+          "sets": 3
         },
         {
-          "exerciseId": "superman-hold",
-          "sets": 2
+          "exerciseId": "pull-ups",
+          "sets": 3
         },
         {
-          "exerciseId": "shoulder-taps-plank",
-          "sets": 2
+          "exerciseId": "floor-pulldowns",
+          "sets": 3
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "shoulder-stretch",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "chest-opener",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 25,
+      "restBetweenSets": 20,
       "restBetweenExercises": 25
     },
     {
@@ -975,76 +987,80 @@
       "category": "office",
       "difficulty": "beginner",
       "duration": 10,
-      "icon": "🧑‍💻",
-      "description": "Ten-minute posture and mobility reset for Indian 9-5 desk workers.",
+      "icon": "💺",
+      "description": "Loosen the neck, shoulders and back after sitting.",
       "warmUp": [
         {
-          "exerciseId": "desk-neck-rolls",
+          "exerciseId": "arm-circles",
           "sets": 1
         },
         {
-          "exerciseId": "wrist-circles",
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
       "main": [
         {
-          "exerciseId": "seated-shoulder-shrugs",
-          "sets": 1
+          "exerciseId": "standing-side-stretch",
+          "sets": 2
         },
         {
-          "exerciseId": "seated-spinal-twist",
-          "sets": 1
+          "exerciseId": "arm-circles",
+          "sets": 2
         },
         {
-          "exerciseId": "desk-chair-squats",
-          "sets": 1
+          "exerciseId": "standing-toe-touch",
+          "sets": 2
         },
         {
-          "exerciseId": "standing-calf-raises",
-          "sets": 1
+          "exerciseId": "cobra-pose",
+          "sets": 2
         },
         {
-          "exerciseId": "desk-push-ups",
-          "sets": 1
+          "exerciseId": "cow-pose",
+          "sets": 2
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "hip-flexor-stretch-standing",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 10,
-      "restBetweenExercises": 15
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     },
     {
       "id": "weekend-warrior",
       "name": "Weekend Warrior",
       "category": "full_body",
       "difficulty": "advanced",
-      "duration": 40,
+      "duration": 30,
       "icon": "🏆",
-      "description": "Longer weekend session mixing strength, HIIT, yoga mobility, and core.",
+      "description": "A tough full-body challenge for your day off.",
       "warmUp": [
         {
-          "exerciseId": "surya-namaskar",
-          "sets": 1
-        },
-        {
-          "exerciseId": "inchworms",
-          "sets": 1
-        },
-        {
           "exerciseId": "arm-circles",
+          "sets": 1
+        },
+        {
+          "exerciseId": "arm-swings",
+          "sets": 1
+        },
+        {
+          "exerciseId": "standing-side-bends",
           "sets": 1
         }
       ],
@@ -1054,11 +1070,11 @@
           "sets": 3
         },
         {
-          "exerciseId": "push-ups-standard",
+          "exerciseId": "push-ups",
           "sets": 3
         },
         {
-          "exerciseId": "bodyweight-squats",
+          "exerciseId": "squats",
           "sets": 3
         },
         {
@@ -1066,42 +1082,34 @@
           "sets": 3
         },
         {
-          "exerciseId": "reverse-lunges",
+          "exerciseId": "v-ups",
           "sets": 3
         },
         {
-          "exerciseId": "plank-hold-core",
+          "exerciseId": "decline-push-ups",
           "sets": 3
         },
         {
-          "exerciseId": "burpees",
-          "sets": 2
-        },
-        {
-          "exerciseId": "naukasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "setu-bandhasana",
-          "sets": 1
+          "exerciseId": "wall-sit",
+          "sets": 3
         }
       ],
       "coolDown": [
         {
-          "exerciseId": "paschimottanasana",
+          "exerciseId": "seated-forward-bend",
           "sets": 1
         },
         {
-          "exerciseId": "spinal-twist-lying",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "shavasana",
+          "exerciseId": "puppy-pose",
           "sets": 1
         }
       ],
-      "restBetweenSets": 25,
-      "restBetweenExercises": 20
+      "restBetweenSets": 20,
+      "restBetweenExercises": 25
     }
   ]
 }

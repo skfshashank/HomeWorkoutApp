@@ -1,262 +1,266 @@
 {
-  "version": 1,
-  "name": "30-Day Belly Fat Blast",
-  "description": "Progressive 30-day challenge to reduce belly fat with recovery built in.",
+  "version": 2,
+  "name": "30-Day Home Fitness Challenge",
+  "description": "Progressive 30-day plan mixing core, strength, cardio and yoga recovery—built on video-guided exercises.",
   "days": [
     {
       "day": 1,
       "label": "Core Ignition",
       "type": "workout",
-      "intensity": 0.7,
+      "intensity": 0.61,
       "exercises": [
-        {
-          "exerciseId": "crunches",
-          "sets": 2
-        },
         {
           "exerciseId": "dead-bug",
           "sets": 2
         },
         {
-          "exerciseId": "plank-hold",
+          "exerciseId": "plank-pose",
           "sets": 2
         },
         {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "reverse-crunches",
+          "sets": 2
+        },
+        {
+          "exerciseId": "lying-scissor-kicks",
           "sets": 2
         }
       ],
-      "motivation": "Every journey begins with a single rep. Let's go! 💪"
+      "motivation": "Day 1: show up and earn it. You're getting stronger."
     },
     {
       "day": 2,
-      "label": "Twist and Tighten",
+      "label": "Leg Day",
       "type": "workout",
-      "intensity": 0.7,
+      "intensity": 0.62,
       "exercises": [
         {
-          "exerciseId": "bicycle-crunches",
+          "exerciseId": "wall-sit",
           "sets": 2
         },
         {
-          "exerciseId": "russian-twists",
+          "exerciseId": "glute-kickbacks",
           "sets": 2
         },
         {
-          "exerciseId": "heel-taps",
+          "exerciseId": "single-leg-glute-bridge",
           "sets": 2
         },
         {
-          "exerciseId": "plank-hip-dips",
+          "exerciseId": "calf-raises",
           "sets": 2
         }
       ],
-      "motivation": "Small consistent efforts beat big excuses."
+      "motivation": "Day 2: show up and earn it. You're getting stronger."
     },
     {
       "day": 3,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 0.7,
+      "label": "Cardio Blast",
+      "type": "workout",
+      "intensity": 0.64,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
-          "sets": 1
+          "exerciseId": "crab-kicks",
+          "sets": 2
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
+          "exerciseId": "jump-rope",
+          "sets": 2
         },
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "run-in-place",
+          "sets": 2
+        },
+        {
+          "exerciseId": "jumping-jacks",
+          "sets": 2
         }
       ],
-      "motivation": "Rest is where muscles grow. You earned this."
+      "motivation": "Day 3: show up and earn it. You're getting stronger."
     },
     {
       "day": 4,
-      "label": "Lower Belly Lift",
-      "type": "workout",
-      "intensity": 0.7,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.65,
       "exercises": [
         {
-          "exerciseId": "plank-shoulder-taps",
-          "sets": 2
+          "exerciseId": "cobra-pose",
+          "sets": 1
         },
         {
-          "exerciseId": "knee-to-elbow-plank",
-          "sets": 2
+          "exerciseId": "reclined-twist",
+          "sets": 1
         },
         {
-          "exerciseId": "side-plank",
-          "sets": 2
-        },
-        {
-          "exerciseId": "boat-hold",
-          "sets": 2
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
         }
       ],
-      "motivation": "Lower belly strength starts with patient control."
+      "motivation": "Rest is where progress is built—breathe and recover."
     },
     {
       "day": 5,
-      "label": "Steady Burner",
+      "label": "Upper Body Burn",
       "type": "workout",
-      "intensity": 0.7,
+      "intensity": 0.66,
       "exercises": [
         {
-          "exerciseId": "plank-jacks",
+          "exerciseId": "arm-circles",
           "sets": 2
         },
         {
-          "exerciseId": "burpees",
+          "exerciseId": "knee-push-ups",
           "sets": 2
         },
         {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "push-ups",
           "sets": 2
         },
         {
-          "exerciseId": "v-ups",
+          "exerciseId": "incline-push-ups",
           "sets": 2
         }
       ],
-      "motivation": "You are building discipline, not just abs."
+      "motivation": "Day 5: show up and earn it. You're getting stronger."
     },
     {
       "day": 6,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 0.7,
-      "exercises": [
-        {
-          "exerciseId": "cat-cow",
-          "sets": 1
-        },
-        {
-          "exerciseId": "balasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
-        }
-      ],
-      "motivation": "Breathe, recover, and come back sharper tomorrow."
-    },
-    {
-      "day": 7,
-      "label": "Foundation Finisher",
+      "label": "Belly Burner",
       "type": "workout",
-      "intensity": 0.7,
+      "intensity": 0.67,
       "exercises": [
         {
-          "exerciseId": "bicycle-crunches",
+          "exerciseId": "reaching-crunches",
           "sets": 2
         },
         {
-          "exerciseId": "russian-twists",
+          "exerciseId": "crunch-kicks",
           "sets": 2
         },
         {
-          "exerciseId": "heel-taps",
+          "exerciseId": "legs-up-crunches",
           "sets": 2
-        },
-        {
-          "exerciseId": "plank-hip-dips",
-          "sets": 2
-        }
-      ],
-      "motivation": "Finish the week proud, not perfect."
-    },
-    {
-      "day": 8,
-      "label": "Building Momentum",
-      "type": "workout",
-      "intensity": 0.85,
-      "exercises": [
-        {
-          "exerciseId": "reverse-crunches",
-          "sets": 3
-        },
-        {
-          "exerciseId": "leg-raises",
-          "sets": 3
-        },
-        {
-          "exerciseId": "toe-touches",
-          "sets": 3
-        },
-        {
-          "exerciseId": "scissor-kicks",
-          "sets": 3
-        }
-      ],
-      "motivation": "Momentum loves routine. Show up again."
-    },
-    {
-      "day": 9,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 0.85,
-      "exercises": [
-        {
-          "exerciseId": "cat-cow",
-          "sets": 1
-        },
-        {
-          "exerciseId": "balasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
-        }
-      ],
-      "motivation": "Recovery keeps your fat-loss engine running."
-    },
-    {
-      "day": 10,
-      "label": "Waistline Wake-Up",
-      "type": "workout",
-      "intensity": 0.85,
-      "exercises": [
-        {
-          "exerciseId": "plank-jacks",
-          "sets": 3
-        },
-        {
-          "exerciseId": "burpees",
-          "sets": 3
-        },
-        {
-          "exerciseId": "mountain-climbers",
-          "sets": 3
         },
         {
           "exerciseId": "v-ups",
-          "sets": 3
+          "sets": 2
         }
       ],
-      "motivation": "Twist with control and own every rep."
+      "motivation": "Day 6: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 7,
+      "label": "Full Body Forge",
+      "type": "workout",
+      "intensity": 0.68,
+      "exercises": [
+        {
+          "exerciseId": "push-ups",
+          "sets": 2
+        },
+        {
+          "exerciseId": "jumping-jacks",
+          "sets": 2
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 2
+        },
+        {
+          "exerciseId": "plank-pose",
+          "sets": 2
+        }
+      ],
+      "motivation": "Day 7: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 8,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.69,
+      "exercises": [
+        {
+          "exerciseId": "seated-forward-bend",
+          "sets": 1
+        },
+        {
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest is where progress is built—breathe and recover."
+    },
+    {
+      "day": 9,
+      "label": "Core Ignition",
+      "type": "workout",
+      "intensity": 0.7,
+      "exercises": [
+        {
+          "exerciseId": "reverse-crunches",
+          "sets": 2
+        },
+        {
+          "exerciseId": "lying-scissor-kicks",
+          "sets": 2
+        },
+        {
+          "exerciseId": "plank-knee-raises",
+          "sets": 2
+        },
+        {
+          "exerciseId": "crunches",
+          "sets": 2
+        }
+      ],
+      "motivation": "Day 9: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 10,
+      "label": "Leg Day",
+      "type": "workout",
+      "intensity": 0.72,
+      "exercises": [
+        {
+          "exerciseId": "single-leg-glute-bridge",
+          "sets": 2
+        },
+        {
+          "exerciseId": "calf-raises",
+          "sets": 2
+        },
+        {
+          "exerciseId": "squats",
+          "sets": 2
+        },
+        {
+          "exerciseId": "narrow-squats",
+          "sets": 2
+        }
+      ],
+      "motivation": "Day 10: show up and earn it. You're getting stronger."
     },
     {
       "day": 11,
-      "label": "Plank and Power",
+      "label": "Cardio Blast",
       "type": "workout",
-      "intensity": 0.85,
+      "intensity": 0.73,
       "exercises": [
         {
-          "exerciseId": "crunches",
+          "exerciseId": "run-in-place",
           "sets": 3
         },
         {
-          "exerciseId": "dead-bug",
+          "exerciseId": "jumping-jacks",
           "sets": 3
         },
         {
-          "exerciseId": "plank-hold",
+          "exerciseId": "high-knees",
           "sets": 3
         },
         {
@@ -264,110 +268,139 @@
           "sets": 3
         }
       ],
-      "motivation": "Strong planks build a stronger you."
+      "motivation": "Day 11: show up and earn it. You're getting stronger."
     },
     {
       "day": 12,
       "label": "Active Recovery",
       "type": "rest",
-      "intensity": 0.85,
+      "intensity": 0.74,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "balasana",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "legs-up-the-wall",
           "sets": 1
         }
       ],
-      "motivation": "A lighter day keeps the long game alive."
+      "motivation": "Rest is where progress is built—breathe and recover."
     },
     {
       "day": 13,
-      "label": "Midsection Builder",
+      "label": "Upper Body Burn",
       "type": "workout",
-      "intensity": 0.85,
+      "intensity": 0.75,
       "exercises": [
         {
-          "exerciseId": "reverse-crunches",
+          "exerciseId": "push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "incline-push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "tricep-dips",
+          "sets": 3
+        },
+        {
+          "exerciseId": "floor-pulldowns",
+          "sets": 3
+        }
+      ],
+      "motivation": "Day 13: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 14,
+      "label": "Belly Burner",
+      "type": "workout",
+      "intensity": 0.76,
+      "exercises": [
+        {
+          "exerciseId": "legs-up-crunches",
+          "sets": 3
+        },
+        {
+          "exerciseId": "v-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "standing-oblique-crunch",
           "sets": 3
         },
         {
           "exerciseId": "leg-raises",
           "sets": 3
-        },
-        {
-          "exerciseId": "toe-touches",
-          "sets": 3
-        },
-        {
-          "exerciseId": "scissor-kicks",
-          "sets": 3
         }
       ],
-      "motivation": "One more session, one more step forward."
-    },
-    {
-      "day": 14,
-      "label": "Week Two Finish",
-      "type": "workout",
-      "intensity": 0.85,
-      "exercises": [
-        {
-          "exerciseId": "plank-shoulder-taps",
-          "sets": 3
-        },
-        {
-          "exerciseId": "knee-to-elbow-plank",
-          "sets": 3
-        },
-        {
-          "exerciseId": "side-plank",
-          "sets": 3
-        },
-        {
-          "exerciseId": "boat-hold",
-          "sets": 3
-        }
-      ],
-      "motivation": "You are stronger than last week already."
+      "motivation": "Day 14: show up and earn it. You're getting stronger."
     },
     {
       "day": 15,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 1.0,
+      "label": "Full Body Forge",
+      "type": "workout",
+      "intensity": 0.77,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
-          "sets": 1
+          "exerciseId": "mountain-climbers",
+          "sets": 3
         },
         {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
+          "exerciseId": "plank-pose",
+          "sets": 3
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
+          "exerciseId": "crab-kicks",
+          "sets": 3
         },
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "squats",
+          "sets": 3
+        },
+        {
+          "exerciseId": "push-ups",
+          "sets": 3
         }
       ],
-      "motivation": "Rest today so you can attack tomorrow."
+      "motivation": "Day 15: show up and earn it. You're getting stronger."
     },
     {
       "day": 16,
-      "label": "Peak Core Charge",
-      "type": "workout",
-      "intensity": 1.0,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.79,
       "exercises": [
+        {
+          "exerciseId": "puppy-pose",
+          "sets": 1
+        },
+        {
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest is where progress is built—breathe and recover."
+    },
+    {
+      "day": 17,
+      "label": "Core Ignition",
+      "type": "workout",
+      "intensity": 0.8,
+      "exercises": [
+        {
+          "exerciseId": "plank-knee-raises",
+          "sets": 3
+        },
         {
           "exerciseId": "crunches",
           "sets": 3
@@ -377,103 +410,53 @@
           "sets": 3
         },
         {
-          "exerciseId": "plank-hold",
+          "exerciseId": "plank-pose",
           "sets": 3
         },
         {
-          "exerciseId": "mountain-climbers",
+          "exerciseId": "reverse-crunches",
           "sets": 3
         }
       ],
-      "motivation": "Peak week starts now. Bring focus."
-    },
-    {
-      "day": 17,
-      "label": "Strong Center",
-      "type": "workout",
-      "intensity": 1.0,
-      "exercises": [
-        {
-          "exerciseId": "bicycle-crunches",
-          "sets": 3
-        },
-        {
-          "exerciseId": "russian-twists",
-          "sets": 3
-        },
-        {
-          "exerciseId": "heel-taps",
-          "sets": 3
-        },
-        {
-          "exerciseId": "plank-hip-dips",
-          "sets": 3
-        }
-      ],
-      "motivation": "A stable core powers every daily movement."
+      "motivation": "Day 17: show up and earn it. You're getting stronger."
     },
     {
       "day": 18,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 1.0,
+      "label": "Leg Day",
+      "type": "workout",
+      "intensity": 0.81,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
-          "sets": 1
+          "exerciseId": "squats",
+          "sets": 3
         },
         {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
+          "exerciseId": "narrow-squats",
+          "sets": 3
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
+          "exerciseId": "wall-sit",
+          "sets": 3
         },
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "glute-kickbacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "single-leg-glute-bridge",
+          "sets": 3
         }
       ],
-      "motivation": "Recharge well. Consistency wins the month."
+      "motivation": "Day 18: show up and earn it. You're getting stronger."
     },
     {
       "day": 19,
-      "label": "Intensity Boost",
+      "label": "Cardio Blast",
       "type": "workout",
-      "intensity": 1.0,
+      "intensity": 0.82,
       "exercises": [
         {
-          "exerciseId": "plank-shoulder-taps",
-          "sets": 3
-        },
-        {
-          "exerciseId": "knee-to-elbow-plank",
-          "sets": 3
-        },
-        {
-          "exerciseId": "side-plank",
-          "sets": 3
-        },
-        {
-          "exerciseId": "boat-hold",
-          "sets": 3
-        }
-      ],
-      "motivation": "Intensity is earned, and you have earned it."
-    },
-    {
-      "day": 20,
-      "label": "Shred Session",
-      "type": "workout",
-      "intensity": 1.0,
-      "exercises": [
-        {
-          "exerciseId": "plank-jacks",
-          "sets": 3
-        },
-        {
-          "exerciseId": "burpees",
+          "exerciseId": "high-knees",
           "sets": 3
         },
         {
@@ -481,261 +464,314 @@
           "sets": 3
         },
         {
-          "exerciseId": "v-ups",
+          "exerciseId": "crab-kicks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "jump-rope",
+          "sets": 3
+        },
+        {
+          "exerciseId": "run-in-place",
           "sets": 3
         }
       ],
-      "motivation": "This is where office fatigue loses the battle."
+      "motivation": "Day 19: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 20,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.83,
+      "exercises": [
+        {
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
+        },
+        {
+          "exerciseId": "reclined-twist",
+          "sets": 1
+        },
+        {
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
+        }
+      ],
+      "motivation": "Rest is where progress is built—breathe and recover."
     },
     {
       "day": 21,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 1.0,
+      "label": "Upper Body Burn",
+      "type": "workout",
+      "intensity": 0.84,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
-          "sets": 1
+          "exerciseId": "tricep-dips",
+          "sets": 3
         },
         {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
+          "exerciseId": "floor-pulldowns",
+          "sets": 3
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
+          "exerciseId": "arm-circles",
+          "sets": 3
         },
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "knee-push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "push-ups",
+          "sets": 3
         }
       ],
-      "motivation": "Recovery is productive too."
+      "motivation": "Day 21: show up and earn it. You're getting stronger."
     },
     {
       "day": 22,
-      "label": "Maximum Burn Start",
+      "label": "Belly Burner",
       "type": "workout",
-      "intensity": 1.1,
+      "intensity": 0.86,
       "exercises": [
         {
-          "exerciseId": "bicycle-crunches",
-          "sets": 4
-        },
-        {
-          "exerciseId": "russian-twists",
-          "sets": 4
-        },
-        {
-          "exerciseId": "heel-taps",
-          "sets": 4
-        },
-        {
-          "exerciseId": "plank-hip-dips",
-          "sets": 4
-        }
-      ],
-      "motivation": "Week four is your proof of progress."
-    },
-    {
-      "day": 23,
-      "label": "Waist Sculptor",
-      "type": "workout",
-      "intensity": 1.1,
-      "exercises": [
-        {
-          "exerciseId": "reverse-crunches",
-          "sets": 4
+          "exerciseId": "standing-oblique-crunch",
+          "sets": 3
         },
         {
           "exerciseId": "leg-raises",
-          "sets": 4
+          "sets": 3
         },
         {
-          "exerciseId": "toe-touches",
-          "sets": 4
+          "exerciseId": "reaching-crunches",
+          "sets": 3
         },
         {
-          "exerciseId": "scissor-kicks",
-          "sets": 4
+          "exerciseId": "crunch-kicks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "legs-up-crunches",
+          "sets": 3
         }
       ],
-      "motivation": "Controlled reps carve confidence."
+      "motivation": "Day 22: show up and earn it. You're getting stronger."
+    },
+    {
+      "day": 23,
+      "label": "Full Body Forge",
+      "type": "workout",
+      "intensity": 0.87,
+      "exercises": [
+        {
+          "exerciseId": "crab-kicks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "squats",
+          "sets": 3
+        },
+        {
+          "exerciseId": "push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "jumping-jacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "mountain-climbers",
+          "sets": 3
+        }
+      ],
+      "motivation": "Day 23: show up and earn it. You're getting stronger."
     },
     {
       "day": 24,
       "label": "Active Recovery",
       "type": "rest",
-      "intensity": 1.1,
+      "intensity": 0.88,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
+          "exerciseId": "cow-pose",
           "sets": 1
         },
         {
-          "exerciseId": "anulom-vilom",
+          "exerciseId": "reclined-twist",
           "sets": 1
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
-        },
-        {
-          "exerciseId": "deep-belly-breathing",
+          "exerciseId": "legs-up-the-wall",
           "sets": 1
         }
       ],
-      "motivation": "Pause, breathe, and protect your momentum."
+      "motivation": "Rest is where progress is built—breathe and recover."
     },
     {
       "day": 25,
-      "label": "Core and Cardio Surge",
+      "label": "Core Ignition",
       "type": "workout",
-      "intensity": 1.1,
+      "intensity": 0.89,
       "exercises": [
         {
-          "exerciseId": "plank-jacks",
-          "sets": 4
+          "exerciseId": "dead-bug",
+          "sets": 3
         },
         {
-          "exerciseId": "burpees",
-          "sets": 4
+          "exerciseId": "plank-pose",
+          "sets": 3
         },
         {
-          "exerciseId": "mountain-climbers",
-          "sets": 4
+          "exerciseId": "reverse-crunches",
+          "sets": 3
         },
         {
-          "exerciseId": "v-ups",
-          "sets": 4
+          "exerciseId": "lying-scissor-kicks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "plank-knee-raises",
+          "sets": 3
         }
       ],
-      "motivation": "You are training grit as much as muscle."
+      "motivation": "Day 25: show up and earn it. You're getting stronger."
     },
     {
       "day": 26,
-      "label": "Stamina Builder",
+      "label": "Leg Day",
       "type": "workout",
-      "intensity": 1.1,
+      "intensity": 0.9,
       "exercises": [
         {
-          "exerciseId": "crunches",
-          "sets": 4
+          "exerciseId": "wall-sit",
+          "sets": 3
         },
         {
-          "exerciseId": "dead-bug",
-          "sets": 4
+          "exerciseId": "glute-kickbacks",
+          "sets": 3
         },
         {
-          "exerciseId": "plank-hold",
-          "sets": 4
+          "exerciseId": "single-leg-glute-bridge",
+          "sets": 3
         },
         {
-          "exerciseId": "mountain-climbers",
-          "sets": 4
+          "exerciseId": "calf-raises",
+          "sets": 3
+        },
+        {
+          "exerciseId": "squats",
+          "sets": 3
         }
       ],
-      "motivation": "Stay smooth, stay steady, stay in the game."
+      "motivation": "Day 26: show up and earn it. You're getting stronger."
     },
     {
       "day": 27,
-      "label": "Active Recovery",
-      "type": "rest",
-      "intensity": 1.1,
+      "label": "Cardio Blast",
+      "type": "workout",
+      "intensity": 0.92,
       "exercises": [
         {
-          "exerciseId": "cat-cow",
-          "sets": 1
+          "exerciseId": "crab-kicks",
+          "sets": 3
         },
         {
-          "exerciseId": "anulom-vilom",
-          "sets": 1
+          "exerciseId": "jump-rope",
+          "sets": 3
         },
         {
-          "exerciseId": "balasana",
-          "sets": 1
+          "exerciseId": "run-in-place",
+          "sets": 3
         },
         {
-          "exerciseId": "deep-belly-breathing",
-          "sets": 1
+          "exerciseId": "jumping-jacks",
+          "sets": 3
+        },
+        {
+          "exerciseId": "high-knees",
+          "sets": 3
         }
       ],
-      "motivation": "Rest now, finish stronger later."
+      "motivation": "Day 27: show up and earn it. You're getting stronger."
     },
     {
       "day": 28,
-      "label": "Power Flow",
-      "type": "workout",
-      "intensity": 1.1,
+      "label": "Active Recovery",
+      "type": "rest",
+      "intensity": 0.93,
       "exercises": [
         {
-          "exerciseId": "reverse-crunches",
-          "sets": 4
+          "exerciseId": "cobra-pose",
+          "sets": 1
         },
         {
-          "exerciseId": "leg-raises",
-          "sets": 4
+          "exerciseId": "reclined-twist",
+          "sets": 1
         },
         {
-          "exerciseId": "toe-touches",
-          "sets": 4
-        },
-        {
-          "exerciseId": "scissor-kicks",
-          "sets": 4
+          "exerciseId": "legs-up-the-wall",
+          "sets": 1
         }
       ],
-      "motivation": "Your weekend self will thank today's effort."
+      "motivation": "Rest is where progress is built—breathe and recover."
     },
     {
       "day": 29,
-      "label": "Final Prep",
+      "label": "Upper Body Burn",
       "type": "workout",
-      "intensity": 1.1,
+      "intensity": 0.94,
       "exercises": [
         {
-          "exerciseId": "plank-shoulder-taps",
-          "sets": 4
+          "exerciseId": "arm-circles",
+          "sets": 3
         },
         {
-          "exerciseId": "knee-to-elbow-plank",
-          "sets": 4
+          "exerciseId": "knee-push-ups",
+          "sets": 3
         },
         {
-          "exerciseId": "side-plank",
-          "sets": 4
+          "exerciseId": "push-ups",
+          "sets": 3
         },
         {
-          "exerciseId": "boat-hold",
-          "sets": 4
+          "exerciseId": "incline-push-ups",
+          "sets": 3
+        },
+        {
+          "exerciseId": "tricep-dips",
+          "sets": 3
         }
       ],
-      "motivation": "One final setup before the big finish."
+      "motivation": "Day 29: show up and earn it. You're getting stronger."
     },
     {
       "day": 30,
-      "label": "Grand Finish",
+      "label": "Belly Burner",
       "type": "workout",
-      "intensity": 1.1,
+      "intensity": 0.95,
       "exercises": [
         {
-          "exerciseId": "plank-jacks",
-          "sets": 4
+          "exerciseId": "reaching-crunches",
+          "sets": 3
         },
         {
-          "exerciseId": "burpees",
-          "sets": 4
+          "exerciseId": "crunch-kicks",
+          "sets": 3
         },
         {
-          "exerciseId": "mountain-climbers",
-          "sets": 4
+          "exerciseId": "legs-up-crunches",
+          "sets": 3
         },
         {
           "exerciseId": "v-ups",
-          "sets": 4
+          "sets": 3
+        },
+        {
+          "exerciseId": "standing-oblique-crunch",
+          "sets": 3
         }
       ],
-      "motivation": "Thirty days of effort. Finish with pride! 🔥"
+      "motivation": "Day 30: show up and earn it. You're getting stronger."
     }
   ]
 }
