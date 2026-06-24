@@ -1,6 +1,5 @@
 import { Events } from '../../app/eventBus.js';
 import { formatDuration } from '../../core/utils/dateUtils.js';
-import { SkeletonRenderer } from '../../core/animation/SkeletonRenderer.js';
 import { closeAccessibleModal, openAccessibleModal } from '../../core/utils/modalAccessibility.js';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -26,7 +25,6 @@ export class TrainerView {
     this.completionResult = null;
     this.completionStreakDays = 0;
     this.noteFeedback = '';
-    this.skeletonRenderer = new SkeletonRenderer();
 
     this.el.addEventListener('click', (event) => this.handleClick(event));
     this.ctx.bus.on(Events.WORKOUT_STARTED, (session) => this.start(session));
@@ -116,7 +114,6 @@ export class TrainerView {
 
   render() {
     if (!this.session) {
-      this.skeletonRenderer.destroy();
       this.el.innerHTML = '';
       this.el.classList.remove('active');
       return;
@@ -139,7 +136,6 @@ export class TrainerView {
     }
 
     const exercise = item.exercise;
-    const exercisePlayer = this.skeletonRenderer.createPlayer(exercise.id, exercise.name);
     const percent = this.queue.length ? Math.round((this.currentIndex / this.queue.length) * 100) : 0;
     const currentTarget = item.currentTarget || item.target;
     const isRepBased = exercise.isRepBased;
@@ -170,9 +166,6 @@ export class TrainerView {
       <div class="sr-only" aria-live="polite" aria-atomic="true">${this.renderProgressLiveText(percent)}</div>
       <div class="fs-content">
       <div class="exercise-demo-shell w-full mb-16">
-        <div class="exercise-demo">
-          ${exercisePlayer.html}
-        </div>
         <div class="exercise-demo__caption">
           <div class="exercise-name-stack">${this.renderExerciseName(exercise)}</div>
           <div class="text-sm text-muted">${item.phaseLabel}</div>
@@ -212,11 +205,9 @@ export class TrainerView {
           <button class="btn btn-secondary" data-action="skip">${this.t('skip', 'Skip')}</button>
         </div>
       </div>`;
-    exercisePlayer.setup();
   }
 
   renderRest() {
-    this.skeletonRenderer.destroy();
     const next = this.currentItem();
     const percent = Math.round((this.currentIndex / Math.max(this.queue.length, 1)) * 100);
     this.el.classList.add('active');
@@ -249,7 +240,6 @@ export class TrainerView {
   }
 
   renderCompletion() {
-    this.skeletonRenderer.destroy();
     const record = this.completionResult?.record;
     const progressCheck = this.completionResult?.progressCheck;
     const duration = record?.duration || 0;
@@ -622,7 +612,6 @@ export class TrainerView {
     this.cleanupTimer();
     this.closeModal();
     this.ctx.speech.cancel();
-    this.skeletonRenderer.destroy();
     this.session = null;
     this.queue = [];
     this.mode = 'idle';
@@ -639,7 +628,6 @@ export class TrainerView {
     if (action === 'exit-workout') {
       clearInterval(this.timerId);
       this.timerId = null;
-      this.skeletonRenderer.destroy();
       this.session = null;
       this.mode = 'idle';
       this.el.classList.remove('active');

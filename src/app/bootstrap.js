@@ -24,14 +24,10 @@ export class AppBootstrap {
 
   registerServiceWorker() {
     if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
-    
-    // Force cleanup: unregister old SWs and clear old caches
-    const targetVersion = 'openfit-v37';
-    caches.keys().then((keys) => {
-      keys.filter((k) => k.startsWith('openfit-') && k !== targetVersion)
-        .forEach((k) => caches.delete(k));
-    });
 
+    // Stale caches are pruned by the service worker's own `activate` handler
+    // (it deletes every cache except the current CACHE_NAME), so no client-side
+    // cache cleanup is needed here.
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       reg.update().catch(() => {});
       reg.addEventListener('updatefound', () => {
