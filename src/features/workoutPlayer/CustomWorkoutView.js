@@ -78,6 +78,18 @@ export class CustomWorkoutView {
     upgradeSelects(this.el);
   }
 
+  updateLibraryResults() {
+    const grid = this.el?.querySelector('.exercise-picker-grid');
+    if (!grid) {
+      this.render();
+      return;
+    }
+    const exercises = this.ctx.getExercises.execute(this.libraryFilters).slice(0, 24);
+    grid.innerHTML = exercises
+      .map((exercise) => `<button class="picker-chip" data-action="add-exercise" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`)
+      .join('');
+  }
+
   renderDraftItem(item, index) {
     const exercise = this.ctx.getExercises.getById(item.exerciseId);
     return `
@@ -131,7 +143,10 @@ export class CustomWorkoutView {
     }
     if (event.target.dataset.library) {
       this.libraryFilters[event.target.dataset.library] = event.target.value;
-      this.render();
+      // Search text updates the picker list in place so the input keeps focus;
+      // the select filters do a full re-render.
+      if (event.target.dataset.library === 'search') this.updateLibraryResults();
+      else this.render();
     }
     if (event.target.dataset.itemField) {
       const item = this.draft.main[Number(event.target.dataset.index)];

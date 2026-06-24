@@ -7,6 +7,7 @@ export class ExerciseLibraryView {
     this.ctx = null;
     this.el = null;
     this.filters = { search: '', muscle: 'all', difficulty: 'all', equipment: 'all', category: 'all', tag: 'all' };
+    this._favoriteIds = new Set();
     this.modal = null;
     this.modalContent = null;
     this.modalCleanup = null;
@@ -52,6 +53,7 @@ export class ExerciseLibraryView {
     const categories = ['all', ...this.ctx.getExercises.getCategories()];
     const tags = ['all', ...this.ctx.getExercises.getTags()];
     const favoriteIds = new Set(favorites.map((exercise) => exercise.id));
+    this._favoriteIds = favoriteIds;
 
     this.el.innerHTML = `
       <div class="page-title">${this.t('exercise_library_title', 'Exercise Library')}</div>
@@ -70,7 +72,7 @@ export class ExerciseLibraryView {
 
       <section class="card"><h2>${this.t('favorites', 'Favorites')}</h2><div class="exercise-chip-row">${favorites.length ? favorites.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : `<span class="text-sm text-muted">${this.t('favorites_empty', 'Tap the star on any exercise to favorite it.')}</span>`}</div></section>
       <section class="card"><h2>${this.t('recently_used', 'Recently Used')}</h2><div class="exercise-chip-row">${recent.length ? recent.map((exercise) => `<button class="chip" data-action="open-detail" data-exercise-id="${exercise.id}">${exercise.emoji} ${exercise.name}</button>`).join('') : `<span class="text-sm text-muted">${this.t('recent_exercises_empty', 'Finish a workout and your recent exercises will appear here.')}</span>`}</div></section>
-      <section>${exercises.map((exercise) => this.renderCard(exercise, favoriteIds.has(exercise.id))).join('') || `<div class="card"><p class="text-sm text-muted">${this.t('no_exercises_match', 'No exercises match those filters yet.')}</p></div>`}</section>`;
+      <section data-results>${exercises.map((exercise) => this.renderCard(exercise, favoriteIds.has(exercise.id))).join('') || `<div class="card"><p class="text-sm text-muted">${this.t('no_exercises_match', 'No exercises match those filters yet.')}</p></div>`}</section>`;
     upgradeSelects(this.el);
   }
 
@@ -108,7 +110,24 @@ export class ExerciseLibraryView {
     const key = event.target.dataset.filter;
     if (!key) return;
     this.filters[key] = event.target.value;
-    this.render();
+    // The search text field updates the results list in place so the input
+    // keeps focus and the caret position; other filters do a full re-render.
+    if (key === 'search') this.updateResults();
+    else this.render();
+  }
+
+  updateResults() {
+    const container = this.el?.querySelector('[data-results]');
+    if (!container) {
+      this.render();
+      return;
+    }
+    const exercises = this.ctx.getExercises.execute(this.filters);
+    const favoriteIds = this._favoriteIds || new Set();
+    container.innerHTML = exercises
+      .map((exercise) => this.renderCard(exercise, favoriteIds.has(exercise.id)))
+      .join('')
+      || `<div class="card"><p class="text-sm text-muted">${this.t('no_exercises_match', 'No exercises match those filters yet.')}</p></div>`;
   }
 
   async handleClick(event) {
