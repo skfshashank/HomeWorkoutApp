@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openfit-v33';
+const CACHE_NAME = 'openfit-v37';
 const PRECACHE = [
   'index.html',
   'manifest.json',
@@ -30,6 +30,8 @@ const PRECACHE = [
   'src/core/storage/profileData.js',
   'src/core/animation/SkeletonEngine.js',
   'src/core/animation/SkeletonRenderer.js',
+  'src/core/animation/exerciseKeyframes.js',
+  'src/core/animation/demoManifest.js',
   'src/core/utils/audioEngine.js',
   'src/core/utils/dateUtils.js',
   'src/core/utils/i18n.js',
@@ -62,15 +64,37 @@ const PRECACHE = [
   'assets/plans/challenge_30day_v1.json',
   'assets/plans/exercise_catalog_v1.json',
   'assets/plans/quotes_v1.json',
-  'assets/plans/workout_plans_v1.json'
+  'assets/plans/workout_plans_v1.json',
+  'assets/exercises/manifest.json'
 ].map((file) => new URL(file, self.location).toString());
 
+// Resolve the demonstration-photo URLs (assets/exercises/<id>/0.jpg & 1.jpg)
+// from the generated manifest so they can be precached for offline use.
+async function demoPhotoUrls() {
+  try {
+    const res = await fetch(new URL('assets/exercises/manifest.json', self.location).toString(), { cache: 'reload' });
+    if (!res.ok) return [];
+    const ids = await res.json();
+    const urls = [];
+    ids.forEach((id) => {
+      urls.push(new URL(`assets/exercises/${id}/0.jpg`, self.location).toString());
+      urls.push(new URL(`assets/exercises/${id}/1.jpg`, self.location).toString());
+    });
+    return urls;
+  } catch (err) {
+    return [];
+  }
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    // Tolerant precache: one bad URL must not abort the whole install.
+    await Promise.allSettled(PRECACHE.map((url) => cache.add(url)));
+    const photos = await demoPhotoUrls();
+    await Promise.allSettled(photos.map((url) => cache.add(url)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', (event) => {

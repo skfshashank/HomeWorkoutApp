@@ -50,6 +50,37 @@ export class TrainerView {
     return `aria-atomic="true"${seconds === 30 || seconds === 10 || seconds <= 3 ? ' aria-live="assertive"' : ''}`;
   }
 
+  // Lightweight per-second update: refresh only the countdown text so the demo
+  // player (canvas figure / photo loop) is NOT torn down and recreated every
+  // second. Rebuilding it each tick would reset the animation before it plays.
+  updateTimerDisplay() {
+    const display = this.el && this.el.querySelector('.timer-display');
+    if (!display) {
+      this.render();
+      return;
+    }
+    let value;
+    let announce = true;
+    if (this.mode === 'rest') {
+      value = formatDuration(this.remaining);
+    } else if (this.mode === 'prepare') {
+      value = this.remaining;
+    } else {
+      const item = this.currentItem();
+      const isTimeBased = item && item.exercise && item.exercise.isTimeBased;
+      value = isTimeBased
+        ? formatDuration(this.remaining)
+        : (item ? (item.currentTarget || item.target) : this.remaining);
+      announce = !!isTimeBased;
+    }
+    display.textContent = value;
+    if (announce && (this.remaining === 30 || this.remaining === 10 || this.remaining <= 3)) {
+      display.setAttribute('aria-live', 'assertive');
+    } else {
+      display.removeAttribute('aria-live');
+    }
+  }
+
   renderExerciseGuide(exercise) {
     const steps = (exercise.steps || []).length
       ? exercise.steps.map((step) => `<li>${step}</li>`).join('')
@@ -316,7 +347,7 @@ export class TrainerView {
       this.remaining -= 1;
       if (this.remaining > 0) {
         this.ctx.audio.countdown321();
-        this.render();
+        this.updateTimerDisplay();
         return;
       }
 
@@ -344,7 +375,7 @@ export class TrainerView {
       this.remaining -= 1;
       if (this.remaining > 0) {
         if (this.remaining <= 3) this.ctx.audio.countdown321();
-        this.render();
+        this.updateTimerDisplay();
         return;
       }
       this.cleanupTimer();
@@ -366,7 +397,7 @@ export class TrainerView {
       this.remaining -= 1;
       if (this.remaining > 0) {
         if (this.remaining <= 3) this.ctx.audio.countdown321();
-        this.render();
+        this.updateTimerDisplay();
         return;
       }
       this.cleanupTimer();

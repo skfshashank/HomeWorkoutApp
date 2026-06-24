@@ -17,8 +17,11 @@
     // Force clear stale service workers
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function(regs) {
-        regs.forEach(function(reg) { reg.update(); });
-      });
+        regs.forEach(function(reg) {
+          var p = reg.update();
+          if (p && p.catch) p.catch(function() {});
+        });
+      }).catch(function() {});
     }
     // Global error handler - shows errors on screen for debugging
     window.onerror = function(msg, src, line) {

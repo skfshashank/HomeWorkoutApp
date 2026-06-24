@@ -26,14 +26,14 @@ export class AppBootstrap {
     if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
     
     // Force cleanup: unregister old SWs and clear old caches
-    const targetVersion = 'openfit-v32';
+    const targetVersion = 'openfit-v37';
     caches.keys().then((keys) => {
       keys.filter((k) => k.startsWith('openfit-') && k !== targetVersion)
         .forEach((k) => caches.delete(k));
     });
 
     navigator.serviceWorker.register('./sw.js').then((reg) => {
-      reg.update();
+      reg.update().catch(() => {});
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
         if (newWorker) {
